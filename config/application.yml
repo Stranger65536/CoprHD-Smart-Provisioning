@@ -1,0 +1,11 @@
+banner:
+  charset: UTF-8
+  location: file:${spring.config.location}/banner.txt
+server:
+  tomcat.uri-encoding: UTF-8
+  http:
+    encoding:
+      enabled: true
+      charset: UTF-8
+logging:
+  config: ${spring.config.location}/log4j2.yml
