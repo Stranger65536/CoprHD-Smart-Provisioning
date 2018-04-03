@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  node-1:
+    image: com/emc/coprhd/sm:${VERSION}
+    container_name: CoprHDSP-node-1
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - VERSION=${VERSION}
+    ports:
+      - 80:8080
+      - 8080:8080
+      - 5005:5005
+    networks:
+      internal:
+        ipv4_address: 172.48.8.2
+
+networks:
+  internal:
+    driver: bridge
+    attachable: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.48.8.0/24
