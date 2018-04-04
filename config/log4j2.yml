@@ -59,6 +59,14 @@ Configutation:
             level: warn
 #          - ref: RollingFile_Appender
 #            level: warn
+      - name: org.mongodb
+        additivity: false
+        level: warn
+        AppenderRef:
+          - ref: Console_Appender
+            level: warn
+#          - ref: RollingFile_Appender
+#            level: warn
       - name: sun.rmi
         additivity: false
         level: warn

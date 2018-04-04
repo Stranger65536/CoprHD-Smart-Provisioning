@@ -1,6 +1,6 @@
 banner:
   charset: UTF-8
-  location: file:${spring.config.location}/banner.txt
+  location: file:config/banner.txt
 server:
   tomcat.uri-encoding: UTF-8
   http:
@@ -8,4 +8,20 @@ server:
       enabled: true
       charset: UTF-8
 logging:
-  config: ${spring.config.location}/log4j2.yml
+  config: config/log4j2.yml
+spring:
+  data:
+    mongodb:
+      database: admin
+      host: localhost
+      username: coprhd
+      password: password
+      port: 27017
+      repositories:
+        type: auto
+com:
+  emc:
+    coprhd:
+      sp:
+        mongo:
+          vp-collection-name: virtual-pools

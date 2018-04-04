@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      database: admin
+      host: 172.48.8.3
+      username: coprhd
+      password: password
+      port: 27017
+      repositories:
+        type: auto
