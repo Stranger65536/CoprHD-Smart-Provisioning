@@ -19,6 +19,9 @@ spring:
       port: 27017
       repositories:
         type: auto
+hazelcast:
+  client:
+    config: config/hazelcast-client.xml
 com:
   emc:
     coprhd:

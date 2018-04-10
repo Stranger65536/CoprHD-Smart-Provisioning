@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   node-1:
-    image: com/emc/coprhd/sm:${VERSION}
+    image: com/emc/coprhd/sp:${VERSION}
     container_name: CoprHDSP-node-1
     build:
       context: .
@@ -13,7 +13,7 @@ services:
       - 8080:8080
       - 5005:5005
     networks:
-      internal:
+      internal-1:
         ipv4_address: 172.48.8.2
   mongo-1:
     image: mongo:3.6
@@ -21,11 +21,24 @@ services:
     ports:
       - 27017:27017
     networks:
-      internal:
+      internal-1:
         ipv4_address: 172.48.8.3
+  hz-1:
+    image: com/emc/coprhd/sp/hz:3.9.3
+    container_name: hz-node-1
+    ports:
+      - 5701:5701
+    build:
+      context: hz-config
+      dockerfile: Dockerfile
+      args:
+        - NODE=1
+    networks:
+      internal-1:
+        ipv4_address: 172.48.8.4
 
 networks:
-  internal:
+  internal-1:
     driver: bridge
     attachable: true
     ipam:
