@@ -1,0 +1,144 @@
+#menu {
+    left: 0;
+    top: 40px;
+    width: 180px;
+    height: 100%;
+    z-index: 999;
+    position: fixed;
+    text-align: left;
+    user-select: none;
+    -o-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    background-color: #eaeaea;
+    -webkit-user-select: none;
+}
+
+.nav span {
+    color: #798790;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+
+a.nav {
+    opacity: 0.75;
+    display: block;
+    outline: none;
+    margin-top: 20px;
+    padding: 7px 15px;
+    position: relative;
+    text-decoration: none;
+}
+
+a.nav:hover {
+    background-color: #d6d6d6;
+}
+
+a.nav:before {
+    top: 0;
+    left: 0;
+    width: 0;
+    color: #fff;
+    opacity: 0;
+    min-height: 48px;
+    line-height: 48px;
+    padding-left: 75px;
+    position: absolute;
+    visibility: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    text-decoration: none;
+    background-color: transparent;
+    box-shadow: 11px 6px 6px -5px #aaa;
+}
+
+a.nav:before:hover {
+    top: 0;
+    left: 0;
+    width: 0;
+    color: #fff;
+    opacity: 0;
+    min-height: 48px;
+    line-height: 48px;
+    padding-left: 75px;
+    position: absolute;
+    visibility: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    text-decoration: none;
+    background-color: transparent;
+    box-shadow: 11px 6px 6px -5px #aaa;
+}
+
+a.nav.active,
+a.nav.active.selected {
+    opacity: 1.0;
+    text-decoration: none;
+    background-color: #2c95dd;
+}
+
+a.nav.active span {
+    color: #fff;
+    text-decoration: none;
+}
+
+a.nav.active.blueArrow:after {
+    top: 0;
+    left: 180px;
+    opacity: 1;
+    content: '';
+    z-index: 1000;
+    box-shadow: none;
+    position: absolute;
+    visibility: visible;
+    display: inline-block;
+    text-decoration: none;
+    border-left: 12px solid #2c95dd;
+    border-top: 32px solid transparent;
+    border-bottom: 32px solid transparent;
+}
+
+#menuitem-service-catalog:before {
+    font-size: 0.99em;
+    line-height: 50px;
+    font-style: normal;
+    font-weight: normal;
+    content: "Service Catalog";
+    font-variant: normal;
+    text-transform: none;
+    align-content: center;
+    text-decoration: none;
+    font-family: Verdana, sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+
+#menuitem-block-volumes:before {
+    height: 50px;
+    line-height: 50px;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    align-content: center;
+    text-decoration: none;
+    content: "Block Volumes";
+    font-family: Verdana, sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+
+#menuitem-pool-manager:before {
+    height: 50px;
+    line-height: 50px;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    align-content: center;
+    text-decoration: none;
+    content: "Pool Manager";
+    font-family: Verdana, sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}

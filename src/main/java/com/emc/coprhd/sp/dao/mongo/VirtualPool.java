@@ -3,6 +3,7 @@
  */
 package com.emc.coprhd.sp.dao.mongo;
 
+import com.emc.coprhd.sp.json.vnxszier.ApplicationsList;
 import com.emc.coprhd.sp.repository.DaoConstants.VirtualPools;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,16 +19,20 @@ public class VirtualPool {
     private final String name;
     @Field(VirtualPools.TARGET_RESPONSE_TIME)
     private final Double targetResponseTime;
+    @Field(VirtualPools.WORKLOAD)
+    private final ApplicationsList workload;
 
     public VirtualPool(
             final String id,
             final String vpId,
             final String name,
-            final Double targetResponseTime) {
+            final Double targetResponseTime,
+            final ApplicationsList workload) {
         this.id = id;
         this.vpId = vpId;
         this.name = name;
         this.targetResponseTime = targetResponseTime;
+        this.workload = workload;
     }
 
     public String getId() {
@@ -46,12 +51,17 @@ public class VirtualPool {
         return targetResponseTime;
     }
 
+    public ApplicationsList getWorkload() {
+        return workload;
+    }
+
     @SuppressWarnings("PublicInnerClass")
     public static final class VirtualPoolBuilder {
         private String id;
         private String vpId;
         private String name;
         private Double targetResponseTime;
+        private ApplicationsList workload;
 
         private VirtualPoolBuilder() {
         }
@@ -76,8 +86,13 @@ public class VirtualPool {
             return this;
         }
 
+        public VirtualPoolBuilder withWorkload(final ApplicationsList workload) {
+            this.workload = workload;
+            return this;
+        }
+
         public VirtualPool build() {
-            return new VirtualPool(id, vpId, name, targetResponseTime);
+            return new VirtualPool(id, vpId, name, targetResponseTime, workload);
         }
 
         public static VirtualPoolBuilder aVirtualPool() {

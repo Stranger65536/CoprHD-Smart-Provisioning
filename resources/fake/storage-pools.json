@@ -1,0 +1,310 @@
+[
+  {
+    "name": "CLARIION+FNM00104900081+POOL+U+Pool RAID10 (1)",
+    "id": "urn:storageos:StoragePool:9cd37364-4e4a-48ec-a31f-ff130c12a911:vdc1",
+    "link": {
+      "linkName": "self",
+      "linkRef": "/vdc/storage-systems/urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1/storage-pools/urn:storageos:StoragePool:9cd37364-4e4a-48ec-a31f-ff130c12a911:vdc1"
+    },
+    "creationTime": 1460121496484,
+    "inactive": false,
+    "global": false,
+    "remote": false,
+    "vdc": {
+      "id": "urn:storageos:VirtualDataCenter:9479ba7d-3fc1-479a-9a38-1eb0f90e8979:vdc1",
+      "link": {
+        "linkName": "self",
+        "linkRef": "/vdc/urn:storageos:VirtualDataCenter:9479ba7d-3fc1-479a-9a38-1eb0f90e8979:vdc1"
+      }
+    },
+    "tags": [],
+    "internal": false,
+    "nativeGuid": "CLARIION+FNM00104900081+POOL+U+Pool RAID10 (1)",
+    "assignedVirtualArrays": [],
+    "connectedVirtualArrays": [
+      "urn:storageos:VirtualArray:472a6dc7-5858-4c2b-a153-fb18578a2f84:vdc1"
+    ],
+    "taggedVirtualArrays": [
+      "urn:storageos:VirtualArray:472a6dc7-5858-4c2b-a153-fb18578a2f84:vdc1"
+    ],
+    "protocols": [
+      "iSCSI",
+      "FC"
+    ],
+    "controllerParams": [],
+    "operationalStatus": "READY",
+    "registrationStatus": "REGISTERED",
+    "totalCapacity": 264,
+    "freeCapacity": 262,
+    "usedCapacity": 2,
+    "percentUsed": 1,
+    "subscribedCapacity": 8,
+    "percentSubscribed": 4,
+    "maxResources": -1,
+    "numResources": 0,
+    "maximumThinVolumeSize": 262144,
+    "minimumThinVolumeSize": 0,
+    "maximumThickVolumeSize": 254,
+    "minimumThickVolumeSize": 0,
+    "raidLevels": [
+      "RAID10"
+    ],
+    "driveTypes": [
+      "SAS"
+    ],
+    "copyTypes": [
+      "UNSYNC_ASSOC",
+      "UNSYNC_UNASSOC"
+    ],
+    "tierUtilizationPercentage": [],
+    "poolName": "Pool RAID10 (1)",
+    "poolServiceType": "block",
+    "longTermRetention": false,
+    "supportedResourceTypes": "THIN_AND_THICK",
+    "storageSystem": {
+      "id": "urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1",
+      "link": {
+        "linkName": "self",
+        "linkRef": "/vdc/storage-systems/urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1"
+      }
+    },
+    "maxThinPoolSubscriptionPercentage": 300,
+    "maxPoolUtilizationPercentage": 100,
+    "thinVolumePreAllocationSupported": false,
+    "autoTieringSupported": false,
+    "compatibilityStatus": "COMPATIBLE",
+    "discoveryStatus": "VISIBLE",
+    "dataCenters": 0
+  },
+  {
+    "name": "CLARIION+FNM00104900081+POOL+U+Pool RAID5 (2)",
+    "id": "urn:storageos:StoragePool:cf127b59-564e-46f8-bf2e-ca444cc61133:vdc1",
+    "link": {
+      "linkName": "self",
+      "linkRef": "/vdc/storage-systems/urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1/storage-pools/urn:storageos:StoragePool:cf127b59-564e-46f8-bf2e-ca444cc61133:vdc1"
+    },
+    "creationTime": 1460121496484,
+    "inactive": false,
+    "global": false,
+    "remote": false,
+    "vdc": {
+      "id": "urn:storageos:VirtualDataCenter:9479ba7d-3fc1-479a-9a38-1eb0f90e8979:vdc1",
+      "link": {
+        "linkName": "self",
+        "linkRef": "/vdc/urn:storageos:VirtualDataCenter:9479ba7d-3fc1-479a-9a38-1eb0f90e8979:vdc1"
+      }
+    },
+    "tags": [],
+    "internal": false,
+    "nativeGuid": "CLARIION+FNM00104900081+POOL+U+Pool RAID5 (2)",
+    "assignedVirtualArrays": [],
+    "connectedVirtualArrays": [
+      "urn:storageos:VirtualArray:472a6dc7-5858-4c2b-a153-fb18578a2f84:vdc1"
+    ],
+    "taggedVirtualArrays": [
+      "urn:storageos:VirtualArray:472a6dc7-5858-4c2b-a153-fb18578a2f84:vdc1"
+    ],
+    "protocols": [
+      "iSCSI",
+      "FC"
+    ],
+    "controllerParams": [],
+    "operationalStatus": "READY",
+    "registrationStatus": "REGISTERED",
+    "totalCapacity": 533,
+    "freeCapacity": 526,
+    "usedCapacity": 7,
+    "percentUsed": 2,
+    "subscribedCapacity": 11,
+    "percentSubscribed": 3,
+    "maxResources": -1,
+    "numResources": 0,
+    "maximumThinVolumeSize": 262144,
+    "minimumThinVolumeSize": 0,
+    "maximumThickVolumeSize": 513,
+    "minimumThickVolumeSize": 0,
+    "raidLevels": [
+      "RAID5"
+    ],
+    "driveTypes": [
+      "SAS"
+    ],
+    "copyTypes": [
+      "UNSYNC_ASSOC",
+      "UNSYNC_UNASSOC"
+    ],
+    "tierUtilizationPercentage": [],
+    "poolName": "Pool RAID5 (2)",
+    "poolServiceType": "block",
+    "longTermRetention": false,
+    "supportedResourceTypes": "THIN_AND_THICK",
+    "storageSystem": {
+      "id": "urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1",
+      "link": {
+        "linkName": "self",
+        "linkRef": "/vdc/storage-systems/urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1"
+      }
+    },
+    "maxThinPoolSubscriptionPercentage": 300,
+    "maxPoolUtilizationPercentage": 100,
+    "thinVolumePreAllocationSupported": false,
+    "autoTieringSupported": false,
+    "compatibilityStatus": "COMPATIBLE",
+    "discoveryStatus": "VISIBLE",
+    "dataCenters": 0
+  },
+  {
+    "name": "CLARIION+FNM00104900081+POOL+U+Pool RAID5 (1)",
+    "id": "urn:storageos:StoragePool:c5ba0adb-2a6b-411a-a87f-7d8f693c210f:vdc1",
+    "link": {
+      "linkName": "self",
+      "linkRef": "/vdc/storage-systems/urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1/storage-pools/urn:storageos:StoragePool:c5ba0adb-2a6b-411a-a87f-7d8f693c210f:vdc1"
+    },
+    "creationTime": 1460121496484,
+    "inactive": false,
+    "global": false,
+    "remote": false,
+    "vdc": {
+      "id": "urn:storageos:VirtualDataCenter:9479ba7d-3fc1-479a-9a38-1eb0f90e8979:vdc1",
+      "link": {
+        "linkName": "self",
+        "linkRef": "/vdc/urn:storageos:VirtualDataCenter:9479ba7d-3fc1-479a-9a38-1eb0f90e8979:vdc1"
+      }
+    },
+    "tags": [],
+    "internal": false,
+    "nativeGuid": "CLARIION+FNM00104900081+POOL+U+Pool RAID5 (1)",
+    "assignedVirtualArrays": [],
+    "connectedVirtualArrays": [
+      "urn:storageos:VirtualArray:472a6dc7-5858-4c2b-a153-fb18578a2f84:vdc1"
+    ],
+    "taggedVirtualArrays": [
+      "urn:storageos:VirtualArray:472a6dc7-5858-4c2b-a153-fb18578a2f84:vdc1"
+    ],
+    "protocols": [
+      "iSCSI",
+      "FC"
+    ],
+    "controllerParams": [],
+    "operationalStatus": "READY",
+    "registrationStatus": "REGISTERED",
+    "totalCapacity": 533,
+    "freeCapacity": 530,
+    "usedCapacity": 3,
+    "percentUsed": 1,
+    "subscribedCapacity": 10,
+    "percentSubscribed": 2,
+    "maxResources": -1,
+    "numResources": 0,
+    "maximumThinVolumeSize": 262144,
+    "minimumThinVolumeSize": 0,
+    "maximumThickVolumeSize": 516,
+    "minimumThickVolumeSize": 0,
+    "raidLevels": [
+      "RAID5"
+    ],
+    "driveTypes": [
+      "SAS"
+    ],
+    "copyTypes": [
+      "UNSYNC_ASSOC",
+      "UNSYNC_UNASSOC"
+    ],
+    "tierUtilizationPercentage": [],
+    "poolName": "Pool RAID5 (1)",
+    "poolServiceType": "block",
+    "longTermRetention": false,
+    "supportedResourceTypes": "THIN_AND_THICK",
+    "storageSystem": {
+      "id": "urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1",
+      "link": {
+        "linkName": "self",
+        "linkRef": "/vdc/storage-systems/urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1"
+      }
+    },
+    "maxThinPoolSubscriptionPercentage": 300,
+    "maxPoolUtilizationPercentage": 100,
+    "thinVolumePreAllocationSupported": false,
+    "autoTieringSupported": false,
+    "compatibilityStatus": "COMPATIBLE",
+    "discoveryStatus": "VISIBLE",
+    "dataCenters": 0
+  },
+  {
+    "name": "CLARIION+FNM00104900081+POOL+U+Pool RAID10 (2)",
+    "id": "urn:storageos:StoragePool:01f00e08-aa8c-44ba-b3dc-1fc0f37f8bed:vdc1",
+    "link": {
+      "linkName": "self",
+      "linkRef": "/vdc/storage-systems/urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1/storage-pools/urn:storageos:StoragePool:01f00e08-aa8c-44ba-b3dc-1fc0f37f8bed:vdc1"
+    },
+    "creationTime": 1460121496484,
+    "inactive": false,
+    "global": false,
+    "remote": false,
+    "vdc": {
+      "id": "urn:storageos:VirtualDataCenter:9479ba7d-3fc1-479a-9a38-1eb0f90e8979:vdc1",
+      "link": {
+        "linkName": "self",
+        "linkRef": "/vdc/urn:storageos:VirtualDataCenter:9479ba7d-3fc1-479a-9a38-1eb0f90e8979:vdc1"
+      }
+    },
+    "tags": [],
+    "internal": false,
+    "nativeGuid": "CLARIION+FNM00104900081+POOL+U+Pool RAID10 (2)",
+    "assignedVirtualArrays": [],
+    "connectedVirtualArrays": [
+      "urn:storageos:VirtualArray:472a6dc7-5858-4c2b-a153-fb18578a2f84:vdc1"
+    ],
+    "taggedVirtualArrays": [
+      "urn:storageos:VirtualArray:472a6dc7-5858-4c2b-a153-fb18578a2f84:vdc1"
+    ],
+    "protocols": [
+      "iSCSI",
+      "FC"
+    ],
+    "controllerParams": [],
+    "operationalStatus": "READY",
+    "registrationStatus": "REGISTERED",
+    "totalCapacity": 264,
+    "freeCapacity": 261,
+    "usedCapacity": 3,
+    "percentUsed": 2,
+    "subscribedCapacity": 9,
+    "percentSubscribed": 4,
+    "maxResources": -1,
+    "numResources": 0,
+    "maximumThinVolumeSize": 262144,
+    "minimumThinVolumeSize": 0,
+    "maximumThickVolumeSize": 253,
+    "minimumThickVolumeSize": 0,
+    "raidLevels": [
+      "RAID10"
+    ],
+    "driveTypes": [
+      "SAS"
+    ],
+    "copyTypes": [
+      "UNSYNC_ASSOC",
+      "UNSYNC_UNASSOC"
+    ],
+    "tierUtilizationPercentage": [],
+    "poolName": "Pool RAID10 (2)",
+    "poolServiceType": "block",
+    "longTermRetention": false,
+    "supportedResourceTypes": "THIN_AND_THICK",
+    "storageSystem": {
+      "id": "urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1",
+      "link": {
+        "linkName": "self",
+        "linkRef": "/vdc/storage-systems/urn:storageos:StorageSystem:76b5b042-2c70-45a9-bf5c-2644b6e17bae:vdc1"
+      }
+    },
+    "maxThinPoolSubscriptionPercentage": 300,
+    "maxPoolUtilizationPercentage": 100,
+    "thinVolumePreAllocationSupported": false,
+    "autoTieringSupported": false,
+    "compatibilityStatus": "COMPATIBLE",
+    "discoveryStatus": "VISIBLE",
+    "dataCenters": 0
+  }
+]

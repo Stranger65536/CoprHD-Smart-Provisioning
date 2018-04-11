@@ -23,6 +23,8 @@ project.ext.jacksonVersion = '2.9.5'
 project.ext.springBootVersion = '1.5.8.RELEASE'
 project.ext.guavaVersion = '22.0'
 project.ext.hazelcastVersion = '3.9.3'
+project.ext.jade4jVersion = '0.3.0'
+project.ext.coprHDClientVersion = '3.0.0.0'
 
 apply plugin: 'org.springframework.boot'
 apply plugin: 'java'
@@ -90,6 +92,8 @@ dependencies {
             [group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: project.springBootVersion],
             [group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: project.springBootVersion],
 
+            [group: 'com.domingosuarez.boot', name: 'spring-boot-starter-jade4j', version: project.jade4jVersion],
+
             [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: project.jacksonVersion],
             [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.jacksonVersion],
             [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: project.jacksonVersion],
@@ -99,6 +103,8 @@ dependencies {
 
             [group: 'com.hazelcast', name: 'hazelcast', version: project.hazelcastVersion],
             [group: 'com.hazelcast', name: 'hazelcast-client', version: project.hazelcastVersion],
+
+            [group: 'com.emc.vipr', name: 'vipr-controller-client', version: project.coprHDClientVersion],
     )
     testCompile(
             [group: 'junit', name: 'junit', version: project.junitVersion],

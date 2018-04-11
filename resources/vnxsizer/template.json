@@ -1,0 +1,55 @@
+{
+  "applicationsList": {
+    "appFreeFormlist": [
+      {
+        "type": 9,
+        "description": "Existing workload",
+        "id": 0,
+        "deduplication": 0,
+        "Skew": 0.96,
+        "WriteSizeKB": 8,
+        "AllocatedGB": 0,
+        "ReadSizeKB": 8,
+        "CacheHitReadPct": 0,
+        "RandomReadPct": 67,
+        "NumberLUNs": 1,
+        "RandomWritePct": 33,
+        "ResponseTimeMS": 100,
+        "appName": "Existing workload",
+        "SequentialReadPct": 0,
+        "thinLUN": true,
+        "PerformanceIOPS": 0,
+        "bThinLUN": false,
+        "ConcurrentProcesses": 0,
+        "CacheHitWritePct": 0,
+        "SequentialWritePct": 0,
+        "bFASTCache": false
+      }
+    ],
+    "appOracleOLTPlist": []
+  },
+  "sizerProjectType": 1,
+  "poolInfo": {
+    "driveCount": 14,
+    "poolType": "POOL_TYPE_POOL",
+    "diskType": "DISK_PERF_TYPE_SAS10K",
+    "driveSize": 300,
+    "driveFormFactor": "3.5",
+    "raidType": "RAID_TYPE_10",
+    "stripeWidth": 2,
+    "hotSpares": 0
+  },
+  "systemPreferences": {
+    "systemType": "VNX5400",
+    "systemFlareVersion": "OE 33",
+    "unified": false,
+    "compactSystemRequested": true,
+    "doBestFit": true,
+    "dataMovers": 0,
+    "systemUtilization": 100,
+    "DAEStrategy": "DAE_STRATEGY_LO",
+    "systemFlareVersionVNXE": "FLARE 32",
+    "ddecay_systemRange": "VNX",
+    "ddecay_monoliticStripeWidth": 8
+  }
+}

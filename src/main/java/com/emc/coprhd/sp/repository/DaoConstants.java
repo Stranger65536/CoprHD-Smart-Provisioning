@@ -10,5 +10,6 @@ public interface DaoConstants {
         String ID = "vp_id";
         String NAME = "name";
         String TARGET_RESPONSE_TIME = "target-response-time";
+        String WORKLOAD = "workload";
     }
 }

@@ -19,6 +19,15 @@ spring:
       port: 27017
       repositories:
         type: auto
+  jade4j:
+    caching: false
+    checkTemplateLocation: true
+    contentType: text/html
+    encoding: UTF-8
+    mode: HTML
+    prefix: file:templates/
+    prettyPrint: false
+    suffix: .jade
 hazelcast:
   client:
     config: config/hazelcast-client.xml
@@ -28,3 +37,6 @@ com:
       sp:
         mongo:
           vp-collection-name: virtual-pools
+        vnx:
+          sizer:
+            template: resources/vnxsizer/template.json

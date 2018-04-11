@@ -1,0 +1,70 @@
+@import url(/resources/css/menu.css);
+@import url(/resources/css/inputs.css);
+
+@font-face {
+    font-family: Verdana;
+    src: url(/resources/fonts/verdana.ttf);
+}
+
+html {
+    min-width: 711px;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #f2f2f2;
+}
+
+a, img {
+    border-style: none;
+    text-decoration: none;
+}
+
+#root-page-wrapper {
+    height: 100%;
+    position: relative;
+}
+
+#header {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    z-index: 999;
+    position: fixed;
+    text-align: left;
+    background-color: #2996de;
+}
+
+#header-brand {
+    margin-top: 2px;
+    margin-left: 2px;
+    position: absolute;
+    border-style: none;
+    vertical-align: middle;
+}
+
+#content-area-wrapper {
+    top: 40px;
+    bottom: 0;
+    left: 180px;
+    right: 30px;
+    position: absolute;
+    text-align: center;
+    background: #f2f2f2;
+}
+
+.hide {
+    display: none;
+}
+
+.heading1 {
+    color: #555555;
+    font-size: 2em;
+    font-weight: bold;
+    font-family: Verdana, sans-serif;
+}

@@ -1,0 +1,522 @@
+html
+    head
+        meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(name='description', content='')
+        title ViPRSizer
+        link(rel='shortcut icon', href='/resources/favicon.ico', type='image/x-icon')
+        link(rel='icon', href='/resources/favicon.ico', type='image/x-icon')
+        // jQueryUI
+        link(rel='stylesheet', type='text/css', href='/resources/css/jquery-ui-1.11.2.custom/jquery-ui.min.css', media='screen')
+        link(rel='stylesheet', type='text/css', href='/resources/css/jquery-ui-1.11.2.custom/jquery-ui.structure.min.css', media='screen')
+        link(rel='stylesheet', type='text/css', href='/resources/css/jquery-ui-1.11.2.custom/jquery-ui.theme.min.css', media='screen')
+        // jqTree
+        link(rel='stylesheet', type='text/css', href='/resources/css/jqtree/jqtree.css', media='screen')
+        // SweetAlert
+        link(rel='stylesheet', type='text/css', href='/resources/css/sweetalert/sweet-alert.css', media='screen')
+        // Custom
+        link(rel='stylesheet', type='text/css', href='/resources/css/style.css', media='screen')
+        link(rel='stylesheet', type='text/css', href='/resources/css/pool-manager.css', media='screen')
+        // jQuery
+        script(src='/resources/js/jquery-2.1.3.min.js')
+        // jQueryUI
+        script(src='/resources/js/jquery-ui.min.js')
+        // jqTree
+        script(src='/resources/js/tree.jquery.js')
+        // SweetAlert
+        script(src='/resources/js/sweet-alert.min.js')
+        // Custom
+        script(src='/resources/js/scripts.js')
+        script(src='/resources/js/pool-manager.js')
+    body
+        #root-page-wrapper
+            #header
+                a#header-brand(href='app-dashboard.html')
+                    img(src='resources/images/logo.png')
+            #menu
+                a#menuPoolManager.nav.active.blueArrow(href='pool-manager')
+                    span#menuitem-pool-manager
+                a#serviceCatalog.nav(href='')
+                    span#menuitem-service-catalog
+                a#menuBlockVolumes.nav(href='')
+                    span#menuitem-block-volumes
+            #content-area-wrapper-no-right-panel
+                #content-area-panel-wrapper
+                    #content-area-panel-header-wrapper
+                        #content-area-panel-header.heading1
+                            | Virtual Pool Manager
+                    #content-area-panel-content-wrapper
+                        #content-area-panel-content
+                            #content-area-panel-content-table
+                                #content-area-panel-content-table-header-wrapper
+                                    #content-area-panel-content-table-header
+                                        form#los-dropdowns
+                                            #content-area-panel-content-table-header-menu-wrapper
+                                                #content-area-panel-content-table-header-menu
+                                                    #content-area-panel-content-table-header-menu-performance-wrapper
+                                                        #content-area-panel-content-table-header-menu-performance
+                                                            #content-area-panel-content-table-header-menu-performance-item-wrapper
+                                                                #content-area-panel-content-table-header-menu-performance-item
+                                                                    | Performance
+                                                            #content-area-panel-content-table-header-menu-performance-dropdown-wrapper
+                                                                #content-area-panel-content-table-header-menu-performance-dropdown
+                                                                    #performance-dropdown-table.dropdown-table
+                                                                        #performance-dropdown-response-time-row.dropdown-row
+                                                                            #performance-dropdown-response-time-title.dropdown-title-cell
+                                                                                | Response time(ms)
+                                                                            #performance-dropdown-response-time-content.dropdown-content-cell
+                                                                                label(for='performance-response-time')
+                                                                                select#performance-response-time.dropdown(name='dataPerformanceLoS.averageIOLatency')
+                                                                                    option(value='Unknown') Unknown
+                                                                                    option(value='3') 3
+                                                                                    option(value='6') 6
+                                                                                    option(value='12') 12
+                                                                                    option(value='18') 18
+                                                                                    option(value='25') 25
+                                                                                    option(value='50') 50
+                                                    #content-area-panel-content-table-header-menu-availability-wrapper
+                                                        #content-area-panel-content-table-header-menu-availability
+                                                            #content-area-panel-content-table-header-menu-availability-item-wrapper
+                                                                #content-area-panel-content-table-header-menu-availability-item
+                                                                    | Availability
+                                                            #content-area-panel-content-table-header-menu-availability-dropdown-wrapper
+                                                                #content-area-panel-content-table-header-menu-availability-dropdown
+                                                                    #availability-dropdown-table.dropdown-table
+                                                                        #availability-dropdown-rgo.dropdown-row
+                                                                            #availability-dropdown-rgo-title.dropdown-title-cell
+                                                                                | RGO
+                                                                            #availability-dropdown-rgo-content.dropdown-content-cell
+                                                                                label(for='availability-rgo')
+                                                                                select#availability-rgo.dropdown(name='dataAvailabilityLoS.supportedRGO')
+                                                                                    option(value='Unknown') Unknown
+                                                                        #availability-dropdown-rpo.dropdown-row
+                                                                            #availability-dropdown-rpo-title.dropdown-title-cell
+                                                                                | RPO(s)
+                                                                            #availability-dropdown-rpo-content.dropdown-content-cell
+                                                                                label(for='availability-rpo')
+                                                                                select#availability-rpo.dropdown(name='dataAvailabilityLoS.RPO')
+                                                                                    option(value='Unknown') Unknown
+                                                                                    option(value='1') 1
+                                                                                    option(value='2') 2
+                                                                                    option(value='3') 3
+                                                                        #availability-dropdown-rto.dropdown-row
+                                                                            #availability-dropdown-rto-title.dropdown-title-cell
+                                                                                | Remote RTO
+                                                                            #availability-dropdown-rto-content.dropdown-content-cell
+                                                                                label(for='availability-rto')
+                                                                                select#availability-rto.dropdown(name='dataAvailabilityLoS.RTO')
+                                                                                    option(value='Unknown') Unknown
+                                                    #content-area-panel-content-table-header-menu-snapshots-wrapper
+                                                        #content-area-panel-content-table-header-menu-snapshots
+                                                            #content-area-panel-content-table-header-menu-snapshots-item-wrapper
+                                                                #content-area-panel-content-table-header-menu-snapshots-item
+                                                                    | Snapshots
+                                                            #content-area-panel-content-table-header-menu-snapshots-dropdown-wrapper
+                                                                #content-area-panel-content-table-header-menu-snapshots-dropdown
+                                                                    #snapshots-dropdown-table.dropdown-table
+                                                                        #snapshots-dropdown-rto.dropdown-row
+                                                                            #snapshots-dropdown-rto-title.dropdown-title-cell
+                                                                                | Local RTO
+                                                                            #snapshots-dropdown-rto-content.dropdown-content-cell
+                                                                                label(for='snapshots-rto')
+                                                                                select#snapshots-rto.dropdown(name='dataSnapshotLoS.RTO')
+                                                                                    option(value='Unknown') Unknown
+                                                                        #snapshots-dropdown-types.dropdown-row
+                                                                            #snapshots-dropdown-types-title.dropdown-title-cell
+                                                                                | Snapshot type
+                                                                            #snapshots-dropdown-types-content.dropdown-content-cell
+                                                                                label(for='snapshots-types')
+                                                                                select#snapshots-types.dropdown(name='dataSnapshotLoS.supportedSnapshotType')
+                                                                                    option(value='Unknown') Unknown
+                                                                                    option(value='1') 1
+                                                                                    option(value='2') 2
+                                                                                    option(value='3') 3
+                                                                        #snapshots-dropdown-number.dropdown-row
+                                                                            #snapshots-dropdown-number-title.dropdown-title-cell
+                                                                                | Max number of snapshots
+                                                                            #snapshots-dropdown-number-content.dropdown-content-cell
+                                                                                label(for='snapshots-number')
+                                                                                select#snapshots-number.dropdown(name='dataSnapshotLoS.snapshotCount')
+                                                                                    option(value='Unknown') Unknown
+                                                                                    option(value='1') 1
+                                                                                    option(value='2') 2
+                                                                                    option(value='3') 3
+                                                    #content-area-panel-content-table-header-menu-storage-wrapper
+                                                        #content-area-panel-content-table-header-menu-storage
+                                                            #content-area-panel-content-table-header-menu-storage-item-wrapper
+                                                                #content-area-panel-content-table-header-menu-storage-item
+                                                                    | Storage
+                                                            #content-area-panel-content-table-header-menu-storage-dropdown-wrapper
+                                                                #content-area-panel-content-table-header-menu-storage-dropdown
+                                                                    #storage-dropdown-table.dropdown-table
+                                                                        #storage-dropdown-protocols.dropdown-row.list-option
+                                                                            #storage-dropdown-protocols-title.dropdown-title-cell
+                                                                                | Access protocols
+                                                                            #storage-dropdown-protocols-content.dropdown-content-cell
+                                                                                #protocols-table
+                                                                                    .protocols-table-row.list-option-item
+                                                                                        .protocols-table-checkbox-cell.list-option-item-toggle
+                                                                                            label
+                                                                                                input#iSCSI(type='checkbox', name='iSCSI')
+                                                                                        .protocols-table-title-cell.list-option-item-value iSCSI
+                                                                                    .protocols-table-row.list-option-item
+                                                                                        .protocols-table-checkbox-cell.list-option-item-toggle
+                                                                                            label
+                                                                                                input#FCP(type='checkbox', name='FCP')
+                                                                                        .protocols-table-title-cell.list-option-item-value FCP
+                                #content-area-panel-content-table-body-wrapper
+                                    #content-area-panel-content-table-body
+                                        #content-area-panel-content-table-body-content-wrapper
+                                            #content-area-panel-content-table-body-content-cell-wrapper
+                                                #content-area-panel-content-table-body-content-collapse-cell.collapsed
+                                                    #content-area-panel-content-table-body-content-collapse-cell-label
+                                                        | Workload information
+                                                    #content-area-panel-content-table-body-content-collapse-cell-button
+                                                        | +
+                                                    #content-area-panel-content-table-body-content-collapse-cell-content-wrapper.hidden
+                                                        #content-area-panel-content-table-body-content-collapse-cell-content-header-wrapper
+                                                            #content-area-panel-content-table-body-content-collapse-cell-content-header
+                                                                #content-area-panel-content-table-body-content-collapse-cell-content-header-body-wrapper
+                                                                    #content-area-panel-content-table-body-content-collapse-cell-content-header-body
+                                                                        #pool-manager-workload-type-panel
+                                                                            | Workload type:
+                                                                            label(for='pool-manager-load-type')
+                                                                            select#pool-manager-load-type.workload-type
+                                                                                option#free-form Free Form
+                                                                                option#app-oriented(selected='selected')
+                                                                                    | Application oriented
+                                                                                option#nar(disabled='disabled')
+                                                                                    | Import
+                                                                                    | NAR
+                                                                        #content-area-panel-content-table-body-content-close-cell-button
+                                                        #content-area-panel-content-table-body-content-collapse-cell-content-table-wrapper
+                                                            #content-area-panel-content-table-body-content-collapse-cell-content-table
+                                                                #workload-table-wrapper
+                                                                    .workload-free-form-table.hidden
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Capacity (GiB)
+                                                                            .workload-value-cell
+                                                                                label(for='capacity')
+                                                                                input#capacity.workload(name='capacity', type='number', min='1', value='10')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | IOPS
+                                                                            .workload-value-cell
+                                                                                label(for='iops')
+                                                                                input#iops.workload(name='iops', type='number', min='1', value='750')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Skew (Activity / Capacity)
+                                                                            .workload-value-cell
+                                                                                label(for='skew-activity')
+                                                                                input#skew-activity.workload.skew(name='skew', type='number', min='50', max='99', value='96')
+                                                                                |                                                                         /
+                                                                                label(for='skew-capacity')
+                                                                                input#skew-capacity.workload.skew(name='skew-capacity', type='number', min='0', max='100', value='4', disabled='disabled')
+                                                                    .workload-free-form-table.hidden
+                                                                        .workload-header-row
+                                                                            .workload-header-cell
+                                                                                | Attributes
+                                                                            .workload-header-cell
+                                                                                | Size(KB)
+                                                                            .workload-header-cell
+                                                                                | Percent
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Read hit
+                                                                            .workload-value-cell
+                                                                                label(for='read-hit-size')
+                                                                                select#read-hit-size.workload(name='read-hit-size')
+                                                                                    option(value='4') 4
+                                                                                    option(value='8', selected='selected')
+                                                                                        | 8
+                                                                                    option(value='16') 16
+                                                                                    option(value='24') 24
+                                                                                    option(value='32') 32
+                                                                                    option(value='40') 40
+                                                                                    option(value='48') 48
+                                                                                    option(value='64') 64
+                                                                                    option(value='80') 80
+                                                                                    option(value='96') 96
+                                                                                    option(value='112') 112
+                                                                                    option(value='128') 128
+                                                                            .workload-value-cell
+                                                                                label(for='read-hit-percent')
+                                                                                input#read-hit-percent.workload.attribute(name='read-hit-percent', type='number', min='0', max='100', value='0')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Write hit
+                                                                            .workload-value-cell
+                                                                                label(for='write-hit-size')
+                                                                                select#write-hit-size.workload(name='write-hit-size')
+                                                                                    option(value='4') 4
+                                                                                    option(value='8', selected='selected')
+                                                                                        | 8
+                                                                                    option(value='16') 16
+                                                                                    option(value='24') 24
+                                                                                    option(value='32') 32
+                                                                                    option(value='40') 40
+                                                                                    option(value='48') 48
+                                                                                    option(value='64') 64
+                                                                                    option(value='80') 80
+                                                                                    option(value='96') 96
+                                                                                    option(value='112') 112
+                                                                                    option(value='128') 128
+                                                                            .workload-value-cell
+                                                                                label(for='write-hit-percent')
+                                                                                input#write-hit-percent.workload.attribute(name='write-hit-percent', type='number', min='0', max='100', value='0')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Sequential read
+                                                                            .workload-value-cell
+                                                                                label(for='sequential-read-size')
+                                                                                select#sequential-read-size.workload(name='sequential-read-size')
+                                                                                    option(value='4') 4
+                                                                                    option(value='8', selected='selected')
+                                                                                        | 8
+                                                                                    option(value='16') 16
+                                                                                    option(value='24') 24
+                                                                                    option(value='32') 32
+                                                                                    option(value='40') 40
+                                                                                    option(value='48') 48
+                                                                                    option(value='64') 64
+                                                                                    option(value='80') 80
+                                                                                    option(value='96') 96
+                                                                                    option(value='112') 112
+                                                                                    option(value='128') 128
+                                                                            .workload-value-cell
+                                                                                label(for='sequential-read-percent')
+                                                                                input#sequential-read-percent.workload.attribute(name='sequential-read-percent', type='number', min='0', max='100', value='25')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Sequential write
+                                                                            .workload-value-cell
+                                                                                label(for='sequential-write-size')
+                                                                                select#sequential-write-size.workload(name='sequential-write-size')
+                                                                                    option(value='4') 4
+                                                                                    option(value='8', selected='selected')
+                                                                                        | 8
+                                                                                    option(value='16') 16
+                                                                                    option(value='24') 24
+                                                                                    option(value='32') 32
+                                                                                    option(value='40') 40
+                                                                                    option(value='48') 48
+                                                                                    option(value='64') 64
+                                                                                    option(value='80') 80
+                                                                                    option(value='96') 96
+                                                                                    option(value='112') 112
+                                                                                    option(value='128') 128
+                                                                            .workload-value-cell
+                                                                                label(for='sequential-write-percent')
+                                                                                input#sequential-write-percent.workload.attribute(name='sequential-write-percent', type='number', min='0', max='100', value='25')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Random read
+                                                                            .workload-value-cell
+                                                                                label(for='random-read-size')
+                                                                                select#random-read-size.workload(name='random-read-size')
+                                                                                    option(value='4') 4
+                                                                                    option(value='8', selected='selected')
+                                                                                        | 8
+                                                                                    option(value='16') 16
+                                                                                    option(value='24') 24
+                                                                                    option(value='32') 32
+                                                                                    option(value='40') 40
+                                                                                    option(value='48') 48
+                                                                                    option(value='64') 64
+                                                                                    option(value='80') 80
+                                                                                    option(value='96') 96
+                                                                                    option(value='112') 112
+                                                                                    option(value='128') 128
+                                                                            .workload-value-cell
+                                                                                label(for='random-read-percent')
+                                                                                input#random-read-percent.workload.attribute(name='random-read-percent', type='number', min='0', max='100', value='25')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Random write
+                                                                            .workload-value-cell
+                                                                                label(for='random-write-size')
+                                                                                select#random-write-size.workload(name='random-write-size')
+                                                                                    option(value='4') 4
+                                                                                    option(value='8', selected='selected')
+                                                                                        | 8
+                                                                                    option(value='16') 16
+                                                                                    option(value='24') 24
+                                                                                    option(value='32') 32
+                                                                                    option(value='40') 40
+                                                                                    option(value='48') 48
+                                                                                    option(value='64') 64
+                                                                                    option(value='80') 80
+                                                                                    option(value='96') 96
+                                                                                    option(value='112') 112
+                                                                                    option(value='128') 128
+                                                                            .workload-value-cell
+                                                                                label(for='random-write-percent')
+                                                                                input#random-write-percent.workload.attribute(name='random-write-percent', type='number', min='0', max='100', value='25')
+                                                                    .workload-app-oriented-type
+                                                                        label(for='workload-app-oriented-type')
+                                                                        select#workload-app-oriented-type.app-type(name='workload-app-oriented-type')
+                                                                            option#oracle-oltp Oracle OLTP
+                                                                            // <option id="dssd" selected="selected">DSSD</option>
+                                                                            // <option id="oracle-dwse" disabled="disabled">Oracle DWSE</option>
+                                                                            // <option id="virtual-desktop-simple" disabled="disabled">Virtual Desktop (Simple)</option>
+                                                                    .workload-app-oriented-label.oracle-oltp
+                                                                        | Load-specific parameters
+                                                                    .workload-app-oriented-table.oracle-oltp
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Transaction Duration
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-oltp-transaction-duration')
+                                                                                input#oracle-oltp-transaction-duration.workload(name='oracle-oltp-transaction-duration', type='number', min='1', value='100')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Active Table (GB)
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-oltp-active-table')
+                                                                                input#oracle-oltp-active-table.workload(name='oracle-oltp-active-table', type='number', min='1', value='1')
+                                                                    .workload-app-oriented-label.oracle-oltp
+                                                                        | Users
+                                                                    .workload-app-oriented-table.oracle-oltp
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Web
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-oltp-web')
+                                                                                input#oracle-oltp-web.workload(name='oracle-oltp-web', type='number', min='0', value='0')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | End-User
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-oltp-end-user')
+                                                                                input#oracle-oltp-end-user.workload(name='oracle-oltp-end-user', type='number', min='0', value='10000')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Internal
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-oltp-internal')
+                                                                                input#oracle-oltp-internal.workload(name='oracle-oltp-internal', type='number', min='0', value='0')
+                                                                    .workload-app-oriented-label.oracle-dwse.hidden
+                                                                        | Load-specific parameters
+                                                                    .workload-app-oriented-table.oracle-dwse.hidden
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Capacity (GB)
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-dwse-capacity')
+                                                                                input#oracle-dwse-capacity.workload(name='oracle-dwse-capacity', type='text', value='100')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Read Rate (MBpS)
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-dwse-read-rate')
+                                                                                input#oracle-dwse-read-rate.workload(name='oracle-dwse-read-rate', type='text', value='20')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Read Rate (MBpS)
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-dwse-write-rate')
+                                                                                input#oracle-dwse-write-rate.workload(name='oracle-dwse-write-rate', type='text', value='30')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Share Storage
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-dwse-share')
+                                                                                input#oracle-dwse-share(name='oracle-dwse-share', type='checkbox')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Size for landing pad
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-dwse-landing-size')
+                                                                                input#oracle-dwse-landing-size(name='oracle-dwse-landing-size', type='checkbox')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Landing Pad Capacity (GB)
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-dwse-landing-capacity')
+                                                                                input#oracle-dwse-landing-capacity.workload(name='oracle-dwse-landing-capacity', type='text', value='0', disabled='disabled')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Landing Pad Target Upload Rate (MBps)
+                                                                            .workload-value-cell
+                                                                                label(for='oracle-dwse-landing-rate')
+                                                                                input#oracle-dwse-landing-rate.workload(name='oracle-dwse-landing-rate', type='text', value='0', disabled='disabled')
+                                                                    .workload-app-oriented-label.virtual-desktop-simple.hidden
+                                                                        | Load-specific parameters
+                                                                    .workload-app-oriented-table.virtual-desktop-simple.hidden
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Type:
+                                                                            .workload-value-cell
+                                                                                label(for='virtual-desktop-simple-type')
+                                                                                select#virtual-desktop-simple-type.workload.table(name='virtual-desktop-simple-type')
+                                                                                    option#vmware-view
+                                                                                        | VMware View
+                                                                                    option#citrix-xen-msc
+                                                                                        | Citrix XEN MSC
+                                                                                    option#citrix-xen-pvs
+                                                                                        | Citrix XEN PVS
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Desktop Size (GB)
+                                                                            .workload-value-cell
+                                                                                label(for='virtual-desktop-simple-size')
+                                                                                input#virtual-desktop-simple-size.workload(name='virtual-desktop-simple-size', type='text', value='5')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | Desktop Count
+                                                                            .workload-value-cell
+                                                                                label(for='virtual-desktop-simple-count')
+                                                                                input#virtual-desktop-simple-count.workload(name='virtual-desktop-simple-count', type='text', value='20')
+                                                                        .workload-option-row
+                                                                            .workload-name-cell
+                                                                                | User Data Capacity (GB)
+                                                                            .workload-value-cell
+                                                                                label(for='virtual-desktop-simple-data')
+                                                                                input#virtual-desktop-simple-data.workload(name='virtual-desktop-simple-data', type='text', value='30')
+                                                        #content-area-panel-content-table-body-content-collapse-cell-content-instances-wrapper
+                                                            #content-area-panel-content-table-body-content-collapse-cell-content-instances
+                                                                .pool-manager-label-cell
+                                                                    | Number of instances:
+                                                                .pool-manager-input-cell
+                                                                    label(for='instancesCount')
+                                                                    input#instancesCount.pool-manager-input(type='number', min='1', value='1')
+                                                        #content-area-panel-content-table-body-content-collapse-cell-content-footer-wrapper
+                                                            #content-area-panel-content-table-body-content-collapse-cell-content-footer
+                                                                input#reset-workload-button(type='button', value='Reset')
+                                                                input#apply-workload-button(type='button', value='Apply')
+                                                #content-area-panel-content-table-body-content-left-cell
+                                                    #content-area-panel-content-table-body-content-left-cell-content-table
+                                                        #content-area-panel-content-table-body-content-left-cell-content-table-header-wrapper
+                                                            #content-area-panel-content-table-body-content-left-cell-content-table-header
+                                                                | Storage Pool list
+                                                        #content-area-panel-content-table-body-content-left-cell-content-table-options-wrapper
+                                                            #content-area-panel-content-table-body-content-left-cell-content-table-options
+                                                                label(for='filter-type') Show:
+                                                                select#filter-type.vp-list
+                                                                    option#filter-type-all(value='All') All
+                                                                    option#filter-type-matching(value='Matching', selected='selected')
+                                                                        | Matching
+                                                        #ghost-row
+                                                        #pools-list-loading-overlay
+                                                        #content-area-panel-content-table-body-content-left-cell-content-table-body-wrapper.blur
+                                                            #content-area-panel-content-table-body-content-left-cell-content-table-body
+                                                                #vp-list-table-wrapper
+                                                                    table#vp-list-table
+                                                                        tbody
+                                                #content-area-panel-content-table-body-content-right-cell
+                                                    #pool-info-loading-overlay
+                                                    #content-area-panel-content-table-body-content-right-cell-content
+                                                        #pool-info-tree
+                                #content-area-panel-content-table-footer-wrapper
+                                    #content-area-panel-content-table-footer
+                                        #content-area-panel-content-table-footer-table
+                                            #content-area-panel-content-table-footer-table-row
+                                                #content-area-panel-content-table-footer-table-characteristics-caption-cell
+                                                    | CoS characteristics:
+                                                #content-area-panel-content-table-footer-table-characteristics-cell
+                                                #content-area-panel-content-table-footer-table-create-pool-cell
+                                                    label(for='pool-name')
+                                                    input#pool-name.pool-name.empty(type='text', value='Pool name')
+                                                    input#create-pool-button(type='button', value='Create')
