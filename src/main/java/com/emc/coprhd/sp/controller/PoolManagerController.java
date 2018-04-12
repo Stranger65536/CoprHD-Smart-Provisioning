@@ -29,11 +29,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.io.IOException;
 import java.util.List;
 
-import static com.emc.coprhd.sp.controller.ContextPaths.ROOT;
 import static com.hazelcast.util.ExceptionUtil.sneakyThrow;
 
 @Controller
-@RequestMapping(ROOT)
 public class PoolManagerController {
     private static final ObjectMapper JSON = new ObjectMapper();
 
@@ -49,7 +47,7 @@ public class PoolManagerController {
     }
 
     @SuppressWarnings("SameReturnValue")
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = PoolManager.ROOT, method = RequestMethod.GET)
     public String handleLoadPageRequest() {
         return PoolManager.ROOT;
     }

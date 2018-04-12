@@ -610,7 +610,7 @@ function processGetPoolsRequest() {
         setPoolsVisible();
         swal({
             title: 'Error processing request!',
-            text: 'Please, reload the page ad check that server is running!',
+            text: 'Please, reload the page and check that server is running!',
             type: 'error',
             confirmButtonText: 'OK'
         });
@@ -747,7 +747,7 @@ function addWorkloadOptionPanel(value) {
             '<input type="image" ' +
             'id="' + workloadPanelButtonId + '" ' +
             'class="disable-image" ' +
-            'src="resources/images/error.png"/>\n');
+            'src="/images/error.png"/>\n');
         workloadPanel.effect('highlight', 1500);
     } else {
         characteristicsPanel.append('<div class="characteristic-wrapper" style="display: none;" id=' + workloadPanelId + '>\n' +
@@ -755,7 +755,7 @@ function addWorkloadOptionPanel(value) {
             '<input type="image" ' +
             'id="' + workloadPanelButtonId + '" ' +
             'class="disable-image" ' +
-            'src="resources/images/error.png"/>\n' +
+            'src="/images/error.png"/>\n' +
             '</div>\n');
         characteristicsPanel.find('#' + workloadPanelId).fadeIn(250);
     }
@@ -774,7 +774,7 @@ function addLosOptionPanel(losOptionId, losOptionName, losOptionValue) {
             '<input type="image" ' +
             'id="' + losOptionButtonId + '" ' +
             'class="disable-image" ' +
-            'src="resources/images/error.png"/>\n');
+            'src="/images/error.png"/>\n');
         losOptionPanel.effect('highlight', 1500);
     } else {
         characteristicsPanel.append('<div class="characteristic-wrapper" style="display: none;" id=' + losOptionPanelId + '>\n' +
@@ -782,7 +782,7 @@ function addLosOptionPanel(losOptionId, losOptionName, losOptionValue) {
             '<input type="image" ' +
             'id="' + losOptionButtonId + '" ' +
             'class="disable-image" ' +
-            'src="resources/images/error.png"/>\n' +
+            'src="/images/error.png"/>\n' +
             '</div>\n');
         characteristicsPanel.find('#' + losOptionPanelId).fadeIn(250);
     }

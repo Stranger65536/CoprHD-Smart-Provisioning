@@ -1,9 +1,9 @@
-@import url(/resources/css/menu.css);
-@import url(/resources/css/inputs.css);
+@import url(/css/menu.css);
+@import url(/css/inputs.css);
 
 @font-face {
     font-family: Verdana;
-    src: url(/resources/fonts/verdana.ttf);
+    src: url(/fonts/verdana.ttf);
 }
 
 html {
@@ -15,7 +15,7 @@ html, body {
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
     background-color: #f2f2f2;
 }
 

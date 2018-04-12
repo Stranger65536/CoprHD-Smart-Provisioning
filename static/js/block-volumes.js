@@ -22,7 +22,7 @@ function redrawVolumesAndHosts() {
                 '<td class="lunPageTableCell" id="' + obj["host_id"] + '">' +
                 obj["volume_name"] + '</td>' +
                 '<td class="lunPageTableCell" id="' + obj["volume_id"] + '">' +
-                (obj["host_name"] != null ? obj["host_name"] : "unmapped <a href=#><img src='/resources/images/attach.png'/></a>") +
+                (obj["host_name"] != null ? obj["host_name"] : "unmapped <a href=#><img src='/images/attach.png'/></a>") +
                 '</td>' +
                 '</tr>');
             if (obj["host_id"] == null) {

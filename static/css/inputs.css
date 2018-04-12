@@ -6,15 +6,15 @@
     cursor: pointer;
     position: relative;
     display: inline-block;
-    background: url(/resources/images/checkbox.png) no-repeat;
+    background: url(/images/checkbox.png) no-repeat;
 }
 
 .custom-checkbox:hover {
-    background: url(/resources/images/checkbox-hover.png) no-repeat;
+    background: url(/images/checkbox-hover.png) no-repeat;
 }
 
 .custom-checkbox.selected {
-    background: url(/resources/images/checkbox-selected.png) no-repeat;
+    background: url(/images/checkbox-selected.png) no-repeat;
 }
 
 input[type="checkbox"] {

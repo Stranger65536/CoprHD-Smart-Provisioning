@@ -35,7 +35,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -81,14 +80,17 @@ public class ProcessingServiceImpl implements ProcessingService {
     @Autowired
     public ProcessingServiceImpl(
             @Value("${com.emc.coprhd.sp.vnx.sizer.template}") final String vnxSizerTemplateFile,
-            @Lazy final ViPRClient viprClient,
-            @Lazy final VNXSizerClient vnxSizerclient,
-            @Lazy final SRMClient srmClient,
+//            @Lazy final ViPRClient viprClient,
+//            @Lazy final VNXSizerClient vnxSizerclient,
+//            @Lazy final SRMClient srmClient,
             final MongoDao mongoDao)
             throws IOException {
-        this.viprClient = viprClient;
-        this.vnxSizerclient = vnxSizerclient;
-        this.srmClient = srmClient;
+//        this.viprClient = viprClient;
+        this.viprClient = null;
+//        this.vnxSizerclient = vnxSizerclient;
+        this.vnxSizerclient = null;
+//        this.srmClient = srmClient;
+        this.srmClient = null;
         this.mongoDao = mongoDao;
         final File requestTemplateFile = new File(checkNotNull(vnxSizerTemplateFile,
                 "JSON template path must be specified!"));

@@ -499,7 +499,7 @@ function reloadServiceCatalogs() {
             '<div class="panel-body">' +
             '<div class="catalog-image">' +
             '<div class="catalog-image-inner">' +
-            '<img class="" src="/resources/images/service-pool.png"/>' +
+            '<img class="" src="/images/service-pool.png"/>' +
             '</div>' +
             '</div>' +
             '<p class="catalog-description">Latency: ' + latency + '</p>' +

@@ -28,6 +28,8 @@ spring:
     prefix: file:templates/
     prettyPrint: false
     suffix: .jade
+  resources:
+    static-locations: file:static/
 hazelcast:
   client:
     config: config/hazelcast-client.xml
