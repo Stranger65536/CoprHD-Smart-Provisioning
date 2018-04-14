@@ -11,6 +11,8 @@ import java.net.URI;
 import java.util.Collection;
 
 public interface ViPRClient {
+    void login();
+
     Collection<StoragePoolRestRep> getStoragePools();
 
     StoragePoolRestRep getStoragePool(final URI id);
@@ -20,4 +22,6 @@ public interface ViPRClient {
     Collection<BlockVirtualPoolRestRep> getVirtualPools();
 
     URI createVirtualPool(final String name, final Collection<URI> pools);
+
+    String getName();
 }

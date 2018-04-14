@@ -42,3 +42,12 @@ com:
         vnx:
           sizer:
             template: resources/vnxsizer/template.json
+        vipr:
+          host: 127.0.0.1
+          login: admin
+          password: password
+          timeout: 2000
+          stub:
+            storage-system: resources/stub/storage-system.json
+            storage-pools: resources/stub/storage-pools.json
+            virtual-pools: resources/stub/virtual-pools.json
