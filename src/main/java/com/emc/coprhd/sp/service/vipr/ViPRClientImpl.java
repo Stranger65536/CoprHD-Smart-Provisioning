@@ -1,5 +1,6 @@
 package com.emc.coprhd.sp.service.vipr;
 
+import com.emc.coprhd.sp.service.common.AbstractFallBackable;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
 import com.emc.storageos.model.systems.StorageSystemRestRep;
 import com.emc.storageos.model.vpool.BlockVirtualPoolParam;
@@ -10,7 +11,6 @@ import com.emc.storageos.model.vpool.VirtualPoolPoolUpdateParam;
 import com.emc.vipr.client.ClientConfig;
 import com.emc.vipr.client.ViPRCoreClient;
 import com.google.common.primitives.Ints;
-import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
@@ -28,7 +28,7 @@ import static com.hazelcast.util.Preconditions.checkNotNull;
 
 @Order(0)
 @Service("ViPRClient")
-public class ViPRClientImpl implements ViPRClient, BeanNameAware {
+public class ViPRClientImpl extends AbstractFallBackable<ViPRClient> implements ViPRClient {
     @SuppressWarnings("FieldCanBeLocal")
     private final String host;
     private final String login;
@@ -36,8 +36,6 @@ public class ViPRClientImpl implements ViPRClient, BeanNameAware {
     @SuppressWarnings("FieldCanBeLocal")
     private final int timeout;
     private final ViPRCoreClient viprCoreClient;
-
-    private String name;
 
     @Autowired
     public ViPRClientImpl(
@@ -61,7 +59,7 @@ public class ViPRClientImpl implements ViPRClient, BeanNameAware {
     }
 
     @Override
-    public void login() {
+    public void initialize() {
         viprCoreClient.auth().login(login, password);
     }
 
@@ -90,17 +88,6 @@ public class ViPRClientImpl implements ViPRClient, BeanNameAware {
         final URI poolId = createVirtualPool(name);
         assignStoragePoolsToVirtualPool(pools, poolId);
         return poolId;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    @SuppressWarnings("SuspiciousGetterSetter")
-    public void setBeanName(final String name) {
-        this.name = name;
     }
 
     @PreDestroy

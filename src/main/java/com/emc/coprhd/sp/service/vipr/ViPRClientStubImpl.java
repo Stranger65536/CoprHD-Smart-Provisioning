@@ -1,5 +1,6 @@
 package com.emc.coprhd.sp.service.vipr;
 
+import com.emc.coprhd.sp.service.common.AbstractFallBackable;
 import com.emc.storageos.model.DataObjectRestRep;
 import com.emc.storageos.model.errorhandling.ServiceErrorRestRep;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
@@ -8,7 +9,6 @@ import com.emc.storageos.model.vpool.BlockVirtualPoolRestRep;
 import com.emc.vipr.client.exceptions.ServiceErrorException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
@@ -27,7 +27,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 @Order(1)
 @Service("ViPRClientStub")
-public class ViPRClientStubImpl implements ViPRClient, BeanNameAware {
+public class ViPRClientStubImpl extends AbstractFallBackable<ViPRClient> implements ViPRClient {
     private final File storageSystemJsonPath;
     private final File storagePoolsJsonPath;
     private final File virtualPoolsJsonPath;
@@ -37,8 +37,6 @@ public class ViPRClientStubImpl implements ViPRClient, BeanNameAware {
     private Collection<BlockVirtualPoolRestRep> virtualPools;
     private Map<URI, StoragePoolRestRep> storagePoolsMap;
     private StorageSystemRestRep storageSystem;
-
-    private String name;
 
     @Autowired
     public ViPRClientStubImpl(
@@ -56,7 +54,7 @@ public class ViPRClientStubImpl implements ViPRClient, BeanNameAware {
     }
 
     @Override
-    public void login() {
+    public void initialize() {
         checkState(this.storageSystemJsonPath.exists(),
                 "Storage System json file must exist at "
                         + this.storageSystemJsonPath + '!');
@@ -107,17 +105,6 @@ public class ViPRClientStubImpl implements ViPRClient, BeanNameAware {
         } else {
             return virtualPools.iterator().next().getId();
         }
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    @SuppressWarnings("SuspiciousGetterSetter")
-    public void setBeanName(final String name) {
-        this.name = name;
     }
 
     private StorageSystemRestRep prepareStorageSystem() throws IOException {

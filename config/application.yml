@@ -42,6 +42,9 @@ com:
         vnx:
           sizer:
             template: resources/vnxsizer/template.json
+        srm:
+          url: http://127.0.0.1/info
+          timeout: 1000
         vipr:
           host: 127.0.0.1
           login: admin
