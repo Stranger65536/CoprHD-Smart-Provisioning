@@ -6,6 +6,7 @@ package com.emc.coprhd.sp.transfer.vnx.sizer.request;
 import com.emc.coprhd.sp.json.vnxszier.ApplicationsList;
 import com.emc.coprhd.sp.json.vnxszier.PoolInfo;
 import com.emc.coprhd.sp.json.vnxszier.SystemPreferences;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 
@@ -25,11 +26,12 @@ public class VNXSizerRequest {
     @JsonProperty(SYSTEM_PREFERENCES)
     private final SystemPreferences systemPreferences;
 
+    @JsonCreator
     public VNXSizerRequest(
-            final ApplicationsList applicationsList,
-            final Integer sizerProjectType,
-            final PoolInfo poolInfo,
-            final SystemPreferences systemPreferences) {
+            @JsonProperty(APPLICATIONS_LIST) final ApplicationsList applicationsList,
+            @JsonProperty(SIZER_PROJECT_TYPE) final Integer sizerProjectType,
+            @JsonProperty(POOL_INFO) final PoolInfo poolInfo,
+            @JsonProperty(SYSTEM_PREFERENCES) final SystemPreferences systemPreferences) {
         this.applicationsList = applicationsList;
         this.sizerProjectType = sizerProjectType;
         this.poolInfo = poolInfo;

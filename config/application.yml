@@ -39,9 +39,10 @@ com:
       sp:
         mongo:
           vp-collection-name: virtual-pools
-        vnx:
-          sizer:
-            template: resources/vnxsizer/template.json
+        sizer:
+          url: http://127.0.0.1:8081/vnxsizer/calculate
+          timeout: 10000
+          template: resources/vnxsizer/template.json
         srm:
           url: http://127.0.0.1:8082/info
           timeout: 1000

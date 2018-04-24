@@ -79,7 +79,7 @@ public class ProcessingServiceImpl implements ProcessingService {
 
     @Autowired
     public ProcessingServiceImpl(
-            @Value("${com.emc.coprhd.sp.vnx.sizer.template}") final String vnxSizerTemplateFile,
+            @Value("${com.emc.coprhd.sp.sizer.template}") final String vnxSizerTemplateFile,
 //            @Lazy final ViPRClient viprClient,
 //            @Lazy final VNXSizerClient vnxSizerclient,
 //            @Lazy final SRMClient srmClient,
