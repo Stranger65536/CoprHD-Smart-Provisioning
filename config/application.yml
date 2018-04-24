@@ -43,7 +43,7 @@ com:
           sizer:
             template: resources/vnxsizer/template.json
         srm:
-          url: http://127.0.0.1/info
+          url: http://127.0.0.1:8082/info
           timeout: 1000
         vipr:
           host: 127.0.0.1
