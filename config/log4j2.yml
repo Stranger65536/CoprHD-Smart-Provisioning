@@ -1,5 +1,5 @@
 Configutation:
-  name: local
+  name: default
 
   Properties:
     Property:
@@ -7,85 +7,62 @@ Configutation:
       value: "logs"
 
   Appenders:
+
     Console:
       name: Console_Appender
       target: SYSTEM_OUT
       PatternLayout:
-        pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%t] %logger{36} - %replace{%msg}{\\R}{}%n"
+        pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%t] %logger{36} - %msg%n"
 
-#    RollingFile:
-#      name: RollingFile_Appender
-#      fileName: "${log-path}/app.log"
-#      filePattern: "${log-path}/archive/app.log.%d{yyyy-MM-dd-hh-mm}.gz"
-#      PatternLayout:
-#        pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%t] %logger{36} - %msg%n"
-#      Policies:
-#        SizeBaseFdTriggeringPolicy:
-#          size: 3 MB
-#      DefaultRollOverStrategy:
-#        max: 30
+    RollingFile:
+      name: RollingFile_Appender
+      fileName: logs/CoprHDSM.log
+      filePattern: "logs/archive/CoprHDSM.log.%d{yyyy-MM-dd-hh-mm}.gz"
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%t] %logger{36} - %msg%n"
+      Policies:
+        SizeBasedTriggeringPolicy:
+          size: 5 MB
+      DefaultRollOverStrategy:
+        max: 30
 
   Loggers:
-    Logger:
-      - name: org.jboss
+      Logger:
+        - name: org.hibernate
+          additivity: false
+          level: off
+        - name: org.jboss
+          additivity: false
+          level: off
+        - name: org.apache
+          additivity: false
+          level: off
+        - name: com.emc.vipr.client
+          additivity: false
+          level: off
+        - name: org.eclipse
+          additivity: false
+          level: off
+        - name: org.mongodb
+          additivity: false
+          level: off
+        - name: sun.rmi
+          additivity: false
+          level: off
+        - name: javax.activation
+          additivity: false
+          level: off
+        - name: org.springframework
+          additivity: false
+          level: warn
+          AppenderRef:
+            - ref: Console_Appender
+              level: warn
+            - ref: RollingFile_Appender
+              level: warn
+      Root:
+        level: debug
         additivity: false
-        level: warn
         AppenderRef:
+          - ref: RollingFile_Appender
           - ref: Console_Appender
-            level: warn
-#          - ref: RollingFile_Appender
-#            level: warn
-      - name: org.apache
-        additivity: false
-        level: warn
-        AppenderRef:
-          - ref: Console_Appender
-            level: warn
-#          - ref: RollingFile_Appender
-#            level: warn
-      - name: org.springframework
-        additivity: false
-        level: warn
-        AppenderRef:
-          - ref: Console_Appender
-            level: warn
-#          - ref: RollingFile_Appender
-#            level: warn
-      - name: org.eclipse
-        additivity: false
-        level: warn
-        AppenderRef:
-          - ref: Console_Appender
-            level: warn
-#          - ref: RollingFile_Appender
-#            level: warn
-      - name: org.mongodb
-        additivity: false
-        level: warn
-        AppenderRef:
-          - ref: Console_Appender
-            level: warn
-#          - ref: RollingFile_Appender
-#            level: warn
-      - name: sun.rmi
-        additivity: false
-        level: warn
-        AppenderRef:
-          - ref: Console_Appender
-            level: warn
-#          - ref: RollingFile_Appender
-#            level: warn
-      - name: javax.activation
-        additivity: false
-        level: warn
-        AppenderRef:
-          - ref: Console_Appender
-            level: warn
-#          - ref: RollingFile_Appender
-#            level: warn
-    Root:
-      level: debug
-      additivity: false
-      AppenderRef:
-#        - ref: RollingFile_Appender
-        - ref: Console_Appender

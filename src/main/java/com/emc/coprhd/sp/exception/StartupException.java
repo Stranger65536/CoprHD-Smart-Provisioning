@@ -1,3 +1,6 @@
+/*
+ * Copyright 1994-2018 EMC Corporation. All rights reserved.
+ */
 package com.emc.coprhd.sp.exception;
 
 public class StartupException extends RuntimeException {

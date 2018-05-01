@@ -1,3 +1,6 @@
+/*
+ * Copyright 1994-2018 EMC Corporation. All rights reserved.
+ */
 package com.emc.coprhd.sp.service.sizer;
 
 import com.emc.coprhd.sp.exception.StartupException;
@@ -22,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.io.IOException;
 
 import static com.emc.coprhd.sp.util.RuntimeUtils.enterMethodMessage;
 import static com.emc.coprhd.sp.util.RuntimeUtils.exitMethodMessage;
@@ -75,7 +79,7 @@ public class VNXSizerClientImpl implements VNXSizerClient {
             checkState(requestTemplateFile.exists(), "JSON template file must exist!");
             final VNXSizerRequest request = mapper.readValue(requestTemplateFile, VNXSizerRequest.class);
             processSizerRequest(request);
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new StartupException("Can't get response from VNX Sizer", e);
         }
     }

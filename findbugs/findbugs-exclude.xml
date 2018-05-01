@@ -1,2 +1,5 @@
 <FindBugsFilter>
+    <Match>
+        <Class name="com.sun.jersey.api.client.ClientResponse"/>
+    </Match>
 </FindBugsFilter>

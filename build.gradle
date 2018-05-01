@@ -98,7 +98,9 @@ dependencies {
             [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: project.jacksonVersion],
             [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.jacksonVersion],
             [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: project.jacksonVersion],
+            [group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: project.jacksonVersion],
             [group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: project.jacksonVersion],
+            [group: 'com.fasterxml.jackson.module', name: 'jackson-module-jaxb-annotations', version: project.jacksonVersion],
 
             [group: 'com.google.guava', name: 'guava', version: project.guavaVersion],
 
