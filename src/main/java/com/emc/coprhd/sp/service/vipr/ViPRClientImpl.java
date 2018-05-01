@@ -43,6 +43,7 @@ public class ViPRClientImpl extends AbstractFallBackable<ViPRClient> implements 
     @Autowired
     public ViPRClientImpl(
             @Value("${com.emc.coprhd.sp.vipr.host}") final String host,
+            @Value("${com.emc.coprhd.sp.vipr.port}") final int port,
             @Value("${com.emc.coprhd.sp.vipr.login}") final String login,
             @Value("${com.emc.coprhd.sp.vipr.password}") final String password,
             @Value("${com.emc.coprhd.sp.vipr.timeout}") final String timeout) {
@@ -58,6 +59,7 @@ public class ViPRClientImpl extends AbstractFallBackable<ViPRClient> implements 
                 .withMaxConcurrentTaskRequests(3)
                 .withRequestLoggingEnabled()
                 .withMaxRetries(3)
+                .withPort(port)
                 .withMediaType("application/json"));
     }
 

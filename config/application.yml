@@ -48,6 +48,7 @@ com:
           timeout: 1000
         vipr:
           host: 127.0.0.1
+          port: 8083
           login: admin
           password: password
           timeout: 2000
