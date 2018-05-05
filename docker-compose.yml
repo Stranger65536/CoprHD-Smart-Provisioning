@@ -2,12 +2,14 @@ version: '3.3'
 services:
   node-1:
     image: com/emc/coprhd/sp:${VERSION}
-    container_name: CoprHDSP-node-1
+    container_name: node-1
     build:
       context: .
       dockerfile: ./Dockerfile
       args:
         - VERSION=${VERSION}
+    environment:
+      - NODE=1
     ports:
       - 80:8080
       - 8080:8080
@@ -17,7 +19,7 @@ services:
         ipv4_address: 172.48.8.2
   mongo-1:
     image: mongo:3.6
-    container_name: mongo-node-1
+    container_name: mongo-1
     ports:
       - 27017:27017
     networks:
@@ -25,7 +27,7 @@ services:
         ipv4_address: 172.48.8.3
   hz-1:
     image: com/emc/coprhd/sp/hz:3.9.3
-    container_name: hz-node-1
+    container_name: hz-1
     ports:
       - 5701:5701
     build:
@@ -56,10 +58,134 @@ services:
     image: com/emc/coprhd/vipr:${VERSION}
     container_name: vipr-1
     ports:
-      - 8083:8443
+      - 8083:4443
     networks:
       internal-1:
         ipv4_address: 172.48.8.7
+  node-2:
+    image: com/emc/coprhd/sp:${VERSION}
+    container_name: node-2
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - VERSION=${VERSION}
+    environment:
+      - NODE=2
+    ports:
+      - 1080:8080
+      - 18080:8080
+      - 15005:5005
+    networks:
+      internal-2:
+        ipv4_address: 172.48.9.2
+  mongo-2:
+    image: mongo:3.6
+    container_name: mongo-2
+    ports:
+      - 37017:27017
+    networks:
+      internal-2:
+        ipv4_address: 172.48.9.3
+  hz-2:
+    image: com/emc/coprhd/sp/hz:3.9.3
+    container_name: hz-2
+    ports:
+      - 15701:5701
+    build:
+      context: hz-config
+      dockerfile: Dockerfile
+      args:
+        - NODE=2
+    networks:
+      internal-2:
+        ipv4_address: 172.48.9.4
+  sizer-2:
+    image: com/emc/vnxsizer-api:latest
+    container_name: sizer-2
+    ports:
+      - 18081:8080
+    networks:
+      internal-2:
+        ipv4_address: 172.48.9.5
+  srm-2:
+    image: com/emc/coprhd/srm:${VERSION}
+    container_name: srm-2
+    ports:
+      - 18082:8080
+    networks:
+      internal-2:
+        ipv4_address: 172.48.9.6
+  vipr-2:
+    image: com/emc/coprhd/vipr:${VERSION}
+    container_name: vipr-2
+    ports:
+      - 18083:4443
+    networks:
+      internal-2:
+        ipv4_address: 172.48.9.7
+  node-3:
+    image: com/emc/coprhd/sp:${VERSION}
+    container_name: node-3
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - VERSION=${VERSION}
+    environment:
+      - NODE=3
+    ports:
+      - 2080:8080
+      - 28080:8080
+      - 25005:5005
+    networks:
+      internal-3:
+        ipv4_address: 172.48.10.2
+  mongo-3:
+    image: mongo:3.6
+    container_name: mongo-3
+    ports:
+      - 47017:27017
+    networks:
+      internal-3:
+        ipv4_address: 172.48.10.3
+  hz-3:
+    image: com/emc/coprhd/sp/hz:3.9.3
+    container_name: hz-3
+    ports:
+      - 25701:5701
+    build:
+      context: hz-config
+      dockerfile: Dockerfile
+      args:
+        - NODE=3
+    networks:
+      internal-3:
+        ipv4_address: 172.48.10.4
+  sizer-3:
+    image: com/emc/vnxsizer-api:latest
+    container_name: sizer-3
+    ports:
+      - 28081:8080
+    networks:
+      internal-3:
+        ipv4_address: 172.48.10.5
+  srm-3:
+    image: com/emc/coprhd/srm:${VERSION}
+    container_name: srm-3
+    ports:
+      - 28082:8080
+    networks:
+      internal-3:
+        ipv4_address: 172.48.10.6
+  vipr-3:
+    image: com/emc/coprhd/vipr:${VERSION}
+    container_name: vipr-3
+    ports:
+      - 28083:4443
+    networks:
+      internal-3:
+        ipv4_address: 172.48.10.7
 
 networks:
   internal-1:
@@ -69,3 +195,17 @@ networks:
       driver: default
       config:
         - subnet: 172.48.8.0/24
+  internal-2:
+    driver: bridge
+    attachable: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.48.9.0/24
+  internal-3:
+    driver: bridge
+    attachable: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.48.10.0/24

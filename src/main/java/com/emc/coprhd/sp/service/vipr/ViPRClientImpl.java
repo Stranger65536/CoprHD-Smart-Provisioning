@@ -59,6 +59,7 @@ public class ViPRClientImpl extends AbstractFallBackable<ViPRClient> implements 
                 .withMaxConcurrentTaskRequests(3)
                 .withRequestLoggingEnabled()
                 .withMaxRetries(3)
+                .withPortalPort(port)
                 .withPort(port)
                 .withMediaType("application/json"));
     }

@@ -16,5 +16,12 @@ echo "Waiting mongo to start..."
 
 sleep "5" #TODO mongo wait to start
 
-docker exec -it mongo-node-1 mongo admin --eval "db.createCollection('virtual-pools')"
-docker exec -it mongo-node-1 mongo admin --eval "db.createUser({ user: 'coprhd', pwd: 'password', roles: ['userAdminAnyDatabase', 'dbAdminAnyDatabase', 'readWriteAnyDatabase']});"
+docker exec -it mongo-1 mongo admin --eval "db.createCollection('virtual-pools')"
+docker exec -it mongo-1 mongo admin --eval "db.createUser({ user: 'coprhd', pwd: 'password', roles: ['userAdminAnyDatabase', 'dbAdminAnyDatabase', 'readWriteAnyDatabase']});"
+
+docker exec -it mongo-2 mongo admin --eval "db.createCollection('virtual-pools')"
+docker exec -it mongo-2 mongo admin --eval "db.createUser({ user: 'coprhd', pwd: 'password', roles: ['userAdminAnyDatabase', 'dbAdminAnyDatabase', 'readWriteAnyDatabase']});"
+
+
+docker exec -it mongo-3 mongo admin --eval "db.createCollection('virtual-pools')"
+docker exec -it mongo-3 mongo admin --eval "db.createUser({ user: 'coprhd', pwd: 'password', roles: ['userAdminAnyDatabase', 'dbAdminAnyDatabase', 'readWriteAnyDatabase']});"

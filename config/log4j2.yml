@@ -39,7 +39,12 @@ Configutation:
           level: off
         - name: com.emc.vipr.client
           additivity: false
-          level: off
+          level: info
+          AppenderRef:
+            - ref: Console_Appender
+              level: off
+            - ref: RollingFile_Appender
+              level: info
         - name: org.eclipse
           additivity: false
           level: off

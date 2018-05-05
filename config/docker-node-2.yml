@@ -13,7 +13,7 @@ spring:
   data:
     mongodb:
       database: admin
-      host: 172.48.8.3
+      host: 172.48.9.3
       username: coprhd
       password: password
       port: 27017
@@ -32,7 +32,7 @@ spring:
     static-locations: file:static/
 hazelcast:
   client:
-    config: config/hazelcast-client-node-1.xml
+    config: config/hazelcast-client-node-2.xml
 com:
   emc:
     coprhd:
@@ -40,14 +40,14 @@ com:
         mongo:
           vp-collection-name: virtual-pools
         sizer:
-          url: http://172.48.8.5:8080/vnxsizer/calculate
+          url: http://172.48.9.5:8080/vnxsizer/calculate
           timeout: 10000
           template: resources/vnxsizer/template.json
         srm:
-          url: http://172.48.8.6:8080/info
+          url: http://172.48.9.6:8080/info
           timeout: 1000
         vipr:
-          host: 172.48.8.7
+          host: 172.48.9.7
           port: 4443
           login: admin
           password: password
