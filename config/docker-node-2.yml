@@ -37,6 +37,7 @@ com:
   emc:
     coprhd:
       sp:
+        node-id: c59e8ffd-bd5d-49cf-b6a6-eb0190ae21a8
         mongo:
           vp-collection-name: virtual-pools
         sizer:

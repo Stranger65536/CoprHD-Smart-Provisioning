@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Primary
@@ -29,7 +28,6 @@ public class SRMClientProxy extends AbstractFallBackable<SRMClient> implements S
         this.activeClient = clients.get(0);
     }
 
-    @PostConstruct
     @SuppressWarnings("ReturnOfNull")
     public void init() {
         performCascadeOperation(client -> {

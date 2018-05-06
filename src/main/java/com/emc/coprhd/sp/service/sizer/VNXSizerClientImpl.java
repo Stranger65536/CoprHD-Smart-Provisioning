@@ -23,7 +23,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 
@@ -71,7 +70,6 @@ public class VNXSizerClientImpl implements VNXSizerClient {
         return responseEntity.getBody();
     }
 
-    @PostConstruct
     public void init() {
         try {
             final File requestTemplateFile = new File(checkNotNull(vnxSizerTemplateFile,

@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
  *
  * @author Paul.Sandoz@Sun.Com
  */
-@SuppressWarnings("unsafe")
+@SuppressWarnings({"unchecked", "ALL"})
 public class ClientResponse {
     protected static final HeaderDelegate<EntityTag> entityTagDelegate =
             RuntimeDelegate.getInstance().createHeaderDelegate(EntityTag.class);

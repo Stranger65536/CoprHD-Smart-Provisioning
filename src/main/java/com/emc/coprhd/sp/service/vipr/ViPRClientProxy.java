@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
@@ -33,7 +32,6 @@ public class ViPRClientProxy extends AbstractFallBackable<ViPRClient> implements
         super.activeClient = clients.get(0);
     }
 
-    @PostConstruct
     @SuppressWarnings("ReturnOfNull")
     public void init() {
         performCascadeOperation(client -> {

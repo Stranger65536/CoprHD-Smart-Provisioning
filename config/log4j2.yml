@@ -57,6 +57,9 @@ Configutation:
         - name: javax.activation
           additivity: false
           level: off
+        - name: com.hazelcast.client.connection.nio
+          additivity: false
+          level: off
         - name: org.springframework
           additivity: false
           level: warn

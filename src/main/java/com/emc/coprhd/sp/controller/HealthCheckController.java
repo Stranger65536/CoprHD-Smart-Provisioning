@@ -6,15 +6,20 @@ package com.emc.coprhd.sp.controller;
 import com.emc.coprhd.sp.dao.mongo.VirtualPool;
 import com.emc.coprhd.sp.dao.mongo.VirtualPool.VirtualPoolBuilder;
 import com.emc.coprhd.sp.dto.HealthCheckResponse;
+import com.emc.coprhd.sp.model.ClusterNode;
 import com.emc.coprhd.sp.repository.mongo.MongoDao;
+import com.emc.coprhd.sp.service.core.ClusterStateService;
 import com.emc.coprhd.sp.service.sizer.VNXSizerClient;
 import com.emc.coprhd.sp.service.srm.SRMClient;
+import com.emc.coprhd.sp.service.vipr.ViPRClient;
 import com.emc.coprhd.sp.transfer.srm.SRMPoolInfo;
 import com.emc.coprhd.sp.transfer.vnx.sizer.request.VNXSizerRequest;
 import com.emc.coprhd.sp.transfer.vnx.sizer.response.VNXSizerResponse;
 import com.emc.coprhd.sp.util.RuntimeUtils;
+import com.emc.storageos.model.pools.StoragePoolRestRep;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hazelcast.core.HazelcastInstance;
+import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +30,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -38,24 +47,27 @@ public class HealthCheckController {
 
     private final MongoDao mongoDao;
     private final SRMClient srmClient;
+    private final ViPRClient viprClient;
     private final ObjectMapper objectMapper;
     private final VNXSizerClient vnxSizerClient;
-    private final HazelcastInstance hzInstance;
+    private final ClusterStateService clusterStateService;
     private final String vnxSizerTemplateFile;
 
     @Autowired
     public HealthCheckController(
             final MongoDao mongoDao,
             final SRMClient srmClient,
+            final ViPRClient viprClient,
             final ObjectMapper objectMapper,
             final VNXSizerClient vnxSizerClient,
-            final HazelcastInstance hzInstance,
+            final ClusterStateService clusterStateService,
             @Value("${com.emc.coprhd.sp.sizer.template}") final String vnxSizerTemplateFile) {
         this.mongoDao = mongoDao;
         this.srmClient = srmClient;
-        this.vnxSizerClient = vnxSizerClient;
-        this.hzInstance = hzInstance;
+        this.viprClient = viprClient;
         this.objectMapper = objectMapper;
+        this.vnxSizerClient = vnxSizerClient;
+        this.clusterStateService = clusterStateService;
         this.vnxSizerTemplateFile = vnxSizerTemplateFile;
     }
 
@@ -88,8 +100,12 @@ public class HealthCheckController {
     @GetMapping(value = "/test/hz", produces = APPLICATION_JSON_VALUE, consumes = ALL_VALUE)
     public HealthCheckResponse testHz() {
         LOGGER.debug(RuntimeUtils.enterMethodMessage());
-        hzInstance.getMap("nodes").size();
-        final HealthCheckResponse response = new HealthCheckResponse("ok");
+        final List<ClusterNode> nodes = clusterStateService.getAvailableNodes();
+        final Map<String, String> addresses = nodes.stream()
+                .map(node -> Pair.of(node.getId(), clusterStateService.getNodeAddress(node)))
+                .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+        final HealthCheckResponse response = new HealthCheckResponse("ok",
+                ImmutableMap.of("nodes", nodes, "addresses", addresses));
         LOGGER.debug(RuntimeUtils.exitMethodMessage());
         return response;
     }
@@ -112,8 +128,18 @@ public class HealthCheckController {
                 "JSON template path must be specified!"));
         checkState(requestTemplateFile.exists(), "JSON template file must exist!");
         final VNXSizerRequest request = objectMapper.readValue(requestTemplateFile, VNXSizerRequest.class);
-        VNXSizerResponse clientResponse = vnxSizerClient.processSizerRequest(request);
+        final VNXSizerResponse clientResponse = vnxSizerClient.processSizerRequest(request);
         final HealthCheckResponse response = new HealthCheckResponse("ok", clientResponse);
+        LOGGER.debug(RuntimeUtils.exitMethodMessage());
+        return response;
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/test/vipr", produces = APPLICATION_JSON_VALUE, consumes = ALL_VALUE)
+    public HealthCheckResponse testVipr() {
+        LOGGER.debug(RuntimeUtils.enterMethodMessage());
+        final Collection<StoragePoolRestRep> info = viprClient.getStoragePools();
+        final HealthCheckResponse response = new HealthCheckResponse("ok", info);
         LOGGER.debug(RuntimeUtils.exitMethodMessage());
         return response;
     }

@@ -15,15 +15,14 @@
         <join>
             <multicast enabled="false"/>
             <tcp-ip enabled="true">
-                <member>172.48.8.4</member>
-                <member>172.48.9.12</member>
-                <member>172.48.10.12</member>
+                <member>172.48.11.2</member>
+                <member>172.48.11.3</member>
+                <member>172.48.13.3</member>
             </tcp-ip>
         </join>
-        <interfaces>
-            <interface>172.48.8.*</interface>
-            <interface>172.48.9.*</interface>
-            <interface>172.48.10.*</interface>
+        <interfaces enabled="true">
+            <interface>172.48.11.2-3</interface>
+            <interface>172.48.13.3</interface>
         </interfaces>
     </network>
     <partition-group/>
@@ -34,7 +33,7 @@
 
     <map name="nodes">
         <in-memory-format>BINARY</in-memory-format>
-        <backup-count>1</backup-count>
+        <backup-count>0</backup-count>
         <async-backup-count>0</async-backup-count>
         <time-to-live-seconds>0</time-to-live-seconds>
         <max-idle-seconds>0</max-idle-seconds>

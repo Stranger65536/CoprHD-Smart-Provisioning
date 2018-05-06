@@ -3,10 +3,12 @@
  */
 package com.emc.coprhd.sp.config;
 
+import com.emc.coprhd.sp.model.ClusterNode;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.config.XmlClientConfigBuilder;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -32,5 +34,11 @@ public class HzConfig {
     @Autowired
     public HazelcastInstance hzClient(final ClientConfig clientConfig) {
         return HazelcastClient.newHazelcastClient(clientConfig);
+    }
+
+    @Bean
+    @Autowired
+    public IMap<String, ClusterNode> nodesMap(final HazelcastInstance hazelcastInstance) {
+        return hazelcastInstance.getMap("nodes");
     }
 }
