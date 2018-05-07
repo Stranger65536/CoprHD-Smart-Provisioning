@@ -19,14 +19,16 @@ public class ClusterNode implements DataSerializable {
     private static final ObjectMapper JSON = new ObjectMapper();
 
     private String id;
+    private long joinTime;
     private Set<AddressInfo> listenAddresses;
 
     @SuppressWarnings("unused")
     public ClusterNode() {
     }
 
-    public ClusterNode(final String id, final Set<AddressInfo> listenAddresses) {
+    public ClusterNode(final String id, final Set<AddressInfo> listenAddresses, final long joinTime) {
         this.id = id;
+        this.joinTime = joinTime;
         this.listenAddresses = listenAddresses;
     }
 
@@ -38,6 +40,9 @@ public class ClusterNode implements DataSerializable {
         return listenAddresses;
     }
 
+    public long getJoinTime() {
+        return joinTime;
+    }
 
     @Override
     @SuppressWarnings("NonFinalFieldReferencedInHashCode")
@@ -70,6 +75,7 @@ public class ClusterNode implements DataSerializable {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
                 .add("listenAddresses", listenAddresses)
+                .add("joinTime", joinTime)
                 .toString();
     }
 

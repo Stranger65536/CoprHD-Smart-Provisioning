@@ -15,15 +15,12 @@
         <join>
             <multicast enabled="false"/>
             <tcp-ip enabled="true">
-                <member>172.48.11.2</member>
-                <member>172.48.12.2</member>
-                <member>172.48.12.3</member>
+                <member>172.48.7.2</member>
+                <member>172.48.7.3</member>
+                <member>172.48.7.4</member>
             </tcp-ip>
         </join>
-        <interfaces enabled="true">
-            <interface>172.48.11.2</interface>
-            <interface>172.48.12.2-3</interface>
-        </interfaces>
+        <interfaces/>
     </network>
     <partition-group/>
     <executor-service>

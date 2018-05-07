@@ -21,6 +21,8 @@ services:
         ipv4_address: 172.48.11.4
       dc-13:
         ipv4_address: 172.48.13.4
+      debug:
+        ipv4_address: 172.48.7.12
   mongo-1:
     image: mongo:3.6
     container_name: mongo-1
@@ -46,6 +48,8 @@ services:
         ipv4_address: 172.48.11.2
       dc-13:
         ipv4_address: 172.48.13.2
+      debug:
+        ipv4_address: 172.48.7.2
   sizer-1:
     image: com/emc/vnxsizer-api:latest
     container_name: sizer-1
@@ -91,6 +95,8 @@ services:
         ipv4_address: 172.48.11.5
       dc-23:
         ipv4_address: 172.48.12.4
+      debug:
+        ipv4_address: 172.48.7.13
   mongo-2:
     image: mongo:3.6
     container_name: mongo-2
@@ -116,6 +122,8 @@ services:
         ipv4_address: 172.48.11.3
       dc-23:
         ipv4_address: 172.48.12.2
+      debug:
+        ipv4_address: 172.48.7.3
   sizer-2:
     image: com/emc/vnxsizer-api:latest
     container_name: sizer-2
@@ -161,6 +169,8 @@ services:
         ipv4_address: 172.48.12.5
       dc-13:
         ipv4_address: 172.48.13.5
+      debug:
+        ipv4_address: 172.48.7.14
   mongo-3:
     image: mongo:3.6
     container_name: mongo-3
@@ -186,6 +196,8 @@ services:
         ipv4_address: 172.48.12.3
       dc-13:
         ipv4_address: 172.48.13.3
+      debug:
+        ipv4_address: 172.48.7.4
   sizer-3:
     image: com/emc/vnxsizer-api:latest
     container_name: sizer-3
@@ -212,6 +224,13 @@ services:
         ipv4_address: 172.48.10.7
 
 networks:
+  debug:
+    driver: bridge
+    attachable: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.48.7.0/24
   internal-1:
     driver: bridge
     attachable: true

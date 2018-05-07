@@ -8,20 +8,17 @@
         <password>password</password>
     </group>
     <properties>
-        <property name="hazelcast.client.debug.address">172.48.7.2</property>
-        <property name="hazelcast.client.shuffle.member.list">false</property>
+        <property name="hazelcast.client.shuffle.member.list">true</property>
         <property name="hazelcast.client.heartbeat.timeout">2000</property>
         <property name="hazelcast.client.heartbeat.interval">1000</property>
+        <property name="hazelcast.client.request.retry.count">65535</property>
         <property name="hazelcast.client.event.thread.count">5</property>
         <property name="hazelcast.client.event.queue.capacity">1000000</property>
-        <property name="hazelcast.client.invocation.timeout.seconds">5</property>
+        <property name="hazelcast.client.invocation.timeout.seconds">10</property>
     </properties>
     <network>
-        <connection-timeout>5000</connection-timeout>
-        <redo-operation>false</redo-operation>
-        <smart-routing>true</smart-routing>
         <cluster-members>
-            <address>172.48.7.2</address>
+            <address>172.48.8.4</address>
         </cluster-members>
     </network>
 </hazelcast-client>

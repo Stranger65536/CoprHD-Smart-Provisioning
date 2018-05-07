@@ -57,9 +57,38 @@ Configutation:
         - name: javax.activation
           additivity: false
           level: off
-        - name: com.hazelcast.client.connection.nio
+        - name: com.hazelcast.client.connection
           additivity: false
-          level: off
+          level: error
+          AppenderRef:
+            - ref: Console_Appender
+              level: error
+            - ref: RollingFile_Appender
+              level: error
+        - name: com.hazelcast.client.connection
+          additivity: false
+          level: error
+          AppenderRef:
+            - ref: Console_Appender
+              level: error
+            - ref: RollingFile_Appender
+              level: error
+        - name: com.hazelcast.core
+          additivity: false
+          level: warn
+          AppenderRef:
+            - ref: Console_Appender
+              level: warn
+            - ref: RollingFile_Appender
+              level: warn
+        - name: com.hazelcast.internal
+          additivity: false
+          level: warn
+          AppenderRef:
+            - ref: Console_Appender
+              level: warn
+            - ref: RollingFile_Appender
+              level: warn
         - name: org.springframework
           additivity: false
           level: warn

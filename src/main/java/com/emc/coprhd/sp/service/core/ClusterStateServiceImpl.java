@@ -5,6 +5,7 @@ package com.emc.coprhd.sp.service.core;
 
 import com.emc.coprhd.sp.model.AddressInfo;
 import com.emc.coprhd.sp.model.ClusterNode;
+import com.emc.coprhd.sp.util.ClusterUtils;
 import com.emc.coprhd.sp.util.NetworkUtils;
 import com.google.common.collect.Sets;
 import com.hazelcast.core.HazelcastInstance;
@@ -21,6 +22,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ClusterStateServiceImpl implements ClusterStateService {
@@ -29,15 +32,23 @@ public class ClusterStateServiceImpl implements ClusterStateService {
     private final String nodeId;
     private final HazelcastInstance hzInstance;
     private final IMap<String, ClusterNode> nodes;
+    private final Set<AddressInfo> ignoredNetworks;
+    private final ClusterMembershipListener listener;
 
     @Autowired
     public ClusterStateServiceImpl(
             final IMap<String, ClusterNode> nodes,
             final HazelcastInstance hzInstance,
-            @Value("${com.emc.coprhd.sp.node-id}") final String nodeId) {
+            final ClusterMembershipListener listener,
+            @Value("${com.emc.coprhd.sp.node-id}") final String nodeId,
+            @Value("${com.emc.coprhd.sp.ignored-networks}") final String ignoredNetworks) {
         this.nodes = nodes;
         this.nodeId = nodeId;
+        this.listener = listener;
         this.hzInstance = hzInstance;
+        this.ignoredNetworks = Stream.of(ignoredNetworks.split(","))
+                .map(i -> new AddressInfo("", i))
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -45,6 +56,7 @@ public class ClusterStateServiceImpl implements ClusterStateService {
     public String getNodeAddress(final ClusterNode node) {
         try {
             final Set<AddressInfo> localAddresses = NetworkUtils.getHostAddresses();
+            localAddresses.removeAll(ignoredNetworks);
             final Set<AddressInfo> nodeAddresses = node.getListenAddresses();
             final Set<AddressInfo> common = Sets.intersection(nodeAddresses, localAddresses);
             LOGGER.debug("Common networks for node {} is {}", node, common);
@@ -61,17 +73,8 @@ public class ClusterStateServiceImpl implements ClusterStateService {
     }
 
     @EventListener(ContextRefreshedEvent.class)
-    void contextRefreshedEvent() throws SocketException {
-        final Set<AddressInfo> addressList = NetworkUtils.getHostAddresses();
-        final ClusterNode node = new ClusterNode(nodeId, addressList);
-        LOGGER.info("Node {} has joined the cluster", node);
-        hzInstance.getPartitionService().getPartitions().forEach(part ->
-                LOGGER.debug("Part id {} owner: {}", part.getPartitionId(), part.getOwner().getAddress())
-        );
-//        final Partition localPartition = hzInstance.getPartitionService().getPartitions().stream()
-//                .findFirst().orElseThrow(() -> new StartupException("No local hz member found!"));
-//        localPartition.getPartitionId();
-//        LOGGER.debug("Local DC hz partition id: {}", localPartition.getPartitionId());
-        nodes.put(nodeId, node);
+    void contextRefreshedEvent() {
+        ClusterUtils.addNodeInfoToCluster(ignoredNetworks, nodeId, hzInstance, nodes);
+        hzInstance.getCluster().addMembershipListener(listener);
     }
 }

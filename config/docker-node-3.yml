@@ -38,6 +38,7 @@ com:
     coprhd:
       sp:
         node-id: b97c9bc3-389b-4ed2-a5a2-ca49d5a31033
+        ignored-networks: 172.48.7.0
         mongo:
           vp-collection-name: virtual-pools
         sizer:
