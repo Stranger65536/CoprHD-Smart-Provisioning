@@ -18,6 +18,8 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
+
 import static com.emc.coprhd.sp.util.RuntimeUtils.enterMethodMessage;
 import static com.emc.coprhd.sp.util.RuntimeUtils.exitMethodMessage;
 
@@ -52,6 +54,7 @@ public class SRMClientImpl extends AbstractFallBackable<SRMClient> implements SR
     }
 
     @Override
+    @PostConstruct
     public void initialize() {
         getStoragePoolInfoByName("test");
     }

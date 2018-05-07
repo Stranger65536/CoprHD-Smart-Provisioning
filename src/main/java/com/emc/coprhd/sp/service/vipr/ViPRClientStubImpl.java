@@ -18,6 +18,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -57,6 +58,7 @@ public class ViPRClientStubImpl extends AbstractFallBackable<ViPRClient> impleme
     }
 
     @Override
+    @PostConstruct
     public void initialize() {
         checkState(this.storageSystemJsonPath.exists(),
                 "Storage System json file must exist at "

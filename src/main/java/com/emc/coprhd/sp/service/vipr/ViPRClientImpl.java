@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.net.URI;
 import java.util.Collection;
@@ -65,6 +66,7 @@ public class ViPRClientImpl extends AbstractFallBackable<ViPRClient> implements 
     }
 
     @Override
+    @PostConstruct
     public void initialize() {
         viprCoreClient.auth().login(login, password);
     }

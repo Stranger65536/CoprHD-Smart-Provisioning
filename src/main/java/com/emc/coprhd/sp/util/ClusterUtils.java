@@ -36,17 +36,23 @@ public enum ClusterUtils {
             final ClusterNode node = new ClusterNode(nodeId, addressList, System.currentTimeMillis());
             LOGGER.info("Node {} has joined the cluster", node);
 
-            final Field f = hzInstance.getConfig().getClass().getDeclaredField("instance");
-            f.setAccessible(true);
-            final HazelcastProperties properties = ((HazelcastClientInstanceImpl)
-                    f.get(hzInstance.getConfig())).getProperties();
-            final String localHzAddress = properties.get("hazelcast.client.debug.address");
+            final String localHzAddress;
+            if (hzInstance instanceof HazelcastClientInstanceImpl) {
+                final Field f = hzInstance.getConfig().getClass().getDeclaredField("instance");
+                f.setAccessible(true);
+                final HazelcastProperties properties = ((HazelcastClientInstanceImpl)
+                        f.get(hzInstance.getConfig())).getProperties();
+                localHzAddress = properties.get("hazelcast.client.debug.address");
+            } else {
+                localHzAddress = hzInstance.getCluster().getMembers().iterator().next()
+                        .getAddress().getInetAddress().getHostAddress();
+            }
             final Partition localPartition = hzInstance.getPartitionService().getPartitions().stream()
                     .filter(part -> Objects.equals(localHzAddress, toInetAddress(part)))
                     .findFirst().orElseThrow(() -> new StartupException("No local hz member found!"));
             LOGGER.debug("Local DC hz partition id: {}", localPartition.getPartitionId());
             nodes.put(nodeId + '@' + String.valueOf(localPartition.getPartitionId()), node);
-        } catch (IllegalAccessException | SocketException | NoSuchFieldException e) {
+        } catch (IllegalAccessException | SocketException | NoSuchFieldException | UnknownHostException e) {
             throw new IllegalStateException("Can't add info to cluster!", e);
         }
     }

@@ -73,6 +73,30 @@ Configutation:
               level: error
             - ref: RollingFile_Appender
               level: error
+        - name: com.hazelcast.system
+          additivity: false
+          level: error
+          AppenderRef:
+            - ref: Console_Appender
+              level: error
+            - ref: RollingFile_Appender
+              level: error
+        - name: com.hazelcast.instance
+          additivity: false
+          level: error
+          AppenderRef:
+            - ref: Console_Appender
+              level: error
+            - ref: RollingFile_Appender
+              level: error
+        - name: com.hazelcast.config
+          additivity: false
+          level: error
+          AppenderRef:
+            - ref: Console_Appender
+              level: error
+            - ref: RollingFile_Appender
+              level: error
         - name: com.hazelcast.core
           additivity: false
           level: warn

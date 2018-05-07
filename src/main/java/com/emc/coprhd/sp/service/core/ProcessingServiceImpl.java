@@ -31,8 +31,6 @@ import com.emc.storageos.model.systems.StorageSystemRestRep;
 import com.emc.storageos.model.vpool.BlockVirtualPoolRestRep;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.MoreObjects;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -61,12 +59,9 @@ import static com.hazelcast.util.ExceptionUtil.sneakyThrow;
 @Service
 @SuppressWarnings("OverlyCoupledClass")
 public class ProcessingServiceImpl implements ProcessingService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessingServiceImpl.class);
     private static final ObjectMapper JSON = new ObjectMapper();
 
     private static final int CALCULATION_SUCCESS = 0;
-    private static final String VIPR_ERROR_SWITCH_TO_FALLBACK = "ViPR Client fatal error, switching to fallback! Error was:";
-    private static final String SRM_ERROR_SWITCH_TO_FALLBACK = "SRM Client fatal error, switching to fallback! Error was:";
     private static final Pattern SS = Pattern.compile("5500", Pattern.LITERAL);
 
     private final byte[] requestTemplate;
@@ -74,23 +69,18 @@ public class ProcessingServiceImpl implements ProcessingService {
     private final VNXSizerClient vnxSizerclient;
     private final SRMClient srmClient;
     private final MongoDao mongoDao;
-//    @Autowired
-//    private ApplicationContext applicationContext;
 
     @Autowired
     public ProcessingServiceImpl(
             @Value("${com.emc.coprhd.sp.sizer.template}") final String vnxSizerTemplateFile,
-//            @Lazy final ViPRClient viprClient,
-//            @Lazy final VNXSizerClient vnxSizerclient,
-//            @Lazy final SRMClient srmClient,
+            final ViPRClient viprClient,
+            final VNXSizerClient vnxSizerclient,
+            final SRMClient srmClient,
             final MongoDao mongoDao)
             throws IOException {
-//        this.viprClient = viprClient;
-        this.viprClient = null;
-//        this.vnxSizerclient = vnxSizerclient;
-        this.vnxSizerclient = null;
-//        this.srmClient = srmClient;
-        this.srmClient = null;
+        this.viprClient = viprClient;
+        this.vnxSizerclient = vnxSizerclient;
+        this.srmClient = srmClient;
         this.mongoDao = mongoDao;
         final File requestTemplateFile = new File(checkNotNull(vnxSizerTemplateFile,
                 "JSON template path must be specified!"));
@@ -102,27 +92,19 @@ public class ProcessingServiceImpl implements ProcessingService {
     //Should be replaced with transparent proxy calls
     @Override
     public StoragePoolsSessionInfo getStoragePoolsInfo() {
-        Collection<StoragePoolRestRep> storagePools;
-
-        try {
-            storagePools = viprClient.getStoragePools();
-        } catch (Exception e) {
-            LOGGER.warn(VIPR_ERROR_SWITCH_TO_FALLBACK, e);
-//            viprClient = (ViPRClient) applicationContext.getBean(FAKE_VIPR_CLIENT);
-            storagePools = viprClient.getStoragePools();
-        }
+        final Collection<StoragePoolRestRep> storagePools = viprClient.getStoragePools();
 
         final List<StoragePoolPerformanceInfo> storagePoolsPerformanceInfo = new ArrayList<>(storagePools.size());
         final Map<String, StoragePoolRestRep> storagePoolsDetailedInfoMap = new HashMap<>(storagePools.size(), 1.0f);
         final Map<String, StorageSystemRestRep> storageSystemsMap = new HashMap<>(storagePools.size(), 1.0f);
 
         for (StoragePoolRestRep storagePool : storagePools) {
-            final ViPRInfo viprInfo = getViPRInfoWithFallback(storagePool);
+            final ViPRInfo viprInfo = getViPRInfo(storagePool);
 
             storagePoolsDetailedInfoMap.put(storagePool.getId().toString(), viprInfo.getStoragePoolDetailedInfo());
             storageSystemsMap.put(storagePool.getId().toString(), viprInfo.getStorageSystem());
 
-            final SRMPoolInfo srmPoolInfo = getSRMPoolInfoWithFallback(storagePool);
+            final SRMPoolInfo srmPoolInfo = getSRMPoolInfo(storagePool);
 
             storagePoolsPerformanceInfo.add(StoragePoolPerformanceInfoBuilder
                     .aStoragePoolPerformanceInfo()
@@ -186,35 +168,15 @@ public class ProcessingServiceImpl implements ProcessingService {
                 .collect(Collectors.toList());
     }
 
-    private ViPRInfo getViPRInfoWithFallback(final StoragePoolRestRep storagePool) {
-        StoragePoolRestRep storagePoolDetailedInfo;
-        StorageSystemRestRep storageSystem;
-
-        try {
-            storagePoolDetailedInfo = viprClient.getStoragePool(storagePool.getId());
-            storageSystem = viprClient.getStorageSystem(storagePool.getStorageSystem().getId());
-        } catch (Exception e) {
-            LOGGER.warn(VIPR_ERROR_SWITCH_TO_FALLBACK, e);
-//            viprClient = (ViPRClient) applicationContext.getBean(FAKE_VIPR_CLIENT);
-            storagePoolDetailedInfo = viprClient.getStoragePool(storagePool.getId());
-            storageSystem = viprClient.getStorageSystem(storagePool.getStorageSystem().getId());
-        }
+    private ViPRInfo getViPRInfo(final StoragePoolRestRep storagePool) {
+        final StoragePoolRestRep storagePoolDetailedInfo = viprClient.getStoragePool(storagePool.getId());
+        final StorageSystemRestRep storageSystem = viprClient.getStorageSystem(storagePool.getStorageSystem().getId());
 
         return new ViPRInfo(storagePoolDetailedInfo, storageSystem);
     }
 
-    private SRMPoolInfo getSRMPoolInfoWithFallback(final StoragePoolRestRep storagePool) {
-        SRMPoolInfo srmPoolInfo;
-
-        try {
-            srmPoolInfo = srmClient.getStoragePoolInfoByName(storagePool.getPoolName());
-        } catch (Exception e) {
-            LOGGER.warn(SRM_ERROR_SWITCH_TO_FALLBACK, e);
-//            srmClient = (SRMClient) applicationContext.getBean(FAKE_SRM_CLIENT);
-            srmPoolInfo = srmClient.getStoragePoolInfoByName(storagePool.getPoolName());
-        }
-
-        return srmPoolInfo;
+    private SRMPoolInfo getSRMPoolInfo(final StoragePoolRestRep storagePool) {
+        return srmClient.getStoragePoolInfoByName(storagePool.getPoolName());
     }
 
     private VNXSizerRequest prepareRequest(
