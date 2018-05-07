@@ -4,9 +4,12 @@
 package com.emc.coprhd.sp.controller;
 
 @SuppressWarnings("ALL")
-interface ContextPaths {
+public interface ContextPaths {
     String ROOT = "/";
     String ERROR = "/error";
+    String DIST = "/dist";
+    String NODE = "node";
+    String NODE_ID = "/{" + NODE + '}';
 
     interface PoolManager {
         String ROOT = "/pool-manager";

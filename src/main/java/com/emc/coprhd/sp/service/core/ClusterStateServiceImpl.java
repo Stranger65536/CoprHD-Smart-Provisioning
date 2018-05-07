@@ -7,6 +7,7 @@ import com.emc.coprhd.sp.model.AddressInfo;
 import com.emc.coprhd.sp.model.ClusterNode;
 import com.emc.coprhd.sp.util.ClusterUtils;
 import com.emc.coprhd.sp.util.NetworkUtils;
+import com.emc.coprhd.sp.util.RuntimeUtils;
 import com.google.common.collect.Sets;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -55,12 +57,16 @@ public class ClusterStateServiceImpl implements ClusterStateService {
     @SuppressWarnings("ReturnOfNull")
     public String getNodeAddress(final ClusterNode node) {
         try {
+            LOGGER.debug("{} node: {}", RuntimeUtils.enterMethodMessage(), node);
             final Set<AddressInfo> localAddresses = NetworkUtils.getHostAddresses();
             localAddresses.removeAll(ignoredNetworks);
             final Set<AddressInfo> nodeAddresses = node.getListenAddresses();
             final Set<AddressInfo> common = Sets.intersection(nodeAddresses, localAddresses);
             LOGGER.debug("Common networks for node {} is {}", node, common);
-            return common.stream().map(AddressInfo::getAddress).findFirst().orElse(null);
+            final String result = common.stream().map(AddressInfo::getAddress).findFirst()
+                    .orElseThrow(() -> new NoSuchElementException("No listen address found for node " + node));
+            LOGGER.debug("{} node: {} address: {}", RuntimeUtils.exitMethodMessage(), node, result);
+            return result;
         } catch (SocketException e) {
             LOGGER.error("Can't get node address {}!", node, e);
             return null;
@@ -69,7 +75,10 @@ public class ClusterStateServiceImpl implements ClusterStateService {
 
     @Override
     public List<ClusterNode> getAvailableNodes() {
-        return new ArrayList<>(nodes.values());
+        LOGGER.debug(RuntimeUtils.enterMethodMessage());
+        final List<ClusterNode> result = new ArrayList<>(nodes.values());
+        LOGGER.debug("{} nodes: {}", RuntimeUtils.exitMethodMessage(), result);
+        return result;
     }
 
     @EventListener(ContextRefreshedEvent.class)

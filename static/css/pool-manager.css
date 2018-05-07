@@ -429,7 +429,6 @@
 #content-area-panel-content-table-body-content-left-cell-content-table-body-wrapper.blur {
     filter: blur(3px);
     -webkit-filter: blur(3px);
-    transition: 0.35s -webkit-filter linear;
 }
 
 #content-area-panel-content-table-body-content-left-cell-content-table-header {
@@ -633,7 +632,6 @@
 #content-area-panel-content-table-body-content-right-cell-content.blur {
     filter: blur(3px);
     -webkit-filter: blur(3px);
-    transition: 0.35s -webkit-filter linear;
 }
 
 .dropdown-table {

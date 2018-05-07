@@ -64,6 +64,7 @@ public class ProcessingServiceImpl implements ProcessingService {
     private static final int CALCULATION_SUCCESS = 0;
     private static final Pattern SS = Pattern.compile("5500", Pattern.LITERAL);
 
+    private final String nodeId;
     private final byte[] requestTemplate;
     private final ViPRClient viprClient;
     private final VNXSizerClient vnxSizerclient;
@@ -72,12 +73,14 @@ public class ProcessingServiceImpl implements ProcessingService {
 
     @Autowired
     public ProcessingServiceImpl(
+            @Value("${com.emc.coprhd.sp.node-id}") final String nodeId,
             @Value("${com.emc.coprhd.sp.sizer.template}") final String vnxSizerTemplateFile,
             final ViPRClient viprClient,
             final VNXSizerClient vnxSizerclient,
             final SRMClient srmClient,
             final MongoDao mongoDao)
             throws IOException {
+        this.nodeId = nodeId;
         this.viprClient = viprClient;
         this.vnxSizerclient = vnxSizerclient;
         this.srmClient = srmClient;
@@ -107,6 +110,7 @@ public class ProcessingServiceImpl implements ProcessingService {
             storagePoolsPerformanceInfo.add(StoragePoolPerformanceInfoBuilder
                     .aStoragePoolPerformanceInfo()
                     .withId(viprInfo.getStoragePoolDetailedInfo().getId().toString())
+                    .withNodeId(nodeId)
                     .withName(viprInfo.getStoragePoolDetailedInfo().getPoolName())
                     .withResponseTime(srmPoolInfo.getResponseTime())
                     .withUtilization(srmPoolInfo.getUtilization())
@@ -216,6 +220,7 @@ public class ProcessingServiceImpl implements ProcessingService {
 
         return new GetVirtualPoolsInfoResponse(
                 pool.getName(),
+                nodeId,
                 pool.getTargetResponseTime(),
                 storagePools,
                 pool.getWorkload());
@@ -236,6 +241,7 @@ public class ProcessingServiceImpl implements ProcessingService {
 
         return new StoragePoolPerformanceInfo(
                 original.getId(),
+                original.getNodeId(),
                 original.getName(),
                 calculatedPool.getPoolAvgResponceTime().doubleValue(),
                 calculatedPool.getPoolDiskUtilization().doubleValue(),
@@ -247,6 +253,7 @@ public class ProcessingServiceImpl implements ProcessingService {
     private static StoragePoolPerformanceInfo getPoolDoesNotFitWorkload(final StoragePoolPerformanceInfo original) {
         return new StoragePoolPerformanceInfo(
                 original.getId(),
+                original.getNodeId(),
                 original.getName(),
                 (double) Integer.MAX_VALUE,
                 (double) Integer.MAX_VALUE,

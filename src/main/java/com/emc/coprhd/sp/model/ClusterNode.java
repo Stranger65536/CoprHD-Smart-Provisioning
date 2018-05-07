@@ -82,12 +82,14 @@ public class ClusterNode implements DataSerializable {
     @Override
     public void writeData(final ObjectDataOutput out) throws IOException {
         out.writeUTF(id);
+        out.writeLong(joinTime);
         out.writeUTF(JSON.writeValueAsString(listenAddresses));
     }
 
     @Override
     public void readData(final ObjectDataInput in) throws IOException {
         this.id = in.readUTF();
+        this.joinTime = in.readLong();
         this.listenAddresses = JSON.readValue(in.readUTF(), new AddressInfoSetReference());
     }
 

@@ -13,11 +13,13 @@ import java.util.List;
 @SuppressWarnings("DuplicateStringLiteralInspection")
 public class CreateSmartVirtualPoolRequest {
     private static final String NAME = "name";
+    private static final String NODE_ID = "nodeId";
     private static final String TARGET_RESPONSE_TIME = "targetResponseTime";
     private static final String STORAGE_POOLS = "storagePools";
     private static final String APPLICATIONS_LIST = "applicationsList";
 
     private final String name;
+    private final String nodeId;
     private final Double targetResponseTime;
     private final List<String> storagePoolIDList;
     private final ApplicationsList applicationsList;
@@ -25,10 +27,12 @@ public class CreateSmartVirtualPoolRequest {
     @JsonCreator
     public CreateSmartVirtualPoolRequest(
             @JsonProperty(NAME) final String name,
+            @JsonProperty(NODE_ID) final String nodeId,
             @JsonProperty(TARGET_RESPONSE_TIME) final Double targetResponseTime,
             @JsonProperty(STORAGE_POOLS) final List<String> storagePoolIDList,
             @JsonProperty(APPLICATIONS_LIST) final ApplicationsList applicationsList) {
         this.name = name;
+        this.nodeId = nodeId;
         this.targetResponseTime = targetResponseTime;
         this.storagePoolIDList = storagePoolIDList;
         this.applicationsList = applicationsList;
@@ -36,6 +40,10 @@ public class CreateSmartVirtualPoolRequest {
 
     public String getName() {
         return name;
+    }
+
+    public String getNodeId() {
+        return nodeId;
     }
 
     public Double getTargetResponseTime() {
@@ -54,6 +62,7 @@ public class CreateSmartVirtualPoolRequest {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("name", name)
+                .add("nodeId", nodeId)
                 .add("targetResponseTime", targetResponseTime)
                 .add("storagePoolIDList", storagePoolIDList)
                 .add("applicationsList", applicationsList)

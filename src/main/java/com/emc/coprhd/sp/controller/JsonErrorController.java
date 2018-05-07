@@ -43,7 +43,7 @@ public class JsonErrorController implements ErrorController {
         final Map<String, Object> attributes = errorAttributes.getErrorAttributes(requestAttributes, true);
         //noinspection ThrowableNotThrown
         final Throwable throwable = errorAttributes.getError(requestAttributes);
-        LOGGER.error("Non-handler exception occurred!", throwable);
+        LOGGER.error("Non-handler exception occurred: {}!", attributes, throwable);
         attributes.put("exception", errorAttributes.getError(requestAttributes));
         return attributes;
     }

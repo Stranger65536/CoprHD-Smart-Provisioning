@@ -12,12 +12,15 @@ import java.util.List;
 @SuppressWarnings("DuplicateStringLiteralInspection")
 public class GetVirtualPoolsInfoResponse {
     private static final String NAME = "name";
+    private static final String NODE_ID = "nodeId";
     private static final String TARGET_RESPONSE_TIME = "targetResponseTime";
     private static final String STORAGE_POOLS = "storagePools";
     private static final String APPLICATIONS_LIST = "applicationsList";
 
     @JsonProperty(NAME)
     private final String name;
+    @JsonProperty(NODE_ID)
+    private final String nodeId;
     @JsonProperty(TARGET_RESPONSE_TIME)
     private final Double targetResponseTime;
     @JsonProperty(STORAGE_POOLS)
@@ -27,10 +30,12 @@ public class GetVirtualPoolsInfoResponse {
 
     public GetVirtualPoolsInfoResponse(
             final String name,
+            final String nodeId,
             final Double targetResponseTime,
             final List<String> storagePoolIDList,
             final ApplicationsList applicationsList) {
         this.name = name;
+        this.nodeId = nodeId;
         this.targetResponseTime = targetResponseTime;
         this.storagePoolIDList = storagePoolIDList;
         this.applicationsList = applicationsList;
@@ -40,6 +45,7 @@ public class GetVirtualPoolsInfoResponse {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("name", name)
+                .add("nodeId", nodeId)
                 .add("targetResponseTime", targetResponseTime)
                 .add("storagePoolIDList", storagePoolIDList)
                 .add("applicationsList", applicationsList)

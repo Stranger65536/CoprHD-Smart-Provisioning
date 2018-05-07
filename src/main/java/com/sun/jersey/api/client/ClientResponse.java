@@ -112,8 +112,8 @@ public class ClientResponse {
      *
      * @param status the status code.
      */
-    public void setStatus(StatusType status) {
-        setStatus(status.getStatusCode());
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     /**
@@ -121,8 +121,8 @@ public class ClientResponse {
      *
      * @param status the status code.
      */
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatus(StatusType status) {
+        setStatus(status.getStatusCode());
     }
 
     /**

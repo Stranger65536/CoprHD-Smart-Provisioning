@@ -449,13 +449,14 @@ function reloadPools() {
             }
 
             var id = pool['id'];
+            var nodeId = pool['nodeId'];
             var name = pool['name'];
             var responseTime = pool['responseTime'];
             var utilization = pool['utilization'];
             var storage = pool['storageSystem'];
 
             //noinspection QuirksModeInspectionTool
-            position.append("<tr id=" + id + ">" +
+            position.append("<tr id=" + id + " nodeId=" + nodeId + ">" +
                 "<td class='checkbox-cell'>" +
                 "<label>" +
                 "<input type='checkbox' id=" + id + ">" +
@@ -527,9 +528,10 @@ function reloadPools() {
         var pools = $('#vp-list-table').find('tbody').find('tr');
         $.each(pools, function () {
             var id = $(this).attr('id');
+            var nodeId = $(this).attr('nodeId');
             $(this).on('click', function () {
                 $.ajax({
-                    url: '/storage-pools/' + id,
+                    url: '/storage-pools/' + nodeId + '/' + id,
                     type: 'GET',
                     dataType: 'json',
                     beforeSend: function () {

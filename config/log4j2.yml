@@ -39,12 +39,7 @@ Configutation:
           level: off
         - name: com.emc.vipr.client
           additivity: false
-          level: info
-          AppenderRef:
-            - ref: Console_Appender
-              level: off
-            - ref: RollingFile_Appender
-              level: info
+          level: off
         - name: org.eclipse
           additivity: false
           level: off
@@ -57,6 +52,22 @@ Configutation:
         - name: javax.activation
           additivity: false
           level: off
+        - name: com.hazelcast.spi.impl.operationservice
+          additivity: false
+          level: error
+          AppenderRef:
+            - ref: Console_Appender
+              level: error
+            - ref: RollingFile_Appender
+              level: error
+        - name: com.hazelcast.spi.impl.operationexecutor
+          additivity: false
+          level: error
+          AppenderRef:
+            - ref: Console_Appender
+              level: error
+            - ref: RollingFile_Appender
+              level: error
         - name: com.hazelcast.client.connection
           additivity: false
           level: error

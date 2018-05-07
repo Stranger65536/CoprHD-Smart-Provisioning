@@ -31,6 +31,7 @@ public enum ClusterUtils {
             final HazelcastInstance hzInstance,
             final IMap<String, ClusterNode> nodes) {
         try {
+            LOGGER.debug("{} node: {}", RuntimeUtils.enterMethodMessage(), nodeId);
             final Set<AddressInfo> addressList = NetworkUtils.getHostAddresses();
             addressList.removeAll(ignoredNetworks);
             final ClusterNode node = new ClusterNode(nodeId, addressList, System.currentTimeMillis());
@@ -52,6 +53,7 @@ public enum ClusterUtils {
                     .findFirst().orElseThrow(() -> new StartupException("No local hz member found!"));
             LOGGER.debug("Local DC hz partition id: {}", localPartition.getPartitionId());
             nodes.put(nodeId + '@' + String.valueOf(localPartition.getPartitionId()), node);
+            LOGGER.debug("{} node: {}", RuntimeUtils.exitMethodMessage(), nodeId);
         } catch (IllegalAccessException | SocketException | NoSuchFieldException | UnknownHostException e) {
             throw new IllegalStateException("Can't add info to cluster!", e);
         }

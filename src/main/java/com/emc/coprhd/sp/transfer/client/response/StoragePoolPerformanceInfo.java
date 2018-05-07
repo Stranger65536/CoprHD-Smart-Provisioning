@@ -8,6 +8,7 @@ import com.google.common.base.MoreObjects;
 
 public class StoragePoolPerformanceInfo {
     private static final String ID = "id";
+    private static final String NODE_ID = "nodeId";
     private static final String NAME = "name";
     private static final String RESPONSE_TIME = "responseTime";
     private static final String UTILIZATION = "utilization";
@@ -17,6 +18,8 @@ public class StoragePoolPerformanceInfo {
 
     @JsonProperty(ID)
     private final String id;
+    @JsonProperty(NODE_ID)
+    private final String nodeId;
     @JsonProperty(NAME)
     private final String name;
     @JsonProperty(RESPONSE_TIME)
@@ -32,6 +35,7 @@ public class StoragePoolPerformanceInfo {
 
     public StoragePoolPerformanceInfo(
             final String id,
+            final String nodeId,
             final String name,
             final Double responseTime,
             final Double utilization,
@@ -39,6 +43,7 @@ public class StoragePoolPerformanceInfo {
             final Double totalIOPS,
             final Double usedCapacity) {
         this.id = id;
+        this.nodeId = nodeId;
         this.name = name;
         this.responseTime = responseTime;
         this.utilization = utilization;
@@ -49,6 +54,10 @@ public class StoragePoolPerformanceInfo {
 
     public String getId() {
         return id;
+    }
+
+    public String getNodeId() {
+        return nodeId;
     }
 
     public String getName() {
@@ -79,6 +88,7 @@ public class StoragePoolPerformanceInfo {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
+                .add("nodeId", nodeId)
                 .add("name", name)
                 .add("responseTime", responseTime)
                 .add("utilization", utilization)
@@ -92,6 +102,7 @@ public class StoragePoolPerformanceInfo {
     @SuppressWarnings("PublicInnerClass")
     public static final class StoragePoolPerformanceInfoBuilder {
         private String id;
+        private String nodeId;
         private String name;
         private Double responseTime;
         private Double utilization;
@@ -104,6 +115,11 @@ public class StoragePoolPerformanceInfo {
 
         public StoragePoolPerformanceInfoBuilder withId(final String id) {
             this.id = id;
+            return this;
+        }
+
+        public StoragePoolPerformanceInfoBuilder withNodeId(final String nodeId) {
+            this.nodeId = nodeId;
             return this;
         }
 
@@ -138,7 +154,7 @@ public class StoragePoolPerformanceInfo {
         }
 
         public StoragePoolPerformanceInfo build() {
-            return new StoragePoolPerformanceInfo(id, name, responseTime,
+            return new StoragePoolPerformanceInfo(id, nodeId, name, responseTime,
                     utilization, storageSystemName, totalIOPS, usedCapacity);
         }
 
