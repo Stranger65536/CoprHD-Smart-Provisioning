@@ -143,4 +143,11 @@ public class HealthCheckController {
         LOGGER.debug(RuntimeUtils.exitMethodMessage());
         return response;
     }
+
+    @ResponseBody
+    @GetMapping(value = "/test/error", produces = APPLICATION_JSON_VALUE, consumes = ALL_VALUE)
+    public HealthCheckResponse testError() {
+        LOGGER.debug(RuntimeUtils.enterMethodMessage());
+        throw new IllegalStateException("Test message");
+    }
 }

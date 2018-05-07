@@ -3,7 +3,7 @@
  */
 package com.emc.coprhd.sp.service.core;
 
-import com.emc.coprhd.sp.session.StoragePoolsSessionInfo;
+import com.emc.coprhd.sp.model.StoragePoolsInfo;
 import com.emc.coprhd.sp.transfer.client.request.ApplyWorkloadRequest;
 import com.emc.coprhd.sp.transfer.client.request.CreateSmartVirtualPoolRequest;
 import com.emc.coprhd.sp.transfer.client.response.GetVirtualPoolsInfoResponse;
@@ -13,12 +13,12 @@ import java.net.URI;
 import java.util.List;
 
 public interface ProcessingService {
-    StoragePoolsSessionInfo getStoragePoolsInfo();
+    StoragePoolsInfo getStoragePoolsInfo();
 
     URI createSmartVirtualPool(final CreateSmartVirtualPoolRequest info);
 
     List<StoragePoolPerformanceInfo> getPoolsCharacteristicsUnderWorkload(
-            final StoragePoolsSessionInfo info,
+            final StoragePoolsInfo info,
             final ApplyWorkloadRequest workload);
 
     List<GetVirtualPoolsInfoResponse> getVirtualPools();

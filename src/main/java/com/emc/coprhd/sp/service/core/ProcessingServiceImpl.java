@@ -10,11 +10,11 @@ import com.emc.coprhd.sp.json.vnxszier.ApplicationsList;
 import com.emc.coprhd.sp.json.vnxszier.Pool;
 import com.emc.coprhd.sp.json.vnxszier.PoolInfo;
 import com.emc.coprhd.sp.json.vnxszier.SystemPreferences;
+import com.emc.coprhd.sp.model.StoragePoolsInfo;
 import com.emc.coprhd.sp.repository.mongo.MongoDao;
 import com.emc.coprhd.sp.service.sizer.VNXSizerClient;
 import com.emc.coprhd.sp.service.srm.SRMClient;
 import com.emc.coprhd.sp.service.vipr.ViPRClient;
-import com.emc.coprhd.sp.session.StoragePoolsSessionInfo;
 import com.emc.coprhd.sp.supports.vnx.sizer.SystemFlareVersion;
 import com.emc.coprhd.sp.supports.vnx.sizer.SystemType;
 import com.emc.coprhd.sp.supports.vnx.sizer.TierRaidType;
@@ -88,10 +88,8 @@ public class ProcessingServiceImpl implements ProcessingService {
         this.requestTemplate = Files.readAllBytes(Paths.get(requestTemplateFile.toURI()));
     }
 
-    //This is not the best fallback implementation
-    //Should be replaced with transparent proxy calls
     @Override
-    public StoragePoolsSessionInfo getStoragePoolsInfo() {
+    public StoragePoolsInfo getStoragePoolsInfo() {
         final Collection<StoragePoolRestRep> storagePools = viprClient.getStoragePools();
 
         final List<StoragePoolPerformanceInfo> storagePoolsPerformanceInfo = new ArrayList<>(storagePools.size());
@@ -118,7 +116,7 @@ public class ProcessingServiceImpl implements ProcessingService {
                     .build());
         }
 
-        return new StoragePoolsSessionInfo(storagePoolsPerformanceInfo, storagePoolsDetailedInfoMap, storageSystemsMap);
+        return new StoragePoolsInfo(storagePoolsPerformanceInfo, storagePoolsDetailedInfoMap, storageSystemsMap);
     }
 
     @Override
@@ -139,7 +137,7 @@ public class ProcessingServiceImpl implements ProcessingService {
 
     @Override
     public List<StoragePoolPerformanceInfo> getPoolsCharacteristicsUnderWorkload(
-            final StoragePoolsSessionInfo info, final ApplyWorkloadRequest workload) {
+            final StoragePoolsInfo info, final ApplyWorkloadRequest workload) {
         return info.getStoragePoolsPerformanceInfo()
                 .stream()
                 .map(original -> {

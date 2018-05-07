@@ -1,7 +1,7 @@
 /*
  * Copyright 1994-2018 EMC Corporation. All rights reserved.
  */
-package com.emc.coprhd.sp.session;
+package com.emc.coprhd.sp.model;
 
 import com.emc.coprhd.sp.transfer.client.response.StoragePoolPerformanceInfo;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
@@ -12,12 +12,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class StoragePoolsSessionInfo {
+public class StoragePoolsInfo {
     private final List<StoragePoolPerformanceInfo> storagePoolsPerformanceInfo;
     private final Map<String, StoragePoolRestRep> storagePoolsDetailedInfo;
     private final Map<String, StorageSystemRestRep> storageSystemsInfo;
 
-    public StoragePoolsSessionInfo(
+    public StoragePoolsInfo(
             final List<StoragePoolPerformanceInfo> storagePoolsPerformanceInfo,
             final Map<String, StoragePoolRestRep> storagePoolsDetailedInfo,
             final Map<String, StorageSystemRestRep> storageSystemsInfo) {

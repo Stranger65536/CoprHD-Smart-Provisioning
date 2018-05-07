@@ -6,6 +6,7 @@ package com.emc.coprhd.sp.controller;
 @SuppressWarnings("ALL")
 interface ContextPaths {
     String ROOT = "/";
+    String ERROR = "/error";
 
     interface PoolManager {
         String ROOT = "/pool-manager";

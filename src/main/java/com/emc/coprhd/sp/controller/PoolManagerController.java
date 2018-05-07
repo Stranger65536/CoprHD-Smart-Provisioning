@@ -7,9 +7,8 @@ import com.emc.coprhd.sp.controller.ContextPaths.PoolManager;
 import com.emc.coprhd.sp.controller.ContextPaths.PoolManager.Workload;
 import com.emc.coprhd.sp.controller.ContextPaths.StoragePools;
 import com.emc.coprhd.sp.controller.ContextPaths.VirtualPools;
+import com.emc.coprhd.sp.model.StoragePoolsInfo;
 import com.emc.coprhd.sp.service.core.ProcessingService;
-import com.emc.coprhd.sp.session.SessionAttributes;
-import com.emc.coprhd.sp.session.StoragePoolsSessionInfo;
 import com.emc.coprhd.sp.transfer.client.request.ApplyWorkloadRequest;
 import com.emc.coprhd.sp.transfer.client.request.CreateSmartVirtualPoolRequest;
 import com.emc.coprhd.sp.transfer.client.response.GetVirtualPoolsInfoResponse;
@@ -35,14 +34,10 @@ import static com.hazelcast.util.ExceptionUtil.sneakyThrow;
 public class PoolManagerController {
     private static final ObjectMapper JSON = new ObjectMapper();
 
-    private final SessionAttributes sessionAttributes;
     private final ProcessingService processingService;
 
     @Autowired
-    public PoolManagerController(
-            final SessionAttributes sessionAttributes,
-            final ProcessingService processingService) {
-        this.sessionAttributes = sessionAttributes;
+    public PoolManagerController(final ProcessingService processingService) {
         this.processingService = processingService;
     }
 
@@ -54,17 +49,11 @@ public class PoolManagerController {
 
     @RequestMapping(value = StoragePools.ROOT, method = RequestMethod.GET)
     public ResponseEntity<List<StoragePoolPerformanceInfo>> getStoragePools() {
-        if (isSessionInfoMissing()) {
-            sessionAttributes.setStoragePoolsSessionInfo(processingService.getStoragePoolsInfo());
-        }
         return ResponseEntity.ok(getStoragePoolsPerformanceInfo());
     }
 
     @RequestMapping(value = StoragePools.ROOT + StoragePools.POOL_ID, method = RequestMethod.GET)
     public ResponseEntity<?> getStoragePoolInfo(@PathVariable(StoragePools.ID) final String id) {
-        if (isSessionInfoMissing()) {
-            sessionAttributes.setStoragePoolsSessionInfo(processingService.getStoragePoolsInfo());
-        }
         final StoragePoolRestRep info = getStoragePoolDetailedInfo(id);
         return info == null
                 ? ResponseEntity.notFound().build()
@@ -76,11 +65,8 @@ public class PoolManagerController {
             @RequestBody final String request) {
         try {
             final ApplyWorkloadRequest requestObject = JSON.readValue(request, ApplyWorkloadRequest.class);
-            if (isSessionInfoMissing()) {
-                sessionAttributes.setStoragePoolsSessionInfo(processingService.getStoragePoolsInfo());
-            }
-            return ResponseEntity.ok(processingService.getPoolsCharacteristicsUnderWorkload(
-                    getSessionInfo(), requestObject));
+            final StoragePoolsInfo info = processingService.getStoragePoolsInfo();
+            return ResponseEntity.ok(processingService.getPoolsCharacteristicsUnderWorkload(info, requestObject));
         } catch (IOException e) {
             sneakyThrow(e);
             //noinspection ReturnOfNull
@@ -92,14 +78,12 @@ public class PoolManagerController {
     @RequestMapping(value = VirtualPools.ROOT, method = RequestMethod.POST)
     public ResponseEntity<Void> handleCreateVirtualPoolRequest(@RequestBody final String request) {
         try {
-            final CreateSmartVirtualPoolRequest requestObject = JSON
-                    .readValue(request, CreateSmartVirtualPoolRequest.class);
-            if (isSessionInfoMissing()) {
-                sessionAttributes.setStoragePoolsSessionInfo(processingService.getStoragePoolsInfo());
-            }
+            final CreateSmartVirtualPoolRequest requestObject =
+                    JSON.readValue(request, CreateSmartVirtualPoolRequest.class);
+            final StoragePoolsInfo info = processingService.getStoragePoolsInfo();
 
             if (requestObject.getStoragePoolIDList().stream().allMatch(i ->
-                    getSessionInfo().getStoragePoolsDetailedInfo().containsKey(i))) {
+                    info.getStoragePoolsDetailedInfo().containsKey(i))) {
                 processingService.createSmartVirtualPool(requestObject);
                 return ResponseEntity.ok().build();
             } else {
@@ -117,19 +101,13 @@ public class PoolManagerController {
         return new ResponseEntity<>(processingService.getVirtualPools(), HttpStatus.OK);
     }
 
-    private boolean isSessionInfoMissing() {
-        return getSessionInfo() == null;
-    }
-
     private List<StoragePoolPerformanceInfo> getStoragePoolsPerformanceInfo() {
-        return getSessionInfo().getStoragePoolsPerformanceInfo();
-    }
-
-    private StoragePoolsSessionInfo getSessionInfo() {
-        return sessionAttributes.getStoragePoolsSessionInfo();
+        final StoragePoolsInfo info = processingService.getStoragePoolsInfo();
+        return info.getStoragePoolsPerformanceInfo();
     }
 
     private StoragePoolRestRep getStoragePoolDetailedInfo(@PathVariable(StoragePools.ID) final String id) {
-        return getSessionInfo().getStoragePoolsDetailedInfo().get(id);
+        final StoragePoolsInfo info = processingService.getStoragePoolsInfo();
+        return info.getStoragePoolsDetailedInfo().get(id);
     }
 }
