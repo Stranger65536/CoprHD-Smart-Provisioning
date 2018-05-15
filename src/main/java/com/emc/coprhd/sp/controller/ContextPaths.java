@@ -19,6 +19,10 @@ public interface ContextPaths {
         }
     }
 
+    interface ServiceCatalog {
+        String ROOT = "/service-catalog";
+    }
+
     interface StoragePools {
         String ROOT = "/storage-pools";
         String ID = "id";

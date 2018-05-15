@@ -486,7 +486,7 @@ function reloadServiceCatalogs() {
         $("#catalog").empty();
     }
 
-    function addCatalog(id, vp_name, latency, type) {
+    function addCatalog(id, node, vp_name, latency, type) {
         latency = (latency == null) ? "Not defined" : (latency + " ms");
         type = (type == null) ? "Not defined" : type;
         $("#catalog").append('<div class="catalog-item" vp_id="' + id + '" ' +
@@ -502,6 +502,7 @@ function reloadServiceCatalogs() {
             '<img class="" src="/images/service-pool.png"/>' +
             '</div>' +
             '</div>' +
+            '<p class="catalog-description">Node: ' + node + '</p>' +
             '<p class="catalog-description">Latency: ' + latency + '</p>' +
             '<p class="catalog-description">Workload type: ' + type + '</p>' +
             '</div>' +
@@ -511,7 +512,7 @@ function reloadServiceCatalogs() {
 
     $.ajax({
         dataType: "json",
-        url: "/service-catalog/vp_params",
+        url: "/virtual-pools",
         type: "GET",
         beforeSend: function () {
             toggleLoadingAnimation();
@@ -519,7 +520,17 @@ function reloadServiceCatalogs() {
     }).done(function (data) {
         clearCatalogs();
         $.each(data, function (index, value) {
-            addCatalog(value['vp_id'], value['vp_name'], value['latency'], value['app_type']);
+            if (value['targetResponseTime'] === 0) {
+                value['targetResponseTime'] = null
+            }
+            var appType = '';
+            if (value['applicationsList'] && value['applicationsList']['appFreeFormlist']) {
+                appType = 'Free form'
+            }
+            if (value['applicationsList'] && value['applicationsList']['appOracleOLTPlist']) {
+                appType = 'Oracle OLTP'
+            }
+            addCatalog(value['id'], value['nodeId'], value['name'], value['targetResponseTime'], appType);
         });
         toggleLoadingAnimation();
     });

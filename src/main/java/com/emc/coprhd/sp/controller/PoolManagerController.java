@@ -5,6 +5,7 @@ package com.emc.coprhd.sp.controller;
 
 import com.emc.coprhd.sp.controller.ContextPaths.PoolManager;
 import com.emc.coprhd.sp.controller.ContextPaths.PoolManager.Workload;
+import com.emc.coprhd.sp.controller.ContextPaths.ServiceCatalog;
 import com.emc.coprhd.sp.controller.ContextPaths.StoragePools;
 import com.emc.coprhd.sp.controller.ContextPaths.VirtualPools;
 import com.emc.coprhd.sp.model.ClusterNode;
@@ -62,6 +63,13 @@ public class PoolManagerController {
     public String handleLoadPageRequest() {
         LOGGER.debug(RuntimeUtils.enterMethodMessage());
         return PoolManager.ROOT;
+    }
+
+    @SuppressWarnings("SameReturnValue")
+    @GetMapping(ServiceCatalog.ROOT)
+    public String handleServiceLoadPageRequest() {
+        LOGGER.debug(RuntimeUtils.enterMethodMessage());
+        return ServiceCatalog.ROOT;
     }
 
     @GetMapping(StoragePools.ROOT)

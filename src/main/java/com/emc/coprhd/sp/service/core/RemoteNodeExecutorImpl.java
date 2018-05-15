@@ -1,6 +1,7 @@
 package com.emc.coprhd.sp.service.core;
 
 import com.emc.coprhd.sp.controller.ContextPaths.StoragePools;
+import com.emc.coprhd.sp.controller.ContextPaths.VirtualPools;
 import com.emc.coprhd.sp.model.ClusterNode;
 import com.emc.coprhd.sp.model.StoragePoolsInfo;
 import com.emc.coprhd.sp.transfer.client.request.CreateSmartVirtualPoolRequest;
@@ -110,6 +111,31 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
 
     @Override
     public List<GetVirtualPoolsInfoResponse> getVirtualPools(final ClusterNode clusterNode) {
-        return null;
+        LOGGER.debug("{} node: {}", RuntimeUtils.enterMethodMessage(), clusterNode);
+        if (nodeId.equals(clusterNode.getId())) {
+            final List<GetVirtualPoolsInfoResponse> info = processingService.getVirtualPools();
+            LOGGER.debug("{} LOCAL Virtual Pools retrieve node: {} pools: {}",
+                    RuntimeUtils.exitMethodMessage(), clusterNode, info);
+            return info;
+        } else {
+            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode) + DIST + VirtualPools.ROOT;
+            LOGGER.debug("GET > {}", url);
+            final ResponseEntity<GetVirtualPoolsInfoResponse[]> responseEntity =
+                    restTemplate.getForEntity(url, GetVirtualPoolsInfoResponse[].class);
+
+            if (responseEntity.getStatusCode() != HttpStatus.OK) {
+                LOGGER.error("GET < {} {}", url, responseEntity);
+                throw new RestClientException("Error fetching virtual pools list from " + clusterNode);
+            }
+
+            LOGGER.debug("GET < 200 OK {}", url);
+
+            final List<GetVirtualPoolsInfoResponse> result =
+                    Arrays.stream(responseEntity.getBody()).collect(Collectors.toList());
+
+            LOGGER.debug("{} REMOTE Virtual Pools retrieve node: {} pools: {}",
+                    RuntimeUtils.exitMethodMessage(), clusterNode, result);
+            return result;
+        }
     }
 }

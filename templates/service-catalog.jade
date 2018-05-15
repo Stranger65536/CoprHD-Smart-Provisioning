@@ -1,0 +1,90 @@
+html
+    head
+        meta(charset='CP1252')
+        meta(http-equiv='Content-Type', content='text/html; charset=CP1252')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(name='description', content='')
+        title Application aware storage provisioning
+        link(rel='shortcut icon', href='/favicon.ico', type='image/x-icon')
+        link(rel='icon', href='/favicon.ico', type='image/x-icon')
+        // jQueryUI
+        link(rel='stylesheet', type='text/css', href='/css/jquery-ui-1.11.2.custom/jquery-ui.min.css', media='screen')
+        link(rel='stylesheet', type='text/css', href='/css/jquery-ui-1.11.2.custom/jquery-ui.structure.min.css', media='screen')
+        link(rel='stylesheet', type='text/css', href='/css/jquery-ui-1.11.2.custom/jquery-ui.theme.min.css', media='screen')
+        // SweetAlert
+        link(rel='stylesheet', type='text/css', href='/css/sweetalert/sweet-alert.css', media='screen')
+        // Custom
+        link(rel='stylesheet', type='text/css', href='/css/style.css', media='screen')
+        link(rel='stylesheet', type='text/css', href='/css/service-catalog.css', media='screen')
+        // jQuery
+        script(src='/js/jquery-2.1.3.min.js')
+        // jQueryUI
+        script(src='/js/jquery-ui.min.js')
+        // SweetAlert
+        script(src='/js/sweet-alert.min.js')
+        // Custom
+        script(src='/js/scripts.js')
+        script(src='/js/service-catalog.js')
+    body
+        #root-page-wrapper
+            #header
+                a#header-brand(href='pool-manager')
+                    img(src='images/logo.png')
+            #menu
+                a#menuPoolManager.nav(href='pool-manager')
+                    span#menuitem-pool-manager
+                a#serviceCatalog.nav(href='service-catalog')
+                    span#menuitem-service-catalog
+            #breadcrumb
+                .name
+                    | Virtual pool service catalog
+            #content-area-wrapper
+                #catalog
+                .hint-pointer-wrapper.left
+                    .hint-pointer.left
+                .hint
+                    .header
+                        .row
+                            .name
+                            #hint-close-button.close-icon
+                    .content
+                        table.content-table
+                            tr#response-time
+                                td Target response time (ms)
+                                td.latency
+                            tr
+                                td LUN capacity (GB)
+                                td
+                                    label(for='capacity')
+                                    input#capacity(type='text', value='10')
+                            tr
+                                td
+                                    button#check-button Check
+                                td
+                                    button#provisioning-button Provision
+                        table.progress-table
+                            tr
+                                td#check-first-processing
+                                    img.processing(src='/images/loading.gif')
+                                td#check-first-done
+                                    img.done(src='/images/ok.png')
+                                td#check-first-fail
+                                    img.fail(src='/images/error.png')
+                                td#check-first-label Obtaining performance statistics for storage pools
+                            tr
+                                td#check-second-processing
+                                    img.processing(src='/images/loading.gif')
+                                td#check-second-done
+                                    img.done(src='/images/ok.png')
+                                td#check-second-fail
+                                    img.fail(src='/images/error.png')
+                                td#check-second-label Estimating pool performance with additional applyWorkloadRequest
+                            tr
+                                td#provisioning-processing
+                                    img.processing(src='/images/loading.gif')
+                                td#provisioning-done
+                                    img.done(src='/images/ok.png')
+                                td#provisioning-fail
+                                    img.fail(src='/images/error.png')
+                                td#provisioning-label Provisioning LUN
+            #content-area-hider

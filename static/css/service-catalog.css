@@ -1,0 +1,504 @@
+#breadcrumb {
+    top: 40px;
+    left: 210px;
+    right: 30px;
+    height: 55px;
+    position: absolute;
+    background-color: #eaeaea;
+    border-radius: 0 0 8px 8px;
+    border: 1px solid rgb(221, 221, 221);
+}
+
+#breadcrumb .name {
+    color: #555;
+    height: 100%;
+    display: block;
+    font-size: 1.3em;
+    text-align: left;
+    font-weight: bold;
+    line-height: 250%;
+    margin-left: 10px;
+    position: relative;
+    vertical-align: middle;
+    font-family: Verdana, sans-serif;
+}
+
+#content-area-wrapper {
+    right: 0;
+    bottom: 0;
+    top: 100px;
+    left: 180px;
+    padding: 30px;
+    user-select: none;
+    position: absolute;
+    overflow-y: scroll;
+    text-align: center;
+    background: #f2f2f2;
+    -o-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+#content-area-hider {
+    right: 0;
+    bottom: 0;
+    top: 100px;
+    left: 180px;
+    z-index: 1000;
+    display: none;
+    position: absolute;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    background: url(/images/loading.gif) no-repeat center;
+}
+
+#content-area-wrapper::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #F5F5F5;
+    -webkit-box-shadow: inset 0 0 6px rgba(44, 149, 221, 0.2);
+}
+
+#content-area-wrapper::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+    background-color: #F5F5F5;
+}
+
+#content-area-wrapper::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(44, 149, 221, 0.2);
+    -webkit-box-shadow: inset 0 0 6px rgba(44, 149, 221, 0.2);
+}
+
+#content-area-wrapper::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    background-color: rgba(44, 149, 221, 1);
+    -webkit-box-shadow: inset 0 0 6px rgba(44, 149, 221, 0.2);
+}
+
+#catalog {
+    width: 100%;
+    height: 100%;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#catalog.blur {
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+    transition: 0.35s -webkit-filter linear;
+}
+
+.catalog-item {
+    padding: 0;
+    float: left;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: background .1s linear;
+    -o-transition: background .1s linear;
+    -moz-transition: background .1s linear;
+    -webkit-transition: background .1s linear;
+}
+
+.catalog-item {
+    width: 25%;
+}
+
+.catalog-item .panel {
+    margin: 5px;
+}
+
+.catalog-item .panel-body {
+    padding: 5px;
+    height: 100px;
+}
+
+.catalog-item:hover .panel,
+.catalog-item:hover .panel-heading,
+.catalog-item:hover .panel-body {
+    border-color: #aaa;
+    transition: border-color .1s linear;
+    -o-transition: border-color .1s linear;
+    -moz-transition: border-color .1s linear;
+    -webkit-transition: border-color .1s linear;
+}
+
+.catalog-image {
+    float: left;
+    height: 100%;
+}
+
+.catalog-image img {
+    height: 84px;
+    max-width: 112px;
+}
+
+.catalog-description {
+    margin: 0.4em 0;
+    font-size: 1.0em;
+    text-align: left;
+    padding: 0;
+    font-family: Verdana, sans-serif;
+}
+
+.panel {
+    border-radius: 8px;
+    margin-bottom: 40px;
+    background-color: #fff;
+    /*border: 1px solid #ddd;*/
+    transition: border-color .1s linear;
+    -o-transition: border-color .1s linear;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .05);
+    -moz-transition: border-color .1s linear;
+    -webkit-transition: border-color .1s linear;
+    -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, .05);
+}
+
+.panel-heading {
+    color: #333;
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border: 1px solid #ddd;
+    transition: border-color .1s linear;
+    -o-transition: border-color .1s linear;
+    -moz-transition: border-color .1s linear;
+    -webkit-transition: border-color .1s linear;
+}
+
+.panel-title {
+    margin-top: 0;
+    font-size: 1.1em;
+    overflow: hidden;
+    margin-bottom: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: Verdana, sans-serif;
+}
+
+.panel-body {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-top: none;
+}
+
+.hint-pointer-wrapper {
+    border: none;
+    /*z-index: 1400;*/
+    display: none;
+    overflow: hidden;
+    box-shadow: none;
+    position: absolute;
+}
+
+.hint-pointer-wrapper.bottom,
+.hint-pointer-wrapper.top {
+    width: 36px;
+    height: 18px;
+}
+
+.hint-pointer-wrapper.left,
+.hint-pointer-wrapper.right {
+    width: 18px;
+    height: 36px;
+}
+
+.hint-pointer {
+    width: 50px;
+    content: "";
+    height: 50px;
+    z-index: 1200;
+    position: relative;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    transform: rotate(45deg);
+}
+
+.hint-pointer.bottom {
+    top: -45px;
+    left: -9px;
+}
+
+.hint-pointer.top {
+    top: 11px;
+    left: -8px;
+}
+
+.hint-pointer.left {
+    top: -6px;
+    left: 11px;
+}
+
+.hint-pointer.right {
+    top: -7px;
+    left: -45px;
+}
+
+.hint {
+    margin: 0;
+    padding: 0;
+    width: 450px;
+    display: none;
+    z-index: 1300;
+    position: absolute;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.hint .header {
+    height: 50px;
+    display: table;
+    border-spacing: 0;
+    table-layout: fixed;
+    width: calc(100% + 2px);
+    border-collapse: collapse;
+}
+
+.hint .header .row {
+    display: table-row;
+}
+
+.hint .header .row .name {
+    height: 100%;
+    font-size: 1.2em;
+    overflow-x: auto;
+    font-weight: bold;
+    display: table-cell;
+    vertical-align: middle;
+    width: calc(100% - 50px);
+    font-family: Verdana, sans-serif;
+}
+
+.hint .header .row .name::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #F5F5F5;
+    -webkit-box-shadow: inset 0 0 6px rgba(44, 149, 221, 0.2);
+}
+
+.hint .header .row .name::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+    background-color: #F5F5F5;
+}
+
+.hint .header .row .name::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(44, 149, 221, 0.2);
+    -webkit-box-shadow: inset 0 0 6px rgba(44, 149, 221, 0.2);
+}
+
+.hint .header .row .name::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    background-color: rgba(44, 149, 221, 1);
+    -webkit-box-shadow: inset 0 0 6px rgba(44, 149, 221, 0.2);
+}
+
+.hint .header .row .close-icon {
+    width: 50px;
+    height: 100%;
+    cursor: pointer;
+    display: table-cell;
+    text-decoration: none;
+    transition: background-color 0.2s linear;
+    background: url(/resources/images/grey-cross.png) no-repeat 60%;
+    background-size: 65%;
+}
+
+.hint .header .row .close-icon:hover {
+    background-color: #eee;
+    transition: background-color 0.2s linear;
+}
+
+.hint .content {
+    width: 100%;
+    height: calc(100% - 46px);
+}
+
+.hint .content table.progress-table {
+    height: 100%;
+    display: none;
+    border-spacing: 15px;
+    width: calc(100% + 2px);
+    border-collapse: separate;
+}
+
+.hint .content table.progress-table tr td {
+    font-size: 1.2em;
+    text-align: center;
+    font-weight: normal;
+    vertical-align: middle;
+    font-family: Verdana, sans-serif;
+}
+
+.hint .content table.progress-table tr td:last-child {
+    text-align: left;
+}
+
+img.processing {
+    min-width: 2em;
+    max-width: 2em;
+    min-height: 2em;
+    max-height: 2em;
+}
+
+img.done {
+    min-width: 1.2em;
+    max-width: 1.2em;
+    min-height: 1.2em;
+    max-height: 1.2em;
+}
+
+.hint .content table.progress-table tr #check-first-processing {
+    width: 10%;
+    display: none;
+}
+
+.hint .content table.progress-table tr #check-first-done {
+    width: 10%;
+    display: none;
+}
+
+.hint .content table.progress-table tr #check-first-fail {
+    width: 10%;
+    display: none;
+}
+
+.hint .content table.progress-table tr #check-first-label {
+    width: 90%;
+    display: none;
+}
+
+.hint .content table.progress-table tr #check-second-processing {
+    width: 10%;
+    display: none;
+}
+
+.hint .content table.progress-table tr #check-second-done {
+    width: 10%;
+    display: none;
+}
+
+.hint .content table.progress-table tr #check-second-fail {
+    width: 10%;
+    display: none;
+}
+
+.hint .content table.progress-table tr #check-second-label {
+    width: 90%;
+    display: none;
+}
+
+.hint .content table.progress-table tr #provisioning-processing {
+    width: 10%;
+    display: none;
+}
+
+.hint .content table.progress-table tr #provisioning-done {
+    width: 10%;
+    display: none;
+}
+
+.hint .content table.progress-table tr #provisioning-fail {
+    width: 10%;
+    display: none;
+}
+
+.hint .content table.progress-table tr #provisioning-label {
+    width: 90%;
+    display: none;
+}
+
+.hint .content table.content-table {
+    height: 100%;
+    border-spacing: 15px;
+    width: calc(100% + 2px);
+    border-collapse: separate;
+}
+
+.hint .content table.content-table tr {
+    height: 50px;
+}
+
+.hint .content table.content-table tr td {
+    width: 50%;
+    font-size: 1.2em;
+    text-align: left;
+    font-weight: normal;
+    vertical-align: middle;
+    font-family: Verdana, sans-serif;
+}
+
+.hint input[type="text"] {
+    font-size: 1em;
+}
+
+.hint .content table.content-table tr td:nth-child(odd) {
+    font-weight: bold;
+}
+
+.hint .content table.content-table tr:last-child {
+}
+
+.hint .content table.content-table tr:last-child td {
+    height: 100%;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.ui-button .ui-icon.loading {
+    width: 32px;
+    height: 32px;
+    margin-top: -16px;
+    background: url(/images/loading.gif) no-repeat 0 -1px;
+    background-size: 100%;
+}
+
+.ui-button.ui-state-hover .ui-icon.loading {
+    width: 32px;
+    height: 32px;
+    margin-top: -16px;
+    background: url(/images/loading.gif) no-repeat 0 -1px;
+    background-size: 100%;
+}
+
+.ui-button .ui-icon.ok {
+    width: 24px;
+    height: 24px;
+    margin-top: -10px;
+    background: url(/images/ok.png) no-repeat 0 -1px;
+    background-size: 100%;
+}
+
+.ui-button.ui-state-hover .ui-icon.ok {
+    width: 24px;
+    height: 24px;
+    margin-top: -10px;
+    background: url(/images/ok.png) no-repeat 0 -1px;
+    background-size: 100%;
+}
+
+.ui-button .ui-icon.fail {
+    width: 24px;
+    height: 24px;
+    margin-top: -10px;
+    background: url(/images/error.png) no-repeat 0 -1px;
+    background-size: 100%;
+}
+
+.ui-button.ui-state-hover .ui-icon.fail {
+    width: 24px;
+    height: 24px;
+    margin-top: -10px;
+    background: url(/images/error.png) no-repeat 0 -1px;
+    background-size: 100%;
+}
+
+.ui-state-disabled {
+    opacity: .55;
+}

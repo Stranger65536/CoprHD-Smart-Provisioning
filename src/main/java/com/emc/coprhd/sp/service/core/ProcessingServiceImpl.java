@@ -219,6 +219,7 @@ public class ProcessingServiceImpl implements ProcessingService {
                 : null;
 
         return new GetVirtualPoolsInfoResponse(
+                pool.getId(),
                 pool.getName(),
                 nodeId,
                 pool.getTargetResponseTime(),
