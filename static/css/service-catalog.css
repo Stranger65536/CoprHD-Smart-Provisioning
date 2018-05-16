@@ -426,7 +426,6 @@ img.done {
 }
 
 .hint .content table.content-table tr td {
-    width: 50%;
     font-size: 1.2em;
     text-align: left;
     font-weight: normal;
@@ -501,4 +500,13 @@ img.done {
 
 .ui-state-disabled {
     opacity: .55;
+}
+
+#provisioning-button {
+    height: 2.2em;
+    width: 100%;
+}
+
+#provisioning-button img {
+    width: 24px;
 }

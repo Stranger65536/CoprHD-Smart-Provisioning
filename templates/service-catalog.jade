@@ -4,7 +4,7 @@ html
         meta(http-equiv='Content-Type', content='text/html; charset=CP1252')
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
         meta(name='description', content='')
-        title Application aware storage provisioning
+        title CoprHDSP
         link(rel='shortcut icon', href='/favicon.ico', type='image/x-icon')
         link(rel='icon', href='/favicon.ico', type='image/x-icon')
         // jQueryUI
@@ -58,33 +58,6 @@ html
                                     label(for='capacity')
                                     input#capacity(type='text', value='10')
                             tr
-                                td
-                                    button#check-button Check
-                                td
-                                    button#provisioning-button Provision
-                        table.progress-table
-                            tr
-                                td#check-first-processing
-                                    img.processing(src='/images/loading.gif')
-                                td#check-first-done
-                                    img.done(src='/images/ok.png')
-                                td#check-first-fail
-                                    img.fail(src='/images/error.png')
-                                td#check-first-label Obtaining performance statistics for storage pools
-                            tr
-                                td#check-second-processing
-                                    img.processing(src='/images/loading.gif')
-                                td#check-second-done
-                                    img.done(src='/images/ok.png')
-                                td#check-second-fail
-                                    img.fail(src='/images/error.png')
-                                td#check-second-label Estimating pool performance with additional applyWorkloadRequest
-                            tr
-                                td#provisioning-processing
-                                    img.processing(src='/images/loading.gif')
-                                td#provisioning-done
-                                    img.done(src='/images/ok.png')
-                                td#provisioning-fail
-                                    img.fail(src='/images/error.png')
-                                td#provisioning-label Provisioning LUN
+                                td(colspan='2')
+                                    button#provisioning-button Provision LUN
             #content-area-hider

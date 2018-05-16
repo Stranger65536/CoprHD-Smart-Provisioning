@@ -21,6 +21,7 @@ import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -105,8 +106,36 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
     }
 
     @Override
+    @SuppressWarnings("ReturnOfNull")
     public URI createVirtualPool(final CreateSmartVirtualPoolRequest request, final ClusterNode clusterNode) {
-        return null;
+        LOGGER.debug("{} node: {}, request: {}", RuntimeUtils.enterMethodMessage(), clusterNode, request);
+        if (nodeId.equals(clusterNode.getId())) {
+            final URI uri = processingService.createSmartVirtualPool(request);
+            LOGGER.debug("{} LOCAL Virtual Pool create node: {} request: {} uri: {}",
+                    RuntimeUtils.exitMethodMessage(), clusterNode, request, uri);
+            return uri;
+        } else {
+            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode)
+                    + DIST + VirtualPools.ROOT;
+            LOGGER.debug("POST > {}, data: {}", url, request);
+            final ResponseEntity<String> responseEntity =
+                    restTemplate.postForEntity(url, request, String.class);
+
+            if (responseEntity.getStatusCode() != HttpStatus.OK) {
+                LOGGER.error("POST < {}, data: {}, response: {}", url, request, responseEntity);
+                throw new RestClientException("Error creating Virtual Pool on " + clusterNode);
+            }
+
+            LOGGER.debug("POST < 200 OK {}, data: {}, response: {}", url, request, responseEntity);
+            LOGGER.debug("{} REMOTE Virtual Pool create node: {} uri: {}",
+                    RuntimeUtils.exitMethodMessage(), clusterNode, responseEntity.getBody());
+            try {
+                return new URI(responseEntity.getBody());
+            } catch (URISyntaxException e) {
+                LOGGER.error("Unvalid URI: {}", responseEntity.getBody(), e);
+                return null;
+            }
+        }
     }
 
     @Override

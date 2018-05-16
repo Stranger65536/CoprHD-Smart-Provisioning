@@ -8,11 +8,8 @@ function bindPoolClick() {
         $.each(timeout, function (index, item) {
             clearTimeout(item);
         });
-        $("#check-button").button("option", {
-            disabled: false
-        });
         $("#provisioning-button").button("option", {
-            disabled: true
+            disabled: false
         });
         $("#capacity").val("10");
     }
@@ -25,7 +22,7 @@ function bindPoolClick() {
         });
     }
 
-    function bindKeypressCapacity(capacity, checkButton, provisionButton) {
+    function bindKeypressCapacity(capacity, provisionButton) {
         capacity.on("keypress", function (e) {
             var key = e.keyCode ? e.keyCode : e.which;
             //noinspection JSCheckFunctionSignatures
@@ -36,98 +33,44 @@ function bindPoolClick() {
                 clearTimeout(item);
             });
             hideProcessingTable();
-            resetProcessingState();
-            checkButton.button("option", {
-                disabled: false
-            });
+            resetProcessing();
             provisionButton.button("option", {
-                disabled: true
+                disabled: false
             });
         });
     }
 
-    function resetProcessingState() {
-        var table = $("table.progress-table");
+    function resetProcessing() {
         $("#capacity").prop('disabled', false);
-        var firstCheckProcess = table.find("#check-first-processing");
-        firstCheckProcess.hide();
-        var firstCheckDone = table.find("#check-first-done");
-        firstCheckDone.hide();
-        var firstCheckLabel = table.find("#check-first-label");
-        firstCheckLabel.hide();
-        var secondCheckProcess = table.find("#check-second-processing");
-        secondCheckProcess.hide();
-        var secondCheckDone = table.find("#check-second-done");
-        secondCheckDone.hide();
-        var secondCheckLabel = table.find("#check-second-label");
-        secondCheckLabel.hide();
-        var provisionProcess = table.find("#provisioning-processing");
-        provisionProcess.hide();
-        var provisionDone = table.find("#provisioning-done");
-        provisionDone.hide();
-        var provisionFail = table.find("#provisioning-fail");
-        provisionFail.hide();
-        var provisionLabel = table.find("#provisioning-label");
-        provisionLabel.hide();
-        firstCheckProcess.show();
-        firstCheckLabel.show();
-        secondCheckProcess.show();
-        secondCheckLabel.show();
-    }
-
-    function setFirstCheckDone() {
-        var table = $("table.progress-table");
-        var firstCheckProcess = table.find("#check-first-processing");
-        firstCheckProcess.hide();
-        var firstCheckDone = table.find("#check-first-done");
-        firstCheckDone.show();
-    }
-
-    function setSecondCheckDone() {
-        var table = $("table.progress-table");
-        var secondCheckProcess = table.find("#check-second-processing");
-        secondCheckProcess.hide();
-        var secondCheckDone = table.find("#check-second-done");
-        secondCheckDone.show();
+        $("#provisioning-button").html('<span class="ui-button-text">Provision LUN</span>')
     }
 
     function setProvisioningProcessing() {
-        var table = $("table.progress-table");
-        var provisioningProcess = table.find("#provisioning-processing");
-        provisioningProcess.show();
-        var provisionLabel = table.find("#provisioning-label");
-        provisionLabel.show();
+        $("#provisioning-button").html('<img class="processing" src="/images/loading.gif">')
     }
 
     function setProvisioningDone() {
-        var table = $("table.progress-table");
-        var provisioningProcess = table.find("#provisioning-processing");
-        provisioningProcess.hide();
-        var provisioningDone = table.find("#provisioning-done");
-        provisioningDone.show();
+        $("#provisioning-button").html('<img class="done" src="/images/ok.png">')
+
     }
 
     function setProvisioningFail() {
-        var table = $("table.progress-table");
-        var provisioningProcess = table.find("#provisioning-processing");
-        provisioningProcess.hide();
-        var provisioningFail = table.find("#provisioning-fail");
-        provisioningFail.show();
+        $("#provisioning-button").html('<img class="fail" src="/images/error.png">')
     }
 
     function hideProcessingTable() {
-        $("table.progress-table").hide();
+        $("#provisioning-button").html('<span class="ui-button-text">Provision LUN</span>')
     }
 
     function showProcessingTable() {
-        $("table.progress-table").show();
+        $("#provisioning-button").html('<img class="processing" src="/images/loading.gif">')
     }
 
 
     function processClickOnPool(hint, item, zoom, e, pointerWrapper, pointer, timeout) {
         updateHintInfo(hint, item);
         clearHint(timeout);
-        resetProcessingState();
+        resetProcessing();
         showHintInNewPlace(zoom, e, hint, pointerWrapper, pointer);
     }
 
@@ -145,7 +88,7 @@ function bindPoolClick() {
             pointerWrapper.hide("blind", {direction: openDirection}, 100, function () {
                 updateHintInfo(hint, item);
                 clearHint(timeout);
-                resetProcessingState();
+                resetProcessing();
                 showHintInNewPlace(zoom, e, hint, pointerWrapper, pointer);
             });
         });
@@ -154,7 +97,7 @@ function bindPoolClick() {
     function processClickOnUnknownSpace(hint, pointerWrapper) {
         hint.removeAttr("vp_id");
         clearHint(timeout);
-        resetProcessingState();
+        resetProcessing();
         hint.hide("blind", {direction: openDirection}, 200, function () {
             pointerWrapper.hide("blind", {direction: openDirection}, 100);
         });
@@ -351,60 +294,31 @@ function bindPoolClick() {
         });
     }
 
-    function bindCheckButtonClick(checkButton, provisionButton, capacity) {
-        checkButton.button().click(function () {
-            capacity.prop('disabled', true);
-            checkButton.button("option", {
-                disabled: true
-            });
-            provisionButton.button("option", {
-                disabled: true
-            });
-            hideProcessingTable();
-            resetProcessingState();
-            showProcessingTable();
-            timeout.push(setTimeout(function () {
-                setFirstCheckDone();
-                timeout.push(setTimeout(function () {
-                    setSecondCheckDone();
-                    checkButton.button("option", {
-                        disabled: false
-                    });
-                    provisionButton.button("option", {
-                        disabled: false
-                    });
-                    capacity.prop('disabled', false);
-                }, 2000));
-            }, 2000));
-        });
-    }
-
     function bindCloseHintButtonClick(hint, pointerWrapper) {
         $("#hint-close-button").click(function () {
             processClickOnUnknownSpace(hint, pointerWrapper);
         });
     }
 
-    function bindProvisionButtonClick(checkButton, provisionButton, capacity) {
+    function bindProvisionButtonClick(provisionButton, capacity) {
         provisionButton.button().click(function () {
-            doProvisioning(checkButton, provisionButton, capacity);
+            showProcessingTable();
+            doProvisioning(provisionButton, capacity);
         }).button("option", {
             disabled: true
         });
     }
 
     function bindHintButtons(hint, pointerWrapper) {
-        var checkButton = $("#check-button");
         var provisionButton = $("#provisioning-button");
         var capacity = $("#capacity");
-        bindProvisionButtonClick(checkButton, provisionButton, capacity);
+        bindProvisionButtonClick(provisionButton, capacity);
         bindCloseHintButtonClick(hint, pointerWrapper);
-        bindCheckButtonClick(checkButton, provisionButton, capacity);
-        bindKeypressCapacity(capacity, checkButton, provisionButton);
+        bindKeypressCapacity(capacity, provisionButton);
         bindBlurCapacity(capacity);
     }
 
-    function doProvisioning(checkButton, provisionButton, capacity) {
+    function doProvisioning(provisionButton, capacity) {
         var data = {};
         data['vp_id'] = $('.hint').attr('vp_id');
         data['capacity'] = 10;
@@ -415,9 +329,6 @@ function bindPoolClick() {
             data: JSON.stringify(data),
             beforeSend: function () {
                 capacity.prop('disabled', true);
-                checkButton.button("option", {
-                    disabled: true
-                });
                 provisionButton.button("option", {
                     disabled: true
                 });
@@ -425,18 +336,12 @@ function bindPoolClick() {
             }
         }).done(function () {
             capacity.prop('disabled', false);
-            checkButton.button("option", {
-                disabled: false
-            });
             provisionButton.button("option", {
                 disabled: false
             });
             setProvisioningDone();
         }).fail(function () {
             capacity.prop('disabled', false);
-            checkButton.button("option", {
-                disabled: false
-            });
             setProvisioningFail();
         });
     }
