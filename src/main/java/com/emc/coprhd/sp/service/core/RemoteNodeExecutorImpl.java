@@ -1,10 +1,12 @@
 package com.emc.coprhd.sp.service.core;
 
+import com.emc.coprhd.sp.controller.ContextPaths.ServiceCatalog;
 import com.emc.coprhd.sp.controller.ContextPaths.StoragePools;
 import com.emc.coprhd.sp.controller.ContextPaths.VirtualPools;
 import com.emc.coprhd.sp.model.ClusterNode;
 import com.emc.coprhd.sp.model.StoragePoolsInfo;
 import com.emc.coprhd.sp.transfer.client.request.CreateSmartVirtualPoolRequest;
+import com.emc.coprhd.sp.transfer.client.request.ProvisionLunRequest;
 import com.emc.coprhd.sp.transfer.client.response.GetVirtualPoolsInfoResponse;
 import com.emc.coprhd.sp.transfer.client.response.StoragePoolPerformanceInfo;
 import com.emc.coprhd.sp.util.RuntimeUtils;
@@ -165,6 +167,32 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
             LOGGER.debug("{} REMOTE Virtual Pools retrieve node: {} pools: {}",
                     RuntimeUtils.exitMethodMessage(), clusterNode, result);
             return result;
+        }
+    }
+
+    @Override
+    public void provisionLun(final ProvisionLunRequest request, final ClusterNode clusterNode) {
+        LOGGER.debug("{} node: {}", RuntimeUtils.enterMethodMessage(), clusterNode);
+        if (nodeId.equals(clusterNode.getId())) {
+            processingService.provisionLun(request);
+            LOGGER.debug("{} LOCAL LUN provision node: {} request: {}",
+                    RuntimeUtils.exitMethodMessage(), clusterNode, request);
+        } else {
+            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode)
+                    + DIST + ServiceCatalog.PROVISION;
+            LOGGER.debug("POST > {}", url);
+            final ResponseEntity<?> responseEntity =
+                    restTemplate.postForEntity(url, request, Object.class);
+
+            if (responseEntity.getStatusCode() != HttpStatus.OK) {
+                LOGGER.error("POST < {}, request: {}, data: {}", url, request, responseEntity);
+                throw new RestClientException("Error provisioning LUN on " + clusterNode);
+            }
+
+            LOGGER.debug("POST < 200 OK {}, request: {}, data: {}", url, request, responseEntity);
+
+            LOGGER.debug("{} REMOTE LUN provision node: {}",
+                    RuntimeUtils.exitMethodMessage(), clusterNode);
         }
     }
 }

@@ -81,6 +81,12 @@ public class ClusterStateServiceImpl implements ClusterStateService {
         return result;
     }
 
+    @Override
+    public ClusterNode getCurrentNode() {
+        return getAvailableNodes().stream().filter(node -> node.getId().equals(nodeId))
+                .findFirst().orElseThrow(() -> new IllegalStateException("No node with id " + nodeId));
+    }
+
     @EventListener(ContextRefreshedEvent.class)
     void contextRefreshedEvent() {
         ClusterUtils.addNodeInfoToCluster(ignoredNetworks, nodeId, hzInstance, nodes);

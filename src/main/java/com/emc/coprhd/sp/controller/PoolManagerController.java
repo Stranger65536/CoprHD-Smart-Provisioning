@@ -15,6 +15,7 @@ import com.emc.coprhd.sp.service.core.ProcessingService;
 import com.emc.coprhd.sp.service.core.RemoteNodeExecutor;
 import com.emc.coprhd.sp.transfer.client.request.ApplyWorkloadRequest;
 import com.emc.coprhd.sp.transfer.client.request.CreateSmartVirtualPoolRequest;
+import com.emc.coprhd.sp.transfer.client.request.ProvisionLunRequest;
 import com.emc.coprhd.sp.transfer.client.response.GetVirtualPoolsInfoResponse;
 import com.emc.coprhd.sp.transfer.client.response.StoragePoolPerformanceInfo;
 import com.emc.coprhd.sp.util.RuntimeUtils;
@@ -128,7 +129,9 @@ public class PoolManagerController {
     @PostMapping(VirtualPools.ROOT)
     public ResponseEntity<URI> createVirtualPool(@RequestBody final CreateSmartVirtualPoolRequest request) {
         LOGGER.debug("{} request: {}", RuntimeUtils.enterMethodMessage(), request);
-        final ClusterNode node = clusterStateService.getAvailableNodes().stream()
+        final ClusterNode node = request.getStoragePoolIDList().isEmpty()
+                ? clusterStateService.getCurrentNode()
+                : clusterStateService.getAvailableNodes().stream()
                 .filter(n -> Objects.equals(n.getId(), request.getNodeId()))
                 .findFirst().orElse(null);
 
@@ -147,7 +150,6 @@ public class PoolManagerController {
                     .map(StoragePoolPerformanceInfo::getId)
                     .collect(Collectors.toList())
                     .containsAll(request.getStoragePoolIDList())) {
-                processingService.createSmartVirtualPool(request);
                 final URI poolURI = remoteNodeExecutor.createVirtualPool(request, node);
                 LOGGER.debug("{} request: {}, poolURI: {}", RuntimeUtils.exitMethodMessage(), request, poolURI);
                 return ResponseEntity.ok(poolURI);
@@ -177,5 +179,35 @@ public class PoolManagerController {
                 .collect(Collectors.toList());
         LOGGER.debug("{} pools: {}", RuntimeUtils.exitMethodMessage(), result);
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping(ServiceCatalog.PROVISION)
+    public ResponseEntity<?> handleProvisionLunRequest(@RequestBody final ProvisionLunRequest request) {
+        LOGGER.debug("{} request: {}", RuntimeUtils.enterMethodMessage(), request);
+        final ClusterNode node = clusterStateService.getAvailableNodes().stream()
+                .filter(n -> Objects.equals(n.getId(), request.getNodeId()))
+                .findFirst().orElse(null);
+
+        if (node == null) {
+            LOGGER.error("No node with id {} found!", request.getNodeId());
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            final List<GetVirtualPoolsInfoResponse> info = processingService.getVirtualPools();
+
+            if (info.stream().anyMatch(pool -> Objects.equals(pool.getId(), request.getVirtualPoolId()))) {
+                remoteNodeExecutor.provisionLun(request, node);
+                LOGGER.debug("{} request: {} OK", RuntimeUtils.exitMethodMessage(), request);
+                return ResponseEntity.ok(null);
+            } else {
+                LOGGER.error("Missing virtual pool id or not located in specified node: {}, all: {}",
+                        request.getVirtualPoolId(), info);
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+        } catch (RuntimeException e) {
+            LOGGER.error("Can't provision LUN on virtual pool {}", request, e);
+            return ResponseEntity.notFound().build();
+        }
     }
 }

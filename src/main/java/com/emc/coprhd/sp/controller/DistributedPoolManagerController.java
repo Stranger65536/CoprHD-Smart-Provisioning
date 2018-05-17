@@ -3,11 +3,13 @@
  */
 package com.emc.coprhd.sp.controller;
 
+import com.emc.coprhd.sp.controller.ContextPaths.ServiceCatalog;
 import com.emc.coprhd.sp.controller.ContextPaths.StoragePools;
 import com.emc.coprhd.sp.controller.ContextPaths.VirtualPools;
 import com.emc.coprhd.sp.model.StoragePoolsInfo;
 import com.emc.coprhd.sp.service.core.ProcessingService;
 import com.emc.coprhd.sp.transfer.client.request.CreateSmartVirtualPoolRequest;
+import com.emc.coprhd.sp.transfer.client.request.ProvisionLunRequest;
 import com.emc.coprhd.sp.transfer.client.response.GetVirtualPoolsInfoResponse;
 import com.emc.coprhd.sp.transfer.client.response.StoragePoolPerformanceInfo;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
@@ -72,5 +74,10 @@ public class DistributedPoolManagerController {
     @GetMapping(DIST + VirtualPools.ROOT)
     public ResponseEntity<List<GetVirtualPoolsInfoResponse>> handleGetVirtualPoolsListRequest() {
         return new ResponseEntity<>(processingService.getVirtualPools(), HttpStatus.OK);
+    }
+
+    @PostMapping(DIST + ServiceCatalog.PROVISION)
+    public ResponseEntity<?> handleProvisionLunRequest(@RequestBody final ProvisionLunRequest request) {
+        return new ResponseEntity<>(processingService.provisionLun(request), HttpStatus.OK);
     }
 }

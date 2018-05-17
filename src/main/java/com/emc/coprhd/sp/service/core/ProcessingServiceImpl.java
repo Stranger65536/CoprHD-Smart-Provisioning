@@ -20,6 +20,7 @@ import com.emc.coprhd.sp.supports.vnx.sizer.SystemType;
 import com.emc.coprhd.sp.supports.vnx.sizer.TierRaidType;
 import com.emc.coprhd.sp.transfer.client.request.ApplyWorkloadRequest;
 import com.emc.coprhd.sp.transfer.client.request.CreateSmartVirtualPoolRequest;
+import com.emc.coprhd.sp.transfer.client.request.ProvisionLunRequest;
 import com.emc.coprhd.sp.transfer.client.response.GetVirtualPoolsInfoResponse;
 import com.emc.coprhd.sp.transfer.client.response.StoragePoolPerformanceInfo;
 import com.emc.coprhd.sp.transfer.client.response.StoragePoolPerformanceInfo.StoragePoolPerformanceInfoBuilder;
@@ -43,9 +44,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -168,6 +171,28 @@ public class ProcessingServiceImpl implements ProcessingService {
                 .stream()
                 .map(this::mapVirtualPoolModelToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @SuppressWarnings("ReturnOfNull")
+    public Object provisionLun(final ProvisionLunRequest request) {
+        final List<GetVirtualPoolsInfoResponse> pools = getVirtualPools();
+        final GetVirtualPoolsInfoResponse targetPool = pools.stream()
+                .filter(pool -> Objects.equals(pool.getId(), request.getVirtualPoolId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No suck pool " + request.getVirtualPoolId()));
+        final StoragePoolsInfo storagePools = getStoragePoolsInfo();
+        final StoragePoolPerformanceInfo suitablePool = storagePools.getStoragePoolsPerformanceInfo().stream()
+                .filter(pool -> pool.getResponseTime() <= targetPool.getTargetResponseTime()
+                        || targetPool.getTargetResponseTime() == 0)
+                .min(Comparator.comparing(StoragePoolPerformanceInfo::getUtilization))
+                .orElseThrow(() -> new IllegalArgumentException("No suitable pool found!"));
+        try {
+            viprClient.provisionLun(new URI(suitablePool.getId()), request.getCatacity());
+            return null;
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("Invalid pool id " + suitablePool.getId(), e);
+        }
     }
 
     private ViPRInfo getViPRInfo(final StoragePoolRestRep storagePool) {

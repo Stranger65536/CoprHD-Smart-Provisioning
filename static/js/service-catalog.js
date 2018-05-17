@@ -142,6 +142,7 @@ function bindPoolClick() {
 
     function updateHintInfo(hint, item) {
         hint.attr("vp_id", $(item).attr("vp_id"));
+        hint.attr("node_id", $(item).attr("node_id"));
         hint.find(".header").find(".name").text($(item).attr("vp_name"));
         hint.find(".content").find(".latency").text($(item).attr("latency"));
     }
@@ -320,11 +321,14 @@ function bindPoolClick() {
 
     function doProvisioning(provisionButton, capacity) {
         var data = {};
-        data['vp_id'] = $('.hint').attr('vp_id');
+        var hint = $('.hint');
+        data['name'] = 'yep';
+        data['virtualPoolId'] = hint.attr('vp_id');
+        data['nodeId'] = hint.attr('node_id');
         data['capacity'] = 10;
         $.ajax({
             contentType: "application/json; charset=utf-8",
-            url: "/service-catalog/provisioning",
+            url: "/service-catalog/provision",
             type: "POST",
             data: JSON.stringify(data),
             beforeSend: function () {
@@ -342,6 +346,9 @@ function bindPoolClick() {
             setProvisioningDone();
         }).fail(function () {
             capacity.prop('disabled', false);
+            provisionButton.button("option", {
+                disabled: false
+            });
             setProvisioningFail();
         });
     }
@@ -396,6 +403,7 @@ function reloadServiceCatalogs() {
         type = (type == null) ? "Not defined" : type;
         $("#catalog").append('<div class="catalog-item" vp_id="' + id + '" ' +
             'vp_name="' + vp_name + '" ' +
+            'node_id="' + node + '" ' +
             'latency="' + latency + '"' + '>' +
             '<div class="panel">' +
             '<div class="panel-heading">' +

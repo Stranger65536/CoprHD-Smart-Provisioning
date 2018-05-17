@@ -120,6 +120,12 @@ public class ViPRClientImpl extends AbstractFallBackable<ViPRClient> implements 
         return poolId;
     }
 
+    @Override
+    @SuppressWarnings("ReturnOfNull")
+    public Object provisionLun(final URI storagePoolId, final long capacity) {
+        return null;
+    }
+
     @PreDestroy
     private void destroy() {
         viprCoreClient.auth().forceLogout();

@@ -46,6 +46,30 @@ public class GetVirtualPoolsInfoResponse {
         this.applicationsList = applicationsList;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getNodeId() {
+        return nodeId;
+    }
+
+    public Double getTargetResponseTime() {
+        return targetResponseTime;
+    }
+
+    public List<String> getStoragePoolIDList() {
+        return storagePoolIDList;
+    }
+
+    public ApplicationsList getApplicationsList() {
+        return applicationsList;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)

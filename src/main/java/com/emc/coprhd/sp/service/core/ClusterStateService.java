@@ -11,4 +11,6 @@ public interface ClusterStateService {
     String getNodeAddress(final ClusterNode node);
 
     List<ClusterNode> getAvailableNodes();
+
+    ClusterNode getCurrentNode();
 }

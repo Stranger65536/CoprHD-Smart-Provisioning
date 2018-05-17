@@ -6,6 +6,7 @@ package com.emc.coprhd.sp.service.core;
 import com.emc.coprhd.sp.model.StoragePoolsInfo;
 import com.emc.coprhd.sp.transfer.client.request.ApplyWorkloadRequest;
 import com.emc.coprhd.sp.transfer.client.request.CreateSmartVirtualPoolRequest;
+import com.emc.coprhd.sp.transfer.client.request.ProvisionLunRequest;
 import com.emc.coprhd.sp.transfer.client.response.GetVirtualPoolsInfoResponse;
 import com.emc.coprhd.sp.transfer.client.response.StoragePoolPerformanceInfo;
 
@@ -22,4 +23,6 @@ public interface ProcessingService {
             final ApplyWorkloadRequest workload);
 
     List<GetVirtualPoolsInfoResponse> getVirtualPools();
+
+    Object provisionLun(ProvisionLunRequest request);
 }

@@ -66,6 +66,15 @@ public class ViPRClientProxy extends AbstractFallBackable<ViPRClient> implements
     }
 
     @Override
+    @SuppressWarnings("ReturnOfNull")
+    public Object provisionLun(final URI storagePoolId, final long capacity) {
+        return performCascadeOperation(client -> {
+            client.provisionLun(storagePoolId, capacity);
+            return null;
+        }, LOGGER);
+    }
+
+    @Override
     public void initialize() {
     }
 }

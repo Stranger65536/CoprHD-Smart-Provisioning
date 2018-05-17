@@ -21,4 +21,6 @@ public interface ViPRClient extends FallBackable {
     Collection<BlockVirtualPoolRestRep> getVirtualPools();
 
     URI createVirtualPool(final String name, final Collection<URI> pools);
+
+    Object provisionLun(final URI storagePoolId, final long capacity);
 }

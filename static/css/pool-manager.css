@@ -574,14 +574,14 @@
 }
 
 .pool-label-cell {
-    width: 50%;
+    width: 30%;
     text-align: left;
     display: table-cell;
     vertical-align: middle;
 }
 
 .pool-value-cell {
-    width: 50%;
+    width: 70%;
     text-align: left;
     overflow-x: auto;
     display: table-cell;

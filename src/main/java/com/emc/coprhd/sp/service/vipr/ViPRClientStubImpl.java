@@ -112,6 +112,12 @@ public class ViPRClientStubImpl extends AbstractFallBackable<ViPRClient> impleme
         }
     }
 
+    @Override
+    @SuppressWarnings("ReturnOfNull")
+    public Object provisionLun(final URI storagePoolId, final long capacity) {
+        return null;
+    }
+
     private StorageSystemRestRep prepareStorageSystem() throws IOException {
         return objectMapper.readValue(storageSystemJsonPath, StorageSystemRestRep.class);
     }

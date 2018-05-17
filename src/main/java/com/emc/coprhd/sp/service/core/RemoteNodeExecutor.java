@@ -2,6 +2,7 @@ package com.emc.coprhd.sp.service.core;
 
 import com.emc.coprhd.sp.model.ClusterNode;
 import com.emc.coprhd.sp.transfer.client.request.CreateSmartVirtualPoolRequest;
+import com.emc.coprhd.sp.transfer.client.request.ProvisionLunRequest;
 import com.emc.coprhd.sp.transfer.client.response.GetVirtualPoolsInfoResponse;
 import com.emc.coprhd.sp.transfer.client.response.StoragePoolPerformanceInfo;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
@@ -17,4 +18,6 @@ public interface RemoteNodeExecutor {
     URI createVirtualPool(final CreateSmartVirtualPoolRequest request, final ClusterNode clusterNode);
 
     List<GetVirtualPoolsInfoResponse> getVirtualPools(final ClusterNode clusterNode);
+
+    void provisionLun(ProvisionLunRequest request, ClusterNode clusterNode);
 }

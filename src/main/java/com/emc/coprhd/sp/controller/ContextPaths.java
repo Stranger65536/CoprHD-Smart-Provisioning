@@ -21,6 +21,7 @@ public interface ContextPaths {
 
     interface ServiceCatalog {
         String ROOT = "/service-catalog";
+        String PROVISION = ROOT + "/provision";
     }
 
     interface StoragePools {

@@ -29,6 +29,11 @@ function createPool() {
 
     var request = {};
     request['storagePools'] = storagePoolIds;
+    if (elements) {
+        request['nodeId'] = $(elements[0]).parent().parent().parent().parent().attr('nodeid');
+    } else {
+        request['nodeId'] = null;
+    }
     request['name'] = $('#pool-name').val();
     request['applicationsList'] = serializeWorkload()['applicationsList'];
 
@@ -485,6 +490,14 @@ function reloadPools() {
                 "</div>" +
                 "<div class='name-row'>" +
                 "<div class='pool-label-cell'>" +
+                "Node:" +
+                "</div>" +
+                "<div class='pool-value-cell'>" +
+                nodeId +
+                "</div>" +
+                "</div>" +
+                "<div class='name-row'>" +
+                "<div class='pool-label-cell'>" +
                 "Response time:" +
                 "</div>" +
                 "<div class='pool-value-cell'>" +
@@ -493,7 +506,7 @@ function reloadPools() {
                 "</div>" +
                 "<div class='name-row'>" +
                 "<div class='pool-label-cell'>" +
-                "Performance utilization:" +
+                "Utilization:" +
                 "</div>" +
                 "<div class='pool-value-cell'>" +
                 getUtilization(utilization) +
