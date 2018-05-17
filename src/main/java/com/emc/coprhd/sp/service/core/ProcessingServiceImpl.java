@@ -133,18 +133,24 @@ public class ProcessingServiceImpl implements ProcessingService {
 
     @Override
     public URI createSmartVirtualPool(final CreateSmartVirtualPoolRequest info) {
-        final URI id = viprClient.createVirtualPool(info.getName(), info.getStoragePoolIDList()
-                .stream()
-                .map(i -> {
-                    try {
-                        return new URI(i);
-                    } catch (URISyntaxException e) {
-                        throw new IllegalArgumentException(e);
-                    }
-                }).collect(Collectors.toList()));
-        final VirtualPool virtualPool = getVirtualPool(info, id);
-        mongoDao.save(virtualPool);
-        return id;
+        synchronized (this) {
+            if (viprClient.getVirtualPools().stream().anyMatch(pool -> Objects.equals(pool.getName(), info.getName()))
+                    || mongoDao.findAll().stream().anyMatch(pool -> Objects.equals(pool.getName(), info.getName()))) {
+                throw new IllegalArgumentException("Duplicate pool name: " + info.getName());
+            }
+            final URI id = viprClient.createVirtualPool(info.getName(), info.getStoragePoolIDList()
+                    .stream()
+                    .map(i -> {
+                        try {
+                            return new URI(i);
+                        } catch (URISyntaxException e) {
+                            throw new IllegalArgumentException(e);
+                        }
+                    }).collect(Collectors.toList()));
+            final VirtualPool virtualPool = getVirtualPool(info, id);
+            mongoDao.save(virtualPool);
+            return id;
+        }
     }
 
     @Override
