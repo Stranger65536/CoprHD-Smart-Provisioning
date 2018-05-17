@@ -32,6 +32,8 @@ import com.emc.storageos.model.systems.StorageSystemRestRep;
 import com.emc.storageos.model.vpool.BlockVirtualPoolRestRep;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.MoreObjects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -58,10 +60,13 @@ import java.util.stream.Collectors;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.hazelcast.util.ExceptionUtil.sneakyThrow;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 
 @Service
 @SuppressWarnings("OverlyCoupledClass")
 public class ProcessingServiceImpl implements ProcessingService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessingServiceImpl.class);
     private static final ObjectMapper JSON = new ObjectMapper();
 
     private static final int CALCULATION_SUCCESS = 0;
@@ -183,8 +188,28 @@ public class ProcessingServiceImpl implements ProcessingService {
                 .orElseThrow(() -> new IllegalStateException("No suck pool " + request.getVirtualPoolId()));
         final StoragePoolsInfo storagePools = getStoragePoolsInfo();
         final StoragePoolPerformanceInfo suitablePool = storagePools.getStoragePoolsPerformanceInfo().stream()
-                .filter(pool -> pool.getResponseTime() <= targetPool.getTargetResponseTime()
-                        || targetPool.getTargetResponseTime() == 0)
+                .filter(pool -> {
+                    final StoragePoolRestRep storagePoolRestRep =
+                            storagePools.getStoragePoolsDetailedInfo().get(pool.getId());
+                    try {
+                        final List<StoragePoolPerformanceInfo> info =
+                                getPoolsCharacteristicsUnderWorkload(new StoragePoolsInfo(
+                                                singletonList(pool), singletonMap(pool.getId(), storagePoolRestRep),
+                                                storagePools.getStorageSystemsInfo()),
+                                        new ApplyWorkloadRequest(targetPool.getApplicationsList()));
+                        if (info.size() != 1) {
+                            //noinspection ThrowCaughtLocally
+                            throw new IllegalStateException("Expected one pool, found " + info.size());
+                        }
+                        final StoragePoolPerformanceInfo calculatedPool = info.get(0);
+                        return calculatedPool.getResponseTime() + pool.getResponseTime()
+                                <= targetPool.getTargetResponseTime()
+                                || targetPool.getTargetResponseTime() == 0;
+                    } catch (Exception e) {
+                        LOGGER.error("Can't calculate pool load", e);
+                        return false;
+                    }
+                })
                 .min(Comparator.comparing(StoragePoolPerformanceInfo::getUtilization))
                 .orElseThrow(() -> new IllegalArgumentException("No suitable pool found!"));
         try {
