@@ -449,7 +449,18 @@ function reloadServiceCatalogs() {
     });
 }
 
+function fillNodeId() {
+    $.ajax({
+        url: '/nodeId',
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8'
+    }).done(function (data) {
+        $('#header-id').text('Node: ' + data['nodeId'])
+    });
+}
+
 $(document).ready(function () {
+    fillNodeId();
     reloadServiceCatalogs();
     bindPoolClick();
 });
