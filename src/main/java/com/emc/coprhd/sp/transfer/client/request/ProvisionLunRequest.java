@@ -1,3 +1,6 @@
+/*
+ * Copyright 1994-2018 EMC Corporation. All rights reserved.
+ */
 package com.emc.coprhd.sp.transfer.client.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;

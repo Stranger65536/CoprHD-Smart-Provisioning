@@ -1,3 +1,6 @@
+/*
+ * Copyright 1994-2018 EMC Corporation. All rights reserved.
+ */
 package com.emc.coprhd.sp.service.core;
 
 import com.emc.coprhd.sp.model.ClusterNode;
