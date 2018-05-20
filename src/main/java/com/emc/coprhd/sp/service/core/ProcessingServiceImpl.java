@@ -161,6 +161,12 @@ public class ProcessingServiceImpl implements ProcessingService {
                 .map(original -> {
                     final StorageSystemRestRep storageSystem = info.getStorageSystemsInfo().get(original.getId());
                     final StoragePoolRestRep storagePool = info.getStoragePoolsDetailedInfo().get(original.getId());
+
+                    if (workload.getApplicationsList().getFreeFormWorkloads() == null
+                            && workload.getApplicationsList().getOracleOLTPWorkloads() == null) {
+                        return original;
+                    }
+
                     final VNXSizerRequest request = prepareRequest(original, storagePool, storageSystem, workload);
 
                     try {

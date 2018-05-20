@@ -199,7 +199,7 @@ public class PoolManagerController {
         }
 
         try {
-            final List<GetVirtualPoolsInfoResponse> info = processingService.getVirtualPools();
+            final List<GetVirtualPoolsInfoResponse> info = handleGetVirtualPoolsListRequest().getBody();
 
             if (info.stream().anyMatch(pool -> Objects.equals(pool.getId(), request.getVirtualPoolId()))) {
                 remoteNodeExecutor.provisionLun(request, node);
