@@ -90,6 +90,7 @@ test {
 dependencies {
     compile(
             [group: 'org.springframework.boot', name: 'spring-boot-starter', version: project.springBootVersion],
+            [group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion],
             [group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: project.springBootVersion],
             [group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: project.springBootVersion],
             [group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: project.springBootVersion],

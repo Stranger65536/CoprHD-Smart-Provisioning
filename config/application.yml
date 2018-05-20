@@ -2,6 +2,8 @@ banner:
   charset: UTF-8
   location: file:config/banner.txt
 server:
+  ssl:
+    enabled: false
   port: 8080
   tomcat.uri-encoding: UTF-8
   http:
