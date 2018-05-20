@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -85,6 +86,8 @@ public class PoolManagerController {
                         return Collections.<StoragePoolPerformanceInfo>emptyList();
                     }
                 }).flatMap(List::stream)
+                .sorted(Comparator.comparing(StoragePoolPerformanceInfo::getNodeId)
+                        .thenComparing(StoragePoolPerformanceInfo::getId))
                 .collect(Collectors.toList());
         LOGGER.debug("{} pools: {}", RuntimeUtils.exitMethodMessage(), result);
         return ResponseEntity.ok(result);
@@ -141,12 +144,12 @@ public class PoolManagerController {
         }
 
         try {
-            final StoragePoolsInfo info = processingService.getStoragePoolsInfo();
+            final List<StoragePoolPerformanceInfo> info = getStoragePools().getBody();
 
             if (request.getStoragePoolIDList().stream()
-                    .allMatch(i -> info.getStoragePoolsDetailedInfo().containsKey(i))
-                    && info.getStoragePoolsPerformanceInfo().stream()
-                    .filter(i -> Objects.equals(i.getNodeId(), node.getId()))
+                    .allMatch(i -> info.stream().map(StoragePoolPerformanceInfo::getId)
+                            .anyMatch(id -> Objects.equals(i, id)))
+                    && info.stream().filter(i -> Objects.equals(i.getNodeId(), node.getId()))
                     .map(StoragePoolPerformanceInfo::getId)
                     .collect(Collectors.toList())
                     .containsAll(request.getStoragePoolIDList())) {
@@ -155,7 +158,7 @@ public class PoolManagerController {
                 return ResponseEntity.ok(poolURI);
             } else {
                 LOGGER.error("Missing storage pool ids or not located in one node: {}, all: {}",
-                        request.getStoragePoolIDList(), info.getStoragePoolsPerformanceInfo());
+                        request.getStoragePoolIDList(), info);
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
         } catch (RuntimeException e) {
@@ -176,6 +179,8 @@ public class PoolManagerController {
                         return Collections.<GetVirtualPoolsInfoResponse>emptyList();
                     }
                 }).flatMap(List::stream)
+                .sorted(Comparator.comparing(GetVirtualPoolsInfoResponse::getNodeId)
+                        .thenComparing(GetVirtualPoolsInfoResponse::getId))
                 .collect(Collectors.toList());
         LOGGER.debug("{} pools: {}", RuntimeUtils.exitMethodMessage(), result);
         return ResponseEntity.ok(result);

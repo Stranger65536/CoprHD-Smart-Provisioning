@@ -22,7 +22,7 @@ function createPool() {
     var workloadTypeSelectId = workloadTypeSelect.find(':selected').attr('id');
     var elements = $('#vp-list-table').find('tbody').find('input:checked');
     $.each(elements, function (index, value) {
-        storagePoolIds.push($(value).attr('id'));
+        storagePoolIds.push($(value).attr('poolId'));
     });
 
     var responseTime = $('#performance-response-time').val();
@@ -93,10 +93,10 @@ function createPool() {
 function processRootStorageProperty(name, dataStorageLosProperties, value) {
     if (name.indexOf('dataStorageLoS') > -1) {
         dataStorageLosProperties[name.replace('dataStorageLoS.', '')] = value;
-        if (value == 'Unknown') {
+        if (value === 'Unknown') {
             delete dataStorageLosProperties[name.replace('dataStorageLoS.', '')];
         }
-        if (value == 'on') {
+        if (value === 'on') {
             dataStorageLosProperties['enabled'] = 'true';
         }
     }
@@ -105,10 +105,10 @@ function processRootStorageProperty(name, dataStorageLosProperties, value) {
 function processRootPerformanceProperty(name, dataPerformanceLosProperties, value) {
     if (name.indexOf('dataPerformanceLoS') > -1) {
         dataPerformanceLosProperties[name.replace('dataPerformanceLoS.', '')] = value;
-        if (value == 'Unknown') {
+        if (value === 'Unknown') {
             delete dataPerformanceLosProperties[name.replace('dataPerformanceLoS.', '')];
         }
-        if (name != 'dataPerformanceLoS.enabled' && value != 'Unknown') {
+        if (name !== 'dataPerformanceLoS.enabled' && value !== 'Unknown') {
             dataPerformanceLosProperties['enabled'] = 'true';
         }
     }
@@ -117,10 +117,10 @@ function processRootPerformanceProperty(name, dataPerformanceLosProperties, valu
 function processRootAvailabilityProperty(name, dataAvailabilityLosProperties, value) {
     if (name.indexOf('dataAvailabilityLoS') > -1) {
         dataAvailabilityLosProperties[name.replace('dataAvailabilityLoS.', '')] = value;
-        if (value == 'Unknown') {
+        if (value === 'Unknown') {
             delete dataAvailabilityLosProperties[name.replace('dataAvailabilityLoS.', '')];
         }
-        if (name != 'dataAvailabilityLoS.enabled' && value != 'Unknown') {
+        if (name !== 'dataAvailabilityLoS.enabled' && value !== 'Unknown') {
             dataAvailabilityLosProperties['enabled'] = 'true';
         }
     }
@@ -129,10 +129,10 @@ function processRootAvailabilityProperty(name, dataAvailabilityLosProperties, va
 function processRootSnapshotsProperty(name, dataSnapshotLosProperties, value) {
     if (name.indexOf('dataSnapshotLoS') > -1) {
         dataSnapshotLosProperties[name.replace('dataSnapshotLoS.', '')] = value;
-        if (value == 'Unknown') {
+        if (value === 'Unknown') {
             delete dataSnapshotLosProperties[name.replace('dataSnapshotLoS.', '')];
         }
-        if (name != 'dataSnapshotLoS.enabled' && value != 'Unknown') {
+        if (name !== 'dataSnapshotLoS.enabled' && value !== 'Unknown') {
             dataSnapshotLosProperties["enabled"] = "true";
         }
     }
@@ -339,7 +339,7 @@ function serializeWorkload() {
 
         var responseTimeSelect = $('#performance-response-time');
         var responseTime = responseTimeSelect.find(':selected').val();
-        if (responseTime != 'Unknown') {
+        if (responseTime !== 'Unknown') {
             freeFormWorkload['ResponseTimeMS'] = parseInt(responseTime);
         }
 
@@ -429,7 +429,6 @@ function reloadPools() {
         switch (filterType) {
             case 'filter-type-all':
                 return true;
-                break;
             case 'filter-type-matching':
                 if (utilization >= 100) {
                     return false;
@@ -439,7 +438,6 @@ function reloadPools() {
                 } else {
                     return true;
                 }
-                break;
         }
     }
 
@@ -461,10 +459,10 @@ function reloadPools() {
             var storage = pool['storageSystem'];
 
             //noinspection QuirksModeInspectionTool
-            position.append("<tr id=" + id + " nodeId=" + nodeId + ">" +
+            position.append("<tr id=" + nodeId + '_' + id + " nodeId=" + nodeId + " poolId=" + id + ">" +
                 "<td class='checkbox-cell'>" +
                 "<label>" +
-                "<input type='checkbox' id=" + id + ">" +
+                "<input type='checkbox' id=" + nodeId + '_' + id + " poolId=" + id + ">" +
                 "</label>" +
                 "</td>" +
                 "<td class='info-cell'>" +
@@ -517,7 +515,7 @@ function reloadPools() {
                 "</div>" +
                 "<div class='info-characteristic-row'>" +
                 "<div class='butthurt-indicator-cell'>" +
-                "<div id='butthurt-indicator-" + id + "'" +
+                "<div id='butthurt-indicator-" + nodeId + '_' + id + "'" +
                 "value='" + utilization + "'" +
                 "class='butthurt-indicator'>" +
                 "</div>" +
@@ -526,7 +524,7 @@ function reloadPools() {
                 "</div>" +
                 "</td>" +
                 "</tr>");
-            setPoolIndicatorValue(id, utilization);
+            setPoolIndicatorValue(nodeId + '_' + id, utilization);
         });
     }
 
@@ -540,7 +538,7 @@ function reloadPools() {
 
         var pools = $('#vp-list-table').find('tbody').find('tr');
         $.each(pools, function () {
-            var id = $(this).attr('id');
+            var id = $(this).attr('poolId');
             var nodeId = $(this).attr('nodeId');
             $(this).on('click', function () {
                 $.ajax({
@@ -646,7 +644,7 @@ function constructNode(data, obj) {
     var node;
     $.each(obj, function (key, value) {
         node = {};
-        if (typeof  value == 'object' && value !== null) {
+        if (typeof  value === 'object' && value !== null) {
             node.label = key;
             var children = [];
             node.children = children;

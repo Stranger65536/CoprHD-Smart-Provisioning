@@ -38,6 +38,7 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
     private static final Logger LOGGER = LoggerFactory.getLogger(RemoteNodeExecutorImpl.class);
 
     private final String nodeId;
+    private final short port;
     private final RestOperations restTemplate = new RestTemplate();
     private final ClusterStateService clusterStateService;
     private final ProcessingService processingService;
@@ -45,9 +46,11 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
     @Autowired
     public RemoteNodeExecutorImpl(
             @Value("${com.emc.coprhd.sp.node-id}") final String nodeId,
+            @Value("${server.port}") final short port,
             final ClusterStateService clusterStateService,
             final ProcessingService processingService) {
         this.nodeId = nodeId;
+        this.port = port;
         this.clusterStateService = clusterStateService;
         this.processingService = processingService;
     }
@@ -61,7 +64,7 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
                     RuntimeUtils.exitMethodMessage(), clusterNode, info.getStoragePoolsPerformanceInfo());
             return info.getStoragePoolsPerformanceInfo();
         } else {
-            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode) + DIST + StoragePools.ROOT;
+            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode) + ':' + port + DIST + StoragePools.ROOT;
             LOGGER.debug("GET > {}", url);
             final ResponseEntity<StoragePoolPerformanceInfo[]> responseEntity =
                     restTemplate.getForEntity(url, StoragePoolPerformanceInfo[].class);
@@ -92,7 +95,7 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
                     RuntimeUtils.exitMethodMessage(), clusterNode, id, result);
             return result;
         } else {
-            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode)
+            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode) + ':' + port
                     + DIST + StoragePools.ROOT + '/' + id;
             LOGGER.debug("GET > {}", url);
             final ResponseEntity<StoragePoolRestRep> responseEntity =
@@ -120,7 +123,7 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
                     RuntimeUtils.exitMethodMessage(), clusterNode, request, uri);
             return uri;
         } else {
-            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode)
+            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode) + ':' + port
                     + DIST + VirtualPools.ROOT;
             LOGGER.debug("POST > {}, data: {}", url, request);
             final ResponseEntity<String> responseEntity =
@@ -152,7 +155,8 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
                     RuntimeUtils.exitMethodMessage(), clusterNode, info);
             return info;
         } else {
-            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode) + DIST + VirtualPools.ROOT;
+            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode) + ':' + port
+                    + DIST + VirtualPools.ROOT;
             LOGGER.debug("GET > {}", url);
             final ResponseEntity<GetVirtualPoolsInfoResponse[]> responseEntity =
                     restTemplate.getForEntity(url, GetVirtualPoolsInfoResponse[].class);
@@ -181,7 +185,7 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
             LOGGER.debug("{} LOCAL LUN provision node: {} request: {}",
                     RuntimeUtils.exitMethodMessage(), clusterNode, request);
         } else {
-            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode)
+            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode) + ':' + port
                     + DIST + ServiceCatalog.PROVISION;
             LOGGER.debug("POST > {}", url);
             final ResponseEntity<?> responseEntity =

@@ -3,6 +3,7 @@
  */
 package com.emc.coprhd.sp.transfer.client.response;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 
@@ -33,15 +34,16 @@ public class StoragePoolPerformanceInfo {
     @JsonProperty(USED_CAPACITY)
     private final Double usedCapacity;
 
+    @JsonCreator
     public StoragePoolPerformanceInfo(
-            final String id,
-            final String nodeId,
-            final String name,
-            final Double responseTime,
-            final Double utilization,
-            final String storageSystemName,
-            final Double totalIOPS,
-            final Double usedCapacity) {
+            @JsonProperty(ID) final String id,
+            @JsonProperty(NODE_ID) final String nodeId,
+            @JsonProperty(NAME) final String name,
+            @JsonProperty(RESPONSE_TIME) final Double responseTime,
+            @JsonProperty(UTILIZATION) final Double utilization,
+            @JsonProperty(STORAGE_SYSTEM_NAME) final String storageSystemName,
+            @JsonProperty(IOPS) final Double totalIOPS,
+            @JsonProperty(USED_CAPACITY) final Double usedCapacity) {
         this.id = id;
         this.nodeId = nodeId;
         this.name = name;

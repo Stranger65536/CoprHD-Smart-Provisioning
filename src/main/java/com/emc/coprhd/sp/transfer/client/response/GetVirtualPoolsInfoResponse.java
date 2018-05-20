@@ -4,6 +4,7 @@
 package com.emc.coprhd.sp.transfer.client.response;
 
 import com.emc.coprhd.sp.json.vnxszier.ApplicationsList;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 
@@ -31,13 +32,14 @@ public class GetVirtualPoolsInfoResponse {
     @JsonProperty(APPLICATIONS_LIST)
     private final ApplicationsList applicationsList;
 
+    @JsonCreator
     public GetVirtualPoolsInfoResponse(
-            final String id,
-            final String name,
-            final String nodeId,
-            final Double targetResponseTime,
-            final List<String> storagePoolIDList,
-            final ApplicationsList applicationsList) {
+            @JsonProperty(ID) final String id,
+            @JsonProperty(NAME) final String name,
+            @JsonProperty(NODE_ID) final String nodeId,
+            @JsonProperty(TARGET_RESPONSE_TIME) final Double targetResponseTime,
+            @JsonProperty(STORAGE_POOLS) final List<String> storagePoolIDList,
+            @JsonProperty(APPLICATIONS_LIST) final ApplicationsList applicationsList) {
         this.id = id;
         this.name = name;
         this.nodeId = nodeId;

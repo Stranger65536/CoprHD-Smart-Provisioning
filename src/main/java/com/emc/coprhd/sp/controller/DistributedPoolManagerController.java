@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -61,8 +62,8 @@ public class DistributedPoolManagerController {
 
         if (request.getStoragePoolIDList().stream().allMatch(i ->
                 info.getStoragePoolsDetailedInfo().containsKey(i))) {
-            processingService.createSmartVirtualPool(request);
-            return ResponseEntity.ok().build();
+            final URI result = processingService.createSmartVirtualPool(request);
+            return ResponseEntity.ok(result.toString());
         } else {
             final Map<String, Object> data = ImmutableMap.of(
                     "availablePools", info.getStoragePoolsDetailedInfo(),
