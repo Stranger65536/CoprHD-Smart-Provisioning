@@ -18,6 +18,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("ALL")
 @XmlRootElement(name = "vpool")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class VirtualPoolCommonRestRep extends DataObjectRestRep {

@@ -32,6 +32,7 @@ public class ClusterMembershipListener implements MembershipListener {
     private final Set<AddressInfo> ignoredNetworks;
 
     @Autowired
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public ClusterMembershipListener(
             final IMap<String, ClusterNode> nodes,
             final HazelcastInstance hzInstance,

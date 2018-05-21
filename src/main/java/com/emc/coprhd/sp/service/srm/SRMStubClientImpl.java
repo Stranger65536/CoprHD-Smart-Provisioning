@@ -39,10 +39,10 @@ public class SRMStubClientImpl extends AbstractFallBackable<SRMClient> implement
         final int tier = isUseUtilizedPool()
                 ? (baseTier + TIERS_NUMBER / 2) % TIERS_NUMBER + 1
                 : baseTier;
-        final double utilization = Math.abs(randomMeanWithRelativeRange(UTILIZATION / tier, RELATIVE_RANGE));
-        final double latency = Math.abs(randomMeanWithRelativeRange(LATENCY / tier, RELATIVE_RANGE));
-        final double iops = Math.abs(randomMeanWithRelativeRange(IOPS / tier, RELATIVE_RANGE));
-        final double capacity = Math.abs(randomMeanWithRelativeRange(USED_CAPACITY / tier, RELATIVE_RANGE));
+        final double utilization = Math.abs(randomMeanWithRelativeRange(UTILIZATION / tier));
+        final double latency = Math.abs(randomMeanWithRelativeRange(LATENCY / tier));
+        final double iops = Math.abs(randomMeanWithRelativeRange(IOPS / tier));
+        final double capacity = Math.abs(randomMeanWithRelativeRange(USED_CAPACITY / tier));
         final SRMPoolInfo result = new SRMPoolInfo(poolName, utilization, latency, iops, capacity, NO_DISKS);
         LOGGER.debug("{} poolName: {}, info: {}", exitMethodMessage(), poolName, result);
         return result;
@@ -58,7 +58,7 @@ public class SRMStubClientImpl extends AbstractFallBackable<SRMClient> implement
         return LocalTime.now().getSecond() > 30;
     }
 
-    private static double randomMeanWithRelativeRange(final double mean, final double relativeRange) {
-        return mean + RANDOM.nextDouble() * mean * relativeRange / 2;
+    private static double randomMeanWithRelativeRange(final double mean) {
+        return mean + RANDOM.nextDouble() * mean * RELATIVE_RANGE / 2;
     }
 }

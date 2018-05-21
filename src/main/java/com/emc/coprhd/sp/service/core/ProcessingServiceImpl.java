@@ -226,9 +226,12 @@ public class ProcessingServiceImpl implements ProcessingService {
                 .orElseThrow(() -> new IllegalArgumentException("No suitable pool found!"));
         try {
             viprClient.provisionLun(new URI(suitablePool.getId()), request.getCatacity());
+            Thread.sleep(5000);
             return null;
         } catch (URISyntaxException e) {
             throw new IllegalStateException("Invalid pool id " + suitablePool.getId(), e);
+        } catch (InterruptedException e) {
+            throw new IllegalStateException("Interrupted pool creation!", e);
         }
     }
 
@@ -271,14 +274,12 @@ public class ProcessingServiceImpl implements ProcessingService {
                 .filter(i -> i.getName().equals(pool.getName()))
                 .findFirst();
 
-        final List<String> storagePools = virtualPoolRestRep.isPresent()
-                ? virtualPoolRestRep
-                .get()
-                .getAssignedStoragePools()
-                .stream()
-                .map(i -> i.getId().toString())
-                .collect(Collectors.toList())
-                : null;
+        final List<String> storagePools = virtualPoolRestRep
+                .map(blockVirtualPoolRestRep -> blockVirtualPoolRestRep
+                        .getAssignedStoragePools()
+                        .stream()
+                        .map(i -> i.getId().toString())
+                        .collect(Collectors.toList())).orElse(null);
 
         return new GetVirtualPoolsInfoResponse(
                 pool.getId(),

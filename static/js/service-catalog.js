@@ -369,7 +369,7 @@ function bindPoolClick() {
                     handlerFound = true;
                     if (associatedPoolPanel == null) {
                         processClickOnPool(hint, item, zoom, e, pointerWrapper, pointer, timeout);
-                    } else if (associatedPoolPanel != this) {
+                    } else if (associatedPoolPanel !== this) {
                         processClickOnDifferentPool(hint, item, zoom, e, pointerWrapper, pointer, timeout);
                     } else {
                         processClickOnSamePool(hint, zoom, e, pointerWrapper, pointer);

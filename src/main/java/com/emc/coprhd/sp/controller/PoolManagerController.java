@@ -80,7 +80,7 @@ public class PoolManagerController {
         final List<StoragePoolPerformanceInfo> result = clusterStateService.getAvailableNodes().stream()
                 .map(node -> {
                     try {
-                        return remoteNodeExecutor.getStoragePools(node);
+                        return remoteNodeExecutor.getStoragePools(node).getStoragePoolsPerformanceInfo();
                     } catch (RuntimeException e) {
                         LOGGER.error("Can't obtain storage pools from node {}", node, e);
                         return Collections.<StoragePoolPerformanceInfo>emptyList();
@@ -121,9 +121,18 @@ public class PoolManagerController {
     public ResponseEntity<List<StoragePoolPerformanceInfo>> applyWorkloadInformationRequest(
             @RequestBody final ApplyWorkloadRequest request) {
         LOGGER.debug("{} request: {}", RuntimeUtils.enterMethodMessage(), request);
-        final StoragePoolsInfo info = processingService.getStoragePoolsInfo();
-        final List<StoragePoolPerformanceInfo> result =
-                processingService.getPoolsCharacteristicsUnderWorkload(info, request);
+        final List<StoragePoolPerformanceInfo> result = clusterStateService.getAvailableNodes().stream()
+                .map(node -> {
+                    try {
+                        final StoragePoolsInfo pools = remoteNodeExecutor.getStoragePools(node);
+                        return processingService.getPoolsCharacteristicsUnderWorkload(pools, request);
+                    } catch (RuntimeException e) {
+                        LOGGER.error("Can't obtain storage pools from node {}", node, e);
+                        return Collections.<StoragePoolPerformanceInfo>emptyList();
+                    }
+                })
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
         LOGGER.debug("{} request: {}, response: {}", RuntimeUtils.exitMethodMessage(), request, result);
         return ResponseEntity.ok(result);
     }

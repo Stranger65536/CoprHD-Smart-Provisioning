@@ -9,6 +9,7 @@ import com.google.common.base.MoreObjects;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Collection;
 import java.util.List;
 
 public class ApplicationsList {
@@ -32,7 +33,7 @@ public class ApplicationsList {
         return freeFormWorkloads;
     }
 
-    public List<OracleOLTPWorkload> getOracleOLTPWorkloads() {
+    public Collection<OracleOLTPWorkload> getOracleOLTPWorkloads() {
         return oracleOLTPWorkloads;
     }
 

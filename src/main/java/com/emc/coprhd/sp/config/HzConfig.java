@@ -48,6 +48,7 @@ public class HzConfig {
 
     @Bean
     @Autowired
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public IMap<String, ClusterNode> nodesMap(final HazelcastInstance hazelcastInstance) {
         return hazelcastInstance.getMap("nodes");
     }

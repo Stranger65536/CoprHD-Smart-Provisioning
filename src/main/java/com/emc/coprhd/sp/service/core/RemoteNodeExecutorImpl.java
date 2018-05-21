@@ -11,14 +11,17 @@ import com.emc.coprhd.sp.model.StoragePoolsInfo;
 import com.emc.coprhd.sp.transfer.client.request.CreateSmartVirtualPoolRequest;
 import com.emc.coprhd.sp.transfer.client.request.ProvisionLunRequest;
 import com.emc.coprhd.sp.transfer.client.response.GetVirtualPoolsInfoResponse;
-import com.emc.coprhd.sp.transfer.client.response.StoragePoolPerformanceInfo;
 import com.emc.coprhd.sp.util.RuntimeUtils;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -32,6 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.emc.coprhd.sp.controller.ContextPaths.DIST;
+import static java.util.Arrays.asList;
 
 @Service
 public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
@@ -42,6 +46,7 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
     private final RestOperations restTemplate = new RestTemplate();
     private final ClusterStateService clusterStateService;
     private final ProcessingService processingService;
+    private final HttpHeaders headers;
 
     @Autowired
     public RemoteNodeExecutorImpl(
@@ -53,21 +58,30 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
         this.port = port;
         this.clusterStateService = clusterStateService;
         this.processingService = processingService;
+        this.headers = new HttpHeaders();
+        headers.setAccept(asList(MediaType.APPLICATION_JSON));
     }
 
     @Override
-    public List<StoragePoolPerformanceInfo> getStoragePools(final ClusterNode clusterNode) {
+    public StoragePoolsInfo getStoragePools(final ClusterNode clusterNode) {
         LOGGER.debug("{} node: {}", RuntimeUtils.enterMethodMessage(), clusterNode);
         if (nodeId.equals(clusterNode.getId())) {
             final StoragePoolsInfo info = processingService.getStoragePoolsInfo();
             LOGGER.debug("{} LOCAL Storage Pools retrieve node: {} pools: {}",
-                    RuntimeUtils.exitMethodMessage(), clusterNode, info.getStoragePoolsPerformanceInfo());
-            return info.getStoragePoolsPerformanceInfo();
+                    RuntimeUtils.exitMethodMessage(), clusterNode, info);
+            return info;
         } else {
-            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode) + ':' + port + DIST + StoragePools.ROOT;
+            final String url = "http://" + clusterStateService.getNodeAddress(clusterNode) + ':' + port
+                    + DIST + StoragePools.ROOT;
             LOGGER.debug("GET > {}", url);
-            final ResponseEntity<StoragePoolPerformanceInfo[]> responseEntity =
-                    restTemplate.getForEntity(url, StoragePoolPerformanceInfo[].class);
+            final ResponseEntity<StoragePoolsInfo> responseEntity;
+            try {
+                responseEntity = restTemplate.exchange(
+                        new RequestEntity<>(headers, HttpMethod.GET, new URI(url)),
+                        StoragePoolsInfo.class);
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException("Invalid URI " + url, e);
+            }
 
             if (responseEntity.getStatusCode() != HttpStatus.OK) {
                 LOGGER.error("GET < {} {}", url, responseEntity);
@@ -76,8 +90,7 @@ public class RemoteNodeExecutorImpl implements RemoteNodeExecutor {
 
             LOGGER.debug("GET < 200 OK {}", url);
 
-            final List<StoragePoolPerformanceInfo> result =
-                    Arrays.stream(responseEntity.getBody()).collect(Collectors.toList());
+            final StoragePoolsInfo result = responseEntity.getBody();
 
             LOGGER.debug("{} REMOTE Storage Pools retrieve node: {} pools: {}",
                     RuntimeUtils.exitMethodMessage(), clusterNode, result);

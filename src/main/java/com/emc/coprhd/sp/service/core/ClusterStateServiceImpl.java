@@ -41,6 +41,7 @@ public class ClusterStateServiceImpl implements ClusterStateService {
     private final ClusterMembershipListener listener;
 
     @Autowired
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public ClusterStateServiceImpl(
             final IMap<String, ClusterNode> nodes,
             final HazelcastInstance hzInstance,

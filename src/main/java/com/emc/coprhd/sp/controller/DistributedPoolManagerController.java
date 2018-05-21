@@ -11,7 +11,6 @@ import com.emc.coprhd.sp.service.core.ProcessingService;
 import com.emc.coprhd.sp.transfer.client.request.CreateSmartVirtualPoolRequest;
 import com.emc.coprhd.sp.transfer.client.request.ProvisionLunRequest;
 import com.emc.coprhd.sp.transfer.client.response.GetVirtualPoolsInfoResponse;
-import com.emc.coprhd.sp.transfer.client.response.StoragePoolPerformanceInfo;
 import com.emc.storageos.model.pools.StoragePoolRestRep;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +39,9 @@ public class DistributedPoolManagerController {
     }
 
     @GetMapping(DIST + StoragePools.ROOT)
-    public ResponseEntity<List<StoragePoolPerformanceInfo>> getStoragePools() {
+    public ResponseEntity<StoragePoolsInfo> getStoragePools() {
         final StoragePoolsInfo info = processingService.getStoragePoolsInfo();
-        return ResponseEntity.ok(info.getStoragePoolsPerformanceInfo());
+        return ResponseEntity.ok(info);
     }
 
     @GetMapping(DIST + StoragePools.ROOT + StoragePools.POOL_ID)
@@ -74,11 +73,11 @@ public class DistributedPoolManagerController {
 
     @GetMapping(DIST + VirtualPools.ROOT)
     public ResponseEntity<List<GetVirtualPoolsInfoResponse>> handleGetVirtualPoolsListRequest() {
-        return new ResponseEntity<>(processingService.getVirtualPools(), HttpStatus.OK);
+        return ResponseEntity.ok(processingService.getVirtualPools());
     }
 
     @PostMapping(DIST + ServiceCatalog.PROVISION)
     public ResponseEntity<?> handleProvisionLunRequest(@RequestBody final ProvisionLunRequest request) {
-        return new ResponseEntity<>(processingService.provisionLun(request), HttpStatus.OK);
+        return ResponseEntity.ok(processingService.provisionLun(request));
     }
 }
