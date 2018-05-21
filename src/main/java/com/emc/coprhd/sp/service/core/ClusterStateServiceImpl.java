@@ -20,10 +20,12 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +36,7 @@ public class ClusterStateServiceImpl implements ClusterStateService {
     private final String nodeId;
     private final HazelcastInstance hzInstance;
     private final IMap<String, ClusterNode> nodes;
+    private final Map<String, ClusterNode> nodesMap;
     private final Set<AddressInfo> ignoredNetworks;
     private final ClusterMembershipListener listener;
 
@@ -45,6 +48,7 @@ public class ClusterStateServiceImpl implements ClusterStateService {
             @Value("${com.emc.coprhd.sp.node-id}") final String nodeId,
             @Value("${com.emc.coprhd.sp.ignored-networks}") final String ignoredNetworks) {
         this.nodes = nodes;
+        this.nodesMap = new ConcurrentHashMap<>(3, 1.0f);
         this.nodeId = nodeId;
         this.listener = listener;
         this.hzInstance = hzInstance;
@@ -76,7 +80,14 @@ public class ClusterStateServiceImpl implements ClusterStateService {
     @Override
     public List<ClusterNode> getAvailableNodes() {
         LOGGER.debug(RuntimeUtils.enterMethodMessage());
-        final List<ClusterNode> result = new ArrayList<>(nodes.values());
+        Set<Entry<String, ClusterNode>> entrySet;
+        try {
+            entrySet = nodes.entrySet();
+            entrySet.forEach(entry -> nodesMap.put(entry.getKey(), entry.getValue()));
+        } catch (Exception ignored) {
+            entrySet = nodesMap.entrySet();
+        }
+        final List<ClusterNode> result = entrySet.stream().map(Entry::getValue).collect(Collectors.toList());
         LOGGER.debug("{} nodes: {}", RuntimeUtils.exitMethodMessage(), result);
         return result;
     }

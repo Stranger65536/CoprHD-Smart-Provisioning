@@ -197,7 +197,7 @@ public class ProcessingServiceImpl implements ProcessingService {
         final GetVirtualPoolsInfoResponse targetPool = pools.stream()
                 .filter(pool -> Objects.equals(pool.getId(), request.getVirtualPoolId()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("No suck pool " + request.getVirtualPoolId()));
+                .orElseThrow(() -> new IllegalStateException("No such pool " + request.getVirtualPoolId()));
         final StoragePoolsInfo storagePools = getStoragePoolsInfo();
         final StoragePoolPerformanceInfo suitablePool = storagePools.getStoragePoolsPerformanceInfo().stream()
                 .filter(pool -> {

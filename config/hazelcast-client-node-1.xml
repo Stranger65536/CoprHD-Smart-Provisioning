@@ -17,7 +17,7 @@
         <property name="hazelcast.client.invocation.timeout.seconds">5</property>
     </properties>
     <network>
-        <connection-timeout>5000</connection-timeout>
+        <connection-timeout>1000</connection-timeout>
         <redo-operation>false</redo-operation>
         <smart-routing>true</smart-routing>
         <cluster-members>
