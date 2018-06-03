@@ -200,6 +200,8 @@ public class ProcessingServiceImpl implements ProcessingService {
                 .orElseThrow(() -> new IllegalStateException("No such pool " + request.getVirtualPoolId()));
         final StoragePoolsInfo storagePools = getStoragePoolsInfo();
         final StoragePoolPerformanceInfo suitablePool = storagePools.getStoragePoolsPerformanceInfo().stream()
+                .filter(pool -> targetPool.getStoragePoolIDList().stream()
+                        .anyMatch(sp -> sp.contains(pool.getId())))
                 .filter(pool -> {
                     final StoragePoolRestRep storagePoolRestRep =
                             storagePools.getStoragePoolsDetailedInfo().get(pool.getId());
